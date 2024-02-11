@@ -70,12 +70,4 @@ public class AuthController {
             throw new RuntimeException(e);
         }
     }
-
-    // add a method to display the actual user that is logged in
-
-    @GetMapping("/api/v1/user/actual")
-    public ResponseEntity<ApiResponse<User>> getActualUser() {
-        //
-        return ResponseEntity.ok(new ApiResponse<>(true, "success", userService.getActualUser()));
-    }
 }

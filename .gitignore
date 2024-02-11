@@ -8,7 +8,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 # Application binary
 *.jar
-!gradle/wrapper/gradle-wrapper.jar
+
 
 # Log file
 *.log
