@@ -1,15 +1,34 @@
 # Compiled class file
 *.class
+# Gradle related
+.gradle/
+build/
+# Gradle wrapper jar binary
+!gradle/wrapper/gradle-wrapper.jar
+# Application binary
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
 
 # Log file
 *.log
 
 # BlueJ files
 *.ctxt
-
+# IDE related
+.idea/
+*.iml
+*.iws
+*.ipr
+.classpath
+.project
+.settings/
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
-
+# Compiled bytecode
+**/bin/
+**/out/
+**/target/
+**/build/
 # Package Files #
 
 *.war
