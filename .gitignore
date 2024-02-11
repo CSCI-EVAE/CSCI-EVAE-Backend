@@ -1,6 +1,7 @@
 # Compiled class file
 *.class
 # Gradle related
+src/main/resources/application.properties
 .gradle/
 build/
 # Gradle wrapper jar binary
