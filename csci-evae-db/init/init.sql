@@ -332,5 +332,3 @@ create table if not exists users_seq
 (
     next_val bigint null
 );
-
-
