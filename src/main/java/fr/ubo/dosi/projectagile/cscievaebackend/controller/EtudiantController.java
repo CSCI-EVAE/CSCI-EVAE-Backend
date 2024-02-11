@@ -20,7 +20,6 @@ import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 @PreAuthorize("hasAuthority('SECRETAIRE')")
 @RequestMapping("/api/v1/etudiants")
 public class EtudiantController {
-
     @Autowired
     private EtudiantService etudiantService;
     Logger logger  = Logger.getLogger(EtudiantController.class.getName()) ;
