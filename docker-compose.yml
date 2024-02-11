@@ -14,7 +14,7 @@ services:
 
   backend:
     build:
-      context: csci-evae-backend
+      context: .
       dockerfile: Dockerfile
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/csci-evae?createDatabaseIfNotExist=true
@@ -28,13 +28,12 @@ services:
 
   frontend:
     build:
-      context: csci-evae-frontend
+      context: ../csci-evae-frontend
       dockerfile: Dockerfile
     ports:
       - "3000:80"
     depends_on:
       - backend
-
 volumes:
   mysql-data:
 
