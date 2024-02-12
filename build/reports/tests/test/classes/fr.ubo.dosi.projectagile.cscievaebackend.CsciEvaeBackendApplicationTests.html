@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">0.377s</div>
+<div class="counter">1.570s</div>
 <p>duration</p>
 </div>
 </td>
@@ -79,7 +79,7 @@
 </thead>
 <tr>
 <td class="success">contextLoads()</td>
-<td class="success">0.377s</td>
+<td class="success">1.570s</td>
 <td class="success">passed</td>
 </tr>
 </table>
@@ -87,8 +87,8 @@
 <div id="tab1" class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>13:49:01.411 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [fr.ubo.dosi.projectagile.cscievaebackend.CsciEvaeBackendApplicationTests]: CsciEvaeBackendApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-13:49:01.490 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration fr.ubo.dosi.projectagile.cscievaebackend.CsciEvaeBackendApplication for test class fr.ubo.dosi.projectagile.cscievaebackend.CsciEvaeBackendApplicationTests
+<pre>12:17:39.745 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [fr.ubo.dosi.projectagile.cscievaebackend.CsciEvaeBackendApplicationTests]: CsciEvaeBackendApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+12:17:40.087 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration fr.ubo.dosi.projectagile.cscievaebackend.CsciEvaeBackendApplication for test class fr.ubo.dosi.projectagile.cscievaebackend.CsciEvaeBackendApplicationTests
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -98,24 +98,79 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v3.2.2)
 
-2024-02-11T13:49:01.734+01:00  INFO 957189 --- [    Test worker] .u.d.p.c.CsciEvaeBackendApplicationTests : Starting CsciEvaeBackendApplicationTests using Java 17.0.9 with PID 957189 (started by dosi in /home/dosi/dosi/ProjrctAgile/CSCI-EVAE/csci-evae-backend)
-2024-02-11T13:49:01.736+01:00  INFO 957189 --- [    Test worker] .u.d.p.c.CsciEvaeBackendApplicationTests : No active profile set, falling back to 1 default profile: &quot;default&quot;
-2024-02-11T13:49:02.222+01:00  INFO 957189 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2024-02-11T13:49:02.287+01:00  INFO 957189 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 58 ms. Found 19 JPA repository interfaces.
-2024-02-11T13:49:02.701+01:00  INFO 957189 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2024-02-11T13:49:02.729+01:00  INFO 957189 --- [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.1.Final
-2024-02-11T13:49:02.750+01:00  INFO 957189 --- [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2024-02-11T13:49:02.904+01:00  INFO 957189 --- [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2024-02-11T13:49:02.920+01:00  INFO 957189 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2024-02-11T13:49:03.222+01:00  INFO 957189 --- [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7aa15a80
-2024-02-11T13:49:03.224+01:00  INFO 957189 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2024-02-11T13:49:03.260+01:00  WARN 957189 --- [    Test worker] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2024-02-11T13:49:03.261+01:00  WARN 957189 --- [    Test worker] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2024-02-11T13:49:04.209+01:00  INFO 957189 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2024-02-11T13:49:04.466+01:00  INFO 957189 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2024-02-11T13:49:04.915+01:00  WARN 957189 --- [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2024-02-11T13:49:05.168+01:00  INFO 957189 --- [    Test worker] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@63236968, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4f6f7a86, org.springframework.security.web.context.SecurityContextHolderFilter@28ec92c9, org.springframework.security.web.header.HeaderWriterFilter@724a80d2, org.springframework.web.filter.CorsFilter@6ed78a5e, org.springframework.security.web.authentication.logout.LogoutFilter@46a5aff, fr.ubo.dosi.projectagile.cscievaebackend.security.JwtAuthFilter@da2303c, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7789719e, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5fbb2e1c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4e0a5606, org.springframework.security.web.session.SessionManagementFilter@347770a9, org.springframework.security.web.access.ExceptionTranslationFilter@44b99f09, org.springframework.security.web.access.intercept.AuthorizationFilter@5b5f48d5]
-2024-02-11T13:49:05.709+01:00  INFO 957189 --- [    Test worker] .u.d.p.c.CsciEvaeBackendApplicationTests : Started CsciEvaeBackendApplicationTests in 4.117 seconds (process running for 4.861)
+2024-02-12T12:17:41.794+01:00  INFO 33000 --- [    Test worker] .u.d.p.c.CsciEvaeBackendApplicationTests : Starting CsciEvaeBackendApplicationTests using Java 18.0.2.1 with PID 33000 (started by HP in C:\Users\HP\Desktop\Projet Agile\CSCI-EVAE-Backend)
+2024-02-12T12:17:41.796+01:00  INFO 33000 --- [    Test worker] .u.d.p.c.CsciEvaeBackendApplicationTests : No active profile set, falling back to 1 default profile: &quot;default&quot;
+2024-02-12T12:17:44.085+01:00  INFO 33000 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-02-12T12:17:44.491+01:00  INFO 33000 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 388 ms. Found 19 JPA repository interfaces.
+2024-02-12T12:17:48.419+01:00  INFO 33000 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-02-12T12:17:51.039+01:00  INFO 33000 --- [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.1.Final
+2024-02-12T12:17:51.257+01:00  INFO 33000 --- [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-02-12T12:17:52.796+01:00  INFO 33000 --- [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-02-12T12:17:52.903+01:00  INFO 33000 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-02-12T12:17:53.579+01:00  INFO 33000 --- [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6d3ad37a
+2024-02-12T12:17:53.587+01:00  INFO 33000 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-02-12T12:17:53.701+01:00  WARN 33000 --- [    Test worker] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-02-12T12:17:53.704+01:00  WARN 33000 --- [    Test worker] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2024-02-12T12:17:59.519+01:00  INFO 33000 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: create table droit (consultation char(1) not null, duplication char(1) not null, ID_EVALUATION bigint not null, NO_ENSEIGNANT integer not null, primary key (ID_EVALUATION, NO_ENSEIGNANT)) engine=InnoDB
+Hibernate: create table element_constitutif (code_ec varchar(8) not null, code_formation varchar(8) not null, code_ue varchar(8) not null, description varchar(240) not null, designation varchar(64) not null, nbh_cm tinyint, nbh_td tinyint, nbh_tp tinyint, no_enseignant integer not null, unite_enseignement_code_ue varchar(8) not null, primary key (code_ec, code_formation, code_ue)) engine=InnoDB
+Hibernate: create table enseignant (no_enseignant integer not null, adresse varchar(255) not null, cp varchar(10) not null, enc_perso_email varchar(255), enc_perso_tel varchar(20), enc_ubo_email varchar(255), enc_ubo_tel varchar(20), int_fonction varchar(50), int_no_insee varchar(50), int_prof_email varchar(255), int_prof_tel varchar(20), int_soc_adresse varchar(255), int_soc_cp varchar(10), int_soc_nom varchar(50), int_soc_pays varchar(255), int_soc_ville varchar(255), nom varchar(50) not null, pays varchar(255) not null, prenom varchar(50) not null, sexe varchar(1) not null, tel_port varchar(20), type varchar(10) not null, ville varchar(255) not null, primary key (no_enseignant)) engine=InnoDB
+Hibernate: create table etudiant (no_etudiant_nat varchar(50) not null, abandon_date datetime(6), abandon_motif varchar(255), actu_adresse varchar(255), actu_cp varchar(10), actu_pays varchar(255), actu_ville varchar(255), code_com varchar(10), compte_cri varchar(10) not null, date_naissance datetime(6) not null, dernier_diplome varchar(255) not null, email varchar(255), est_diplome char(1), grpe_anglais integer, lieu_naissance varchar(255) not null, nationalite varchar(50) not null, no_etudiant_ubo varchar(20), nom varchar(50) not null, perm_adresse varchar(255) not null, perm_cp varchar(10) not null, perm_pays varchar(255) not null, perm_ville varchar(255) not null, prenom varchar(50) not null, sexe varchar(1) not null, sigle_etu varchar(3) not null, situation varchar(3) not null, tel_fixe varchar(20), tel_port varchar(20), ubo_email varchar(255), universite varchar(255) not null, annee_pro varchar(10) not null, primary key (no_etudiant_nat)) engine=InnoDB
+Hibernate: create table evaluation (id_evaluation bigint not null, debut_reponse datetime(6) not null, etat varchar(3) not null, fin_reponse datetime(6) not null, no_evaluation tinyint not null, periode varchar(64), annee_pro varchar(10) not null, code_ec varchar(8) not null, code_formation varchar(8) not null, code_ue varchar(8) not null, no_enseignant integer not null, primary key (id_evaluation)) engine=InnoDB
+Hibernate: create table formation (code_formation varchar(8) not null, debut_habilitation datetime(6), diplome varchar(3) not null, double_diplome char(1) not null, fin_habilitation datetime(6), n0_annee tinyint not null, nom_formation varchar(64) not null, primary key (code_formation)) engine=InnoDB
+Hibernate: create table promotion (annee_pro varchar(10) not null, commentaire varchar(255), date_rentree datetime(6), date_reponse_lalp datetime(6), date_reponse_lp datetime(6), etat_preselection varchar(3) not null, lieu_rentree varchar(255), nb_etu_souhaite smallint not null, processus_stage varchar(5), sigle_pro varchar(5) not null, code_formation varchar(8), no_enseignant integer, no_evaluation integer, primary key (annee_pro)) engine=InnoDB
+Hibernate: create table qualificatif (id_qualificatif bigint not null, maximal varchar(16) not null, minimal varchar(16) not null, primary key (id_qualificatif)) engine=InnoDB
+Hibernate: create table question (id_question bigint not null, `intitul?` varchar(64) not null, type varchar(10) not null, id_qualificatif bigint not null, no_enseignant integer, primary key (id_question)) engine=InnoDB
+Hibernate: create table question_evaluation (id_question_evaluation bigint not null, intitule varchar(64), ordre tinyint not null, id_qualificatif bigint, id_question bigint, id_rubrique_evaluation bigint not null, primary key (id_question_evaluation)) engine=InnoDB
+Hibernate: create table reponse_evaluation (id_reponse_evaluation bigint not null, commentaire varchar(512), nom varchar(32), prenom varchar(32), id_evaluation bigint not null, no_etudiant_nat varchar(50), primary key (id_reponse_evaluation)) engine=InnoDB
+Hibernate: create table reponse_question (positionnement decimal(38,0), ID_QUESTION_EVALUATION bigint not null, ID_REPONSE_QUESTION bigint not null, primary key (ID_QUESTION_EVALUATION, ID_REPONSE_QUESTION)) engine=InnoDB
+Hibernate: create table roles (id integer not null, name tinytext, primary key (id)) engine=InnoDB
+Hibernate: create table roles_seq (next_val bigint) engine=InnoDB
+Hibernate: insert into roles_seq values ( 1 )
+Hibernate: create table rubrique (id_rubrique bigint not null, designation varchar(32) not null, ordre float(53), type varchar(10) not null, no_enseignant integer, primary key (id_rubrique)) engine=InnoDB
+Hibernate: create table rubrique_evaluation (id_rubrique_evaluation bigint not null, designation varchar(64), ordre tinyint not null, id_evaluation bigint not null, id_rubrique bigint, primary key (id_rubrique_evaluation)) engine=InnoDB
+Hibernate: create table rubrique_question (ordre decimal(38,0) not null, ID_QUESTION bigint not null, ID_RUBRIQUE bigint not null, primary key (ID_QUESTION, ID_RUBRIQUE)) engine=InnoDB
+Hibernate: create table structure_evaluation (no_evaluation integer not null, date_creation datetime(6) not null, etat varchar(3) not null, primary key (no_evaluation)) engine=InnoDB
+Hibernate: create table structure_evaluation_seq (next_val bigint) engine=InnoDB
+Hibernate: insert into structure_evaluation_seq values ( 1 )
+Hibernate: create table unite_enseignement (code_ue varchar(8) not null, description varchar(256), designation varchar(64) not null, nbh_cm decimal(38,0), nbh_td tinyint, nbh_tp tinyint, semestre varchar(3) not null, code_formation varchar(8) not null, no_enseignant integer not null, primary key (code_ue)) engine=InnoDB
+Hibernate: create table user_roles (user_id bigint not null, role_id integer not null) engine=InnoDB
+Hibernate: create table users (id bigint not null, created_at datetime(6) not null, created_by varchar(255), email_address varchar(255) not null, email varchar(255), first_name varchar(255) not null, last_name varchar(255) not null, password varchar(255), updated_at datetime(6) not null, updated_by varchar(255), username varchar(255), primary key (id)) engine=InnoDB
+Hibernate: create table users_seq (next_val bigint) engine=InnoDB
+Hibernate: insert into users_seq values ( 1 )
+Hibernate: alter table droit add constraint FKldyrfcjwtks3wi6cc4v0rdas3 foreign key (id_evaluation) references evaluation (id_evaluation)
+Hibernate: alter table droit add constraint FKcterw8cqj8v15xj36qb3ivyx4 foreign key (no_enseignant) references enseignant (no_enseignant)
+Hibernate: alter table element_constitutif add constraint FK6v81wmehjl6qsa8vvo8ml7eq2 foreign key (no_enseignant) references enseignant (no_enseignant)
+Hibernate: alter table element_constitutif add constraint FK7ko6kndoseuvunnqvyl5gqt0i foreign key (unite_enseignement_code_ue) references unite_enseignement (code_ue)
+Hibernate: alter table etudiant add constraint FKru5hakekuhbjw90gml6lqq9jb foreign key (annee_pro) references promotion (annee_pro)
+Hibernate: alter table evaluation add constraint FKqkyyu36otfgith83oaf6ahchl foreign key (annee_pro) references promotion (annee_pro)
+Hibernate: alter table evaluation add constraint FKqnc7bmp3jrano3238wdyo51d7 foreign key (code_ec, code_formation, code_ue) references element_constitutif (code_ec, code_formation, code_ue)
+Hibernate: alter table evaluation add constraint FKemryn3bkip9kone6srol8wwlk foreign key (no_enseignant) references enseignant (no_enseignant)
+Hibernate: alter table promotion add constraint FKbem6u73c3epx5s1fdt97uf13g foreign key (code_formation) references formation (code_formation)
+Hibernate: alter table promotion add constraint FKlcylu9f2sqrl7hrvvnko8la0t foreign key (no_enseignant) references enseignant (no_enseignant)
+Hibernate: alter table promotion add constraint FKcryp2cgc4is7ky41koxgr9uc0 foreign key (no_evaluation) references structure_evaluation (no_evaluation)
+Hibernate: alter table question add constraint FKl4ler5t8k2w31e88uwr9hiam3 foreign key (id_qualificatif) references qualificatif (id_qualificatif)
+Hibernate: alter table question add constraint FKenuqmo8ato75nwtmnhvqn8of foreign key (no_enseignant) references enseignant (no_enseignant)
+Hibernate: alter table question_evaluation add constraint FK7bvyyl9mow6stqpk9un8qnw2n foreign key (id_qualificatif) references qualificatif (id_qualificatif)
+Hibernate: alter table question_evaluation add constraint FKh584khu4508arn65wv9khiikv foreign key (id_question) references question (id_question)
+Hibernate: alter table question_evaluation add constraint FK95saw6ruhtpgwidv4n48qtr8l foreign key (id_rubrique_evaluation) references rubrique_evaluation (id_rubrique_evaluation)
+Hibernate: alter table reponse_evaluation add constraint FKlrbksy6fsgb03iak3dk0w42oo foreign key (id_evaluation) references evaluation (id_evaluation)
+Hibernate: alter table reponse_evaluation add constraint FKlk5perpahqbwartij4fmiwl05 foreign key (no_etudiant_nat) references etudiant (no_etudiant_nat)
+Hibernate: alter table reponse_question add constraint FK9h3ucdpex2fiy0jmnjnii64y8 foreign key (id_question_evaluation) references question_evaluation (id_question_evaluation)
+Hibernate: alter table reponse_question add constraint FKeaf555xyssr4derke8cbchp3o foreign key (id_reponse_question) references reponse_evaluation (id_reponse_evaluation)
+Hibernate: alter table rubrique add constraint FKq2uic5c6upre2u11c867e5pli foreign key (no_enseignant) references enseignant (no_enseignant)
+Hibernate: alter table rubrique_evaluation add constraint FKlu5sx4yfycfa11noogcn0kacm foreign key (id_evaluation) references evaluation (id_evaluation)
+Hibernate: alter table rubrique_evaluation add constraint FK20jvujg1dvmy0s0tg6cd0u0j9 foreign key (id_rubrique) references rubrique (id_rubrique)
+Hibernate: alter table rubrique_question add constraint FK3hu52bbx0ayvbcsdmqt7k2uh5 foreign key (id_question) references question (id_question)
+Hibernate: alter table rubrique_question add constraint FKbi4l32ekwlji8t9juvdqvae20 foreign key (id_rubrique) references rubrique (id_rubrique)
+Hibernate: alter table unite_enseignement add constraint FKtncs5cp8xgnt0p078xa1oijlp foreign key (code_formation) references formation (code_formation)
+Hibernate: alter table unite_enseignement add constraint FK144kbyvq4xmg673abyy35ee50 foreign key (no_enseignant) references enseignant (no_enseignant)
+Hibernate: alter table user_roles add constraint FKh8ciramu9cc9q3qcqiv4ue8a6 foreign key (role_id) references roles (id)
+Hibernate: alter table user_roles add constraint FKhfh9dx7w3ubf1co1vdev94g3f foreign key (user_id) references users (id)
+2024-02-12T12:18:19.769+01:00  INFO 33000 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-02-12T12:18:22.158+01:00  WARN 33000 --- [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-02-12T12:18:23.329+01:00  INFO 33000 --- [    Test worker] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@13c36d48, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7e93e396, org.springframework.security.web.context.SecurityContextHolderFilter@70a984c5, org.springframework.security.web.header.HeaderWriterFilter@4203190, org.springframework.web.filter.CorsFilter@f1e8753, org.springframework.security.web.authentication.logout.LogoutFilter@68596992, fr.ubo.dosi.projectagile.cscievaebackend.security.JwtAuthFilter@700b035b, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@40032b7b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5317a7ef, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1676e501, org.springframework.security.web.session.SessionManagementFilter@64648af1, org.springframework.security.web.access.ExceptionTranslationFilter@3d94b49d, org.springframework.security.web.access.intercept.AuthorizationFilter@55448710]
+2024-02-12T12:18:25.183+01:00  INFO 33000 --- [    Test worker] .u.d.p.c.CsciEvaeBackendApplicationTests : Started CsciEvaeBackendApplicationTests in 44.357 seconds (process running for 48.268)
 </pre>
 </span>
 </div>
@@ -127,7 +182,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 8.5</a> at 11 févr. 2024, 13:49:06</p>
+<a href="http://www.gradle.org">Gradle 8.5</a> at 12 févr. 2024, 12:18:27</p>
 </div>
 </div>
 </body>

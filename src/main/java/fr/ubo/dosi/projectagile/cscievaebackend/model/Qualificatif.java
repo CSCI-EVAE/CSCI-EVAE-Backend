@@ -14,7 +14,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "qualificatif" )
 public class Qualificatif {
-    @Id
+    @Id()
     @Column(name = "id_qualificatif", nullable = false)
     private Long id;
 
