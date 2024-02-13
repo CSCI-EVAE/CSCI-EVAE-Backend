@@ -49,6 +49,7 @@ public class RubriqueController {
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(ApiResponse.error("Rubrique not found", null));
+                    
         }
     }
 
