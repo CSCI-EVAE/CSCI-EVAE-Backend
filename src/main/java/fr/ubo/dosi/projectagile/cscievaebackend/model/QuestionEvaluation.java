@@ -23,16 +23,16 @@ public class QuestionEvaluation {
     @Column(name = "ordre", nullable = false)
     private Byte ordre;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_qualificatif")
     private Qualificatif idQualificatif;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_question")
     private Question idQuestion;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_rubrique_evaluation", nullable = false)
     private RubriqueEvaluation idRubriqueEvaluation;
 

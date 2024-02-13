@@ -53,16 +53,16 @@ public class Promotion {
     @Column(name = "sigle_pro", nullable = false, length = 5)
     private String siglePro;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "code_formation")
     private Formation codeFormation;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "no_enseignant")
     private Enseignant noEnseignant;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "no_evaluation")
     private StructureEvaluation noEvaluation;
 
