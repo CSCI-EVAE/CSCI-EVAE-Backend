@@ -40,7 +40,7 @@ public class AuthController {
         userService.registerNewUser(registrationRequest);
         return "User registration successful";
     }
-    @CrossOrigin(origins = "http://localhost:3000")
+    //@CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/api/v1/login")
     public ResponseEntity<ApiResponse<JwtResponseDTO>> AuthenticateAndGetToken(@RequestBody AuthRequestDTO authRequestDTO){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDTO.getUsername(), authRequestDTO.getPassword()));
