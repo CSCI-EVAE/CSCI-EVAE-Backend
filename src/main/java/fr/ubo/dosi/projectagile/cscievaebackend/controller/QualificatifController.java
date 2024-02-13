@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/v1/admin/qualificatif")
 public class QualificatifController {
 
@@ -32,7 +33,7 @@ public class QualificatifController {
     public ApiResponse<Qualificatif> getQualificatifById(@PathVariable Long id) {
         try {
             Optional<Qualificatif> qualificatif = qualificatifService.getQualificatifById(id);
-            return qualificatif.map(value -> ApiResponse.ok(value))
+            return qualificatif.map(ApiResponse::ok)
                     .orElse(ApiResponse.error("Qualificatif not found", null));
         } catch (ResourceNotFoundException e) {
             return ApiResponse.error("Error retrieving Qualificatif", null);
