@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.logging.Logger;
 
-import static jdk.internal.joptsimple.internal.Strings.isNullOrEmpty;
 
 @RestController
 @RequestMapping("/api/v1/rubrique")
