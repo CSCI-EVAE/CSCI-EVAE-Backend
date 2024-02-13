@@ -1,6 +1,7 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.model;
 
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -11,7 +12,9 @@ import lombok.Setter;
 @Entity
 @Table(name = "rubrique" )
 public class Rubrique {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_rubrique", nullable = false)
     private Long id;
 
@@ -28,7 +31,7 @@ public class Rubrique {
     @Column(name = "type", nullable = false, length = 10)
     private String type;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "no_enseignant")
     private Enseignant noEnseignant;
 

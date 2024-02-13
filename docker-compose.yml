@@ -26,14 +26,14 @@ services:
       - db
     restart: on-failure
 
-  frontend:
-    build:
-      context: ../csci-evae-frontend
-      dockerfile: Dockerfile
-    ports:
-      - "3000:80"
-    depends_on:
-      - backend
+  #frontend:
+   # build:
+    #  context: ../csci-evae-frontend
+     # dockerfile: Dockerfile
+    #ports:
+     # - "3000:80"
+    #depends_on:
+     # - backend
 volumes:
   mysql-data:
 
