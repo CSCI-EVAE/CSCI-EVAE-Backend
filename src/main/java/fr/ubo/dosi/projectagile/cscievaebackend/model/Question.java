@@ -26,11 +26,11 @@ public class Question {
     private String type;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_qualificatif", nullable = false)
     private Qualificatif idQualificatif;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "no_enseignant")
     private Enseignant noEnseignant;
 

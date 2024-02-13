@@ -28,11 +28,11 @@ public class ReponseEvaluation {
     private String prenom;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_evaluation", nullable = false)
     private Evaluation idEvaluation;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "no_etudiant_nat")
     private Etudiant noEtudiantNat;
 
