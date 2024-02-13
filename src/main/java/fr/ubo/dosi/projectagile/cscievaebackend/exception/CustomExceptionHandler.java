@@ -30,4 +30,10 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         ApiResponse apiError = new ApiResponse(false,HttpStatus.BAD_REQUEST.toString(), ex.getMessage());
         return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(EmptyRequestBodyException.class)
+    public ResponseEntity<ApiResponse<String>> handleEmptyRequestBodyException(EmptyRequestBodyException ex) {
+        ApiResponse<String> apiResponse = ApiResponse.error(ex.getMessage(), null);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+    }
 }
