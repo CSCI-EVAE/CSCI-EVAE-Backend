@@ -28,7 +28,7 @@ public class Rubrique {
     @Column(name = "type", nullable = false, length = 10)
     private String type;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "no_enseignant")
     private Enseignant noEnseignant;
 
