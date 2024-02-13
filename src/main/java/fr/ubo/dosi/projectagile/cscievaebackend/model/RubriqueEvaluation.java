@@ -24,11 +24,11 @@ public class RubriqueEvaluation {
     private Byte ordre;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_evaluation", nullable = false)
     private Evaluation idEvaluation;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_rubrique")
     private Rubrique idRubrique;
 

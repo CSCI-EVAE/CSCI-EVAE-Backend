@@ -42,12 +42,12 @@ public class UniteEnseignement {
     private String semestre;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "code_formation", nullable = false)
     private Formation codeFormation;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "no_enseignant", nullable = false)
     private Enseignant noEnseignant;
 
