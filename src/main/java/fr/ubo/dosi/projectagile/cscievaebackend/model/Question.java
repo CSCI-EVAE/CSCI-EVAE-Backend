@@ -30,7 +30,7 @@ public class Question {
     @JoinColumn(name = "id_qualificatif", nullable = false)
     private Qualificatif idQualificatif;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "no_enseignant")
     private Enseignant noEnseignant;
 
