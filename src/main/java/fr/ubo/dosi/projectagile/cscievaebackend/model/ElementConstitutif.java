@@ -34,12 +34,12 @@ public class ElementConstitutif {
     private Byte nbhTp;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "no_enseignant", nullable = false)
     private Enseignant noEnseignant;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "unite_enseignement_code_ue", nullable = false)
     private UniteEnseignement uniteEnseignementCodeUe;
 

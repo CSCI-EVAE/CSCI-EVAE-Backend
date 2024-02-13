@@ -39,12 +39,12 @@ public class Evaluation {
     private String periode;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "annee_pro", nullable = false)
     private Promotion anneePro;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumns({
             @JoinColumn(name = "code_ec", referencedColumnName = "code_ec", nullable = false),
             @JoinColumn(name = "code_formation", referencedColumnName = "code_formation", nullable = false),
@@ -53,7 +53,7 @@ public class Evaluation {
     private ElementConstitutif elementConstitutif;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "no_enseignant", nullable = false)
     private Enseignant noEnseignant;
 
