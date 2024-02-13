@@ -148,7 +148,7 @@ public class Etudiant {
     private String universite;
 
      
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "annee_pro", nullable = false)
     @ToString.Exclude
     private Promotion anneePro;
