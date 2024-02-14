@@ -8,6 +8,5 @@ import java.util.List;
 
 public interface RubriqueRepository extends JpaRepository<Rubrique, Long> {
 
-    List<Rubrique> findByType(String type);
-
+    List<Rubrique> findAllByType(String type);
 }

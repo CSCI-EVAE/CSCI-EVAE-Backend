@@ -1,6 +1,7 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 
 
+
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Etudiant;
@@ -24,7 +25,6 @@ public class RubriqueController {
 
     @Autowired
     private RubriqueService rubriqueService;
-    Logger logger  = Logger.getLogger(EtudiantController.class.getName()) ;
 
     @PostMapping
     public ResponseEntity<ApiResponse<Rubrique>> createRubrique(@RequestBody Rubrique rubrique) {
@@ -36,7 +36,12 @@ public class RubriqueController {
     @GetMapping
     public ResponseEntity<ApiResponse<List<Rubrique>>> getAllRubrique() {
         List<Rubrique> rubriques = rubriqueService.getAllRubrique();
-        logger.info("rubriques : " + rubriques);
+        return ResponseEntity.ok(ApiResponse.ok(rubriques));
+    }
+
+    @GetMapping("/ty/{type}")
+    public ResponseEntity<ApiResponse<List<Rubrique>>> getRubriqueByType(@PathVariable("type") String type)  {
+        List<Rubrique> rubriques = rubriqueService.getRubriqueByType(type);
         return ResponseEntity.ok(ApiResponse.ok(rubriques));
     }
 
@@ -44,12 +49,13 @@ public class RubriqueController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Rubrique>> getRubriqueById(@PathVariable Long id) {
         try {
+
             Rubrique rubrique = rubriqueService.getRubriqueById(id);
             return ResponseEntity.ok(ApiResponse.ok(rubrique));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(ApiResponse.error("Rubrique not found", null));
-                    
+
         }
     }
 

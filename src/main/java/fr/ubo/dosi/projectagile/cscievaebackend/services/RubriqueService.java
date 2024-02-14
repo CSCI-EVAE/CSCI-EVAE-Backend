@@ -9,14 +9,14 @@ public interface RubriqueService {
 
     public Rubrique creerRubrique(Rubrique rubrique);
     public Rubrique getRubriqueById(Long id) throws ResourceNotFoundException;
-    Rubrique updateRubrique(Long id, Rubrique rubrique) throws ResourceNotFoundException;
+    public Rubrique updateRubrique(Long id, Rubrique rubrique) throws ResourceNotFoundException;
 
 
     public List<Rubrique> getAllRubrique();
 
     void deleteRubrique(Long id) throws ResourceNotFoundException;
 
-    public List<Rubrique> getByTYpe(String type) throws ResourceNotFoundException;
+    public List<Rubrique> getRubriqueByType(String type) ;
 
 
 

@@ -17,7 +17,6 @@ public class RubriqueQuestionImpl implements RubriqueService {
     @Autowired
     private RubriqueRepository rubriqueRepository;
 
-
     public Rubrique creerRubrique(Rubrique rubrique){
        return rubriqueRepository.save(rubrique);
     }
@@ -26,16 +25,24 @@ public class RubriqueQuestionImpl implements RubriqueService {
         return rubriqueRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Rubrique non trouver de cet id: "+ id));
     }
 
-    public List<Rubrique> getByTYpe(String type) throws ResourceNotFoundException{
-        return rubriqueRepository.findByType(type).orElseThrow(()-> new ResourceNotFoundException("Rubrique non trouver de cet type: "+ type));
+    public List<Rubrique> getRubriqueByType(String type) {
+        return rubriqueRepository.findAllByType(type);
     }
 
     public Rubrique updateRubrique(Long id, Rubrique rubrique) throws ResourceNotFoundException {
-        if (!rubriqueRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Rubrique not found with id: " + id);
+
+        Optional<Rubrique> rubriqueExistant = rubriqueRepository.findById(id);
+
+        if(rubriqueExistant.isPresent()){
+            Rubrique rubriqueUpdate = rubriqueExistant.get();
+            rubriqueUpdate.setDesignation(rubrique.getDesignation());
+            rubriqueUpdate.setOrdre(rubrique.getOrdre());
+            rubriqueUpdate.setType(rubrique.getType());
+            rubriqueUpdate.setNoEnseignant(rubrique.getNoEnseignant());
+            return rubriqueRepository.save(rubriqueUpdate);
+        }else{
+            throw new ResourceNotFoundException("La rubrique est inexistante avec ce id : "+ id);
         }
-        rubrique.setId(id);
-        return rubriqueRepository.save(rubrique);
     }
 
     public List<Rubrique> getAllRubrique(){
