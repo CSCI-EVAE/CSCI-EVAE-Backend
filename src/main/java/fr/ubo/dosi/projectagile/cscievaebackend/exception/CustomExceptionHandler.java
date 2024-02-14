@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.nio.file.AccessDeniedException;
+
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -31,9 +33,34 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(EmptyRequestBodyException.class)
-    public ResponseEntity<ApiResponse<String>> handleEmptyRequestBodyException(EmptyRequestBodyException ex) {
-        ApiResponse<String> apiResponse = ApiResponse.error(ex.getMessage(), null);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ApiResponse<String>> handleAccessDeniedException(AccessDeniedException ex) {
+        ApiResponse<String> response = new ApiResponse<>(false, "Access Denied", ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<ApiResponse<String>> handleNullPointerException(NullPointerException ex) {
+        ApiResponse<String> response = new ApiResponse<>(false, "Null Pointer Exception", ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ApiResponse<String>> handleIllegalStateException(IllegalStateException ex) {
+        ApiResponse<String> response = new ApiResponse<>(false, "Illegal State Exception", ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(IllegalAccessException.class)
+    public ResponseEntity<ApiResponse<String>> handleIllegalAccessException(IllegalAccessException ex) {
+        ApiResponse<String> response = new ApiResponse<>(false, "Illegal Access Exception", ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    // LinkedToAnotherResourceException
+    @ExceptionHandler(LinkedToAnotherResourceException.class)
+    public ResponseEntity<ApiResponse<String>> handleLinkedToAnotherResourceException(LinkedToAnotherResourceException ex) {
+        ApiResponse<String> response = new ApiResponse<>(false, "Linked To Another Resource Exception", ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
