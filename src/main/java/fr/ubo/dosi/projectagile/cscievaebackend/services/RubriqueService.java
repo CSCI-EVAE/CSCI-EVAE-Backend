@@ -16,6 +16,8 @@ public interface RubriqueService {
 
     void deleteRubrique(Long id) throws ResourceNotFoundException;
 
+    public List<Rubrique> getByTYpe(String type) throws ResourceNotFoundException;
+
 
 
 }

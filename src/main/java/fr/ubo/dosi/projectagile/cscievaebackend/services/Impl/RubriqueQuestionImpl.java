@@ -3,7 +3,6 @@ package fr.ubo.dosi.projectagile.cscievaebackend.services.Impl;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.EmptyRequestBodyException;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Rubrique;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueQuestion;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.RubriqueRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.RubriqueService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +24,10 @@ public class RubriqueQuestionImpl implements RubriqueService {
 
     public Rubrique getRubriqueById(Long id) throws ResourceNotFoundException {
         return rubriqueRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Rubrique non trouver de cet id: "+ id));
+    }
+
+    public List<Rubrique> getByTYpe(String type) throws ResourceNotFoundException{
+        return rubriqueRepository.findByType(type).orElseThrow(()-> new ResourceNotFoundException("Rubrique non trouver de cet type: "+ type));
     }
 
     public Rubrique updateRubrique(Long id, Rubrique rubrique) throws ResourceNotFoundException {
