@@ -36,6 +36,7 @@ public class RubriqueController {
     @GetMapping
     public ResponseEntity<ApiResponse<List<Rubrique>>> getAllRubrique() {
         List<Rubrique> rubriques = rubriqueService.getAllRubrique();
+
         return ResponseEntity.ok(ApiResponse.ok(rubriques));
     }
 

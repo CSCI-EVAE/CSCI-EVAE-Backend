@@ -15,12 +15,10 @@ public class Qualificatif {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_qualificatif", nullable = false)
     private Long id;
-
     @Size(max = 16)
     @NotNull
     @Column(name = "maximal", nullable = false, length = 16)
     private String maximal;
-
     @Size(max = 16)
     @NotNull
     @Column(name = "minimal", nullable = false, length = 16)

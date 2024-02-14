@@ -11,6 +11,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "enseignant" )
 public class Enseignant {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "no_enseignant", nullable = false)
