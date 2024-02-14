@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 @RestController
 @PreAuthorize("hasAuthority('ADMIN')")
-@RequestMapping("/api/v1/questions")
+@RequestMapping("/api/v1/admin/questions")
 public class QuestionController {
 
     @Autowired

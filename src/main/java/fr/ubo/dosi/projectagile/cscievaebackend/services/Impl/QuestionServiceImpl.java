@@ -32,21 +32,16 @@ public class QuestionServiceImpl implements QuestionService {
                 .orElseThrow(() -> new ResourceNotFoundException("Question not found for this id :: " + id));
     }
 
-//    @Override
-//    public Question updateQuestion(Long id, Question question) {
-//        question.setId(id);
-//        return questionRepository.save(question);
-//    }
-@Override
-public Question updateQuestion(Long id, Question question) throws ResourceNotFoundException {
-    Optional<Question> optionalQuestion = questionRepository.findById(id);
-    if (optionalQuestion.isPresent()) {
-        question.setId(id);
-        return questionRepository.save(question);
-    } else {
-        throw new ResourceNotFoundException("Question not found for this id :: " + id);
+    @Override
+    public Question updateQuestion(Long id, Question question) throws ResourceNotFoundException {
+        Optional<Question> optionalQuestion = questionRepository.findById(id);
+        if (optionalQuestion.isPresent()) {
+            question.setId(id);
+            return questionRepository.save(question);
+        } else {
+            throw new ResourceNotFoundException("Question not found for this id :: " + id);
+        }
     }
-}
 
     @Override
     public void deleteQuestion(Long id) throws ResourceNotFoundException {
