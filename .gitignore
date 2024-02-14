@@ -1,6 +1,6 @@
 # Compiled class file
 *.class
-# Gradle related
+
 *.properties
 .gradle/
 build/
@@ -31,6 +31,5 @@ build/
 *.tar.gz
 *.rar
 
-hs_err_pid*
-replay_pid*
+
 src/main/resources/application.properties
