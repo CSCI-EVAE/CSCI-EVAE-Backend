@@ -1,12 +1,3 @@
-#FROM openjdk:17-jdk-alpine
-#
-#WORKDIR /app
-#
-#COPY build/libs/*.jar /app/app.jar
-#
-#EXPOSE 8080
-
-#CMD ["java", "-jar", "/app/app.jar"]
 FROM gradle:8.5.0-jdk21-alpine
 
 WORKDIR /app
@@ -16,6 +7,7 @@ COPY settings.gradle .
 COPY gradlew .
 
 COPY src src
+
 
 RUN gradle build -Pwar -x test
 
