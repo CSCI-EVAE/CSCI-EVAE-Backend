@@ -24,7 +24,6 @@ public class RubriqueController {
 
     @Autowired
     private RubriqueService rubriqueService;
-    Logger logger  = Logger.getLogger(EtudiantController.class.getName()) ;
 
     @PostMapping
     public ResponseEntity<ApiResponse<Rubrique>> createRubrique(@RequestBody Rubrique rubrique) {
@@ -36,7 +35,6 @@ public class RubriqueController {
     @GetMapping
     public ResponseEntity<ApiResponse<List<Rubrique>>> getAllRubrique() {
         List<Rubrique> rubriques = rubriqueService.getAllRubrique();
-        logger.info("rubriques : " + rubriques);
         return ResponseEntity.ok(ApiResponse.ok(rubriques));
     }
 
