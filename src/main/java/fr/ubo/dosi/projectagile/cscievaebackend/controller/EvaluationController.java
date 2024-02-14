@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("evaluation")
+@RequestMapping("/api/v1/admin/evaluation")
 @CrossOrigin(origins = "http://localhost:3000")
 public class EvaluationController {
 
