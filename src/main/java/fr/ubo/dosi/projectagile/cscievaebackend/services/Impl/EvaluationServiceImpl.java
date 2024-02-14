@@ -1,6 +1,6 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.services.Impl;
-
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Rubrique;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.EvaluationRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,4 +21,5 @@ public class EvaluationServiceImpl implements EvaluationService {
             return null;
         }
     }
+
 }

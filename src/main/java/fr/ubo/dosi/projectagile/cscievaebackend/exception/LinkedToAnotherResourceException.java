@@ -13,6 +13,4 @@ public class LinkedToAnotherResourceException extends DataAccessException {
         super(message, cause);
     }
 
-
-
 }

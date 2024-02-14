@@ -35,12 +35,6 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @PostMapping("/api/v1/register")
-    public String registerUser(@RequestBody User registrationRequest) {
-        userService.registerNewUser(registrationRequest);
-        return "User registration successful";
-    }
-    //@CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/api/v1/login")
     public ResponseEntity<ApiResponse<JwtResponseDTO>> AuthenticateAndGetToken(@RequestBody AuthRequestDTO authRequestDTO){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDTO.getUsername(), authRequestDTO.getPassword()));
@@ -50,24 +44,6 @@ public class AuthController {
             return ResponseEntity.ok(new ApiResponse<>(true, "success", new JwtResponseDTO(jwtService.GenerateToken(authRequestDTO.getUsername()), new UserDTO(userService.getUserByUsername(authRequestDTO.getUsername())))));
         } else {
             throw new UsernameNotFoundException("invalid user request..!!");
-        }
-    }
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("/ping/admin")
-    public String test() {
-        try {
-            return "Welcome to the world of Spring Boot Role Based Authorization : ADMIN";
-        } catch (Exception e){
-            throw new RuntimeException(e);
-        }
-    }
-    @PreAuthorize("hasAnyAuthority('SECRETAIRE')")
-    @GetMapping("/ping/secretaire")
-    public String test2() {
-        try {
-            return "Welcome to the world of Spring Boot Role Based Authorization SECRETAIRE";
-        } catch (Exception e){
-            throw new RuntimeException(e);
         }
     }
 }
