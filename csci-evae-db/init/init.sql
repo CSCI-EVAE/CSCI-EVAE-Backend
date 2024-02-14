@@ -212,6 +212,17 @@ create table if not exists evaluation
 (
     id_evaluation  bigint      not null
     primary key,
+create table if not exists rubrique
+(
+    id_rubrique   bigint      not null
+    primary key,
+    designation   varchar(32) not null,
+    ordre         double      null,
+    type          varchar(10) not null,
+    no_enseignant int         null,
+    constraint FKq2uic5c6upre2u11c867e5pli
+    foreign key (no_enseignant) references enseignant (no_enseignant)
+    );
     debut_reponse  datetime(6) not null,
     etat           varchar(3)  not null,
     fin_reponse    datetime(6) not null,
