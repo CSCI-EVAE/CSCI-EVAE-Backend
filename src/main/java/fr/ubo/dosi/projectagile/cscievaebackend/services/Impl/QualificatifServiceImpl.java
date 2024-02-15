@@ -1,10 +1,12 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.services.Impl;
 
+import fr.ubo.dosi.projectagile.cscievaebackend.exception.LinkedToAnotherResourceException;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Qualificatif;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.QualificatifRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.QualificatifService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,18 +42,24 @@ public class QualificatifServiceImpl implements QualificatifService {
             qualificatif.setMaximal(qualificatifModifie.getMaximal());
             return qualificatifRepository.save(qualificatif);
         } else {
-            throw new ResourceNotFoundException("Pas de qualificatif avec ce id : " + id);
+            throw new ResourceNotFoundException("Le qualificatif n'existe pas avec cet id : " + id);
         }
     }
 
     @Override
-    public void deleteQualificatif(Long id) throws ResourceNotFoundException {
+    public void deleteQualificatif(Long id) throws ResourceNotFoundException, LinkedToAnotherResourceException {
         Optional<Qualificatif> qualificatifExistant = qualificatifRepository.findById(id);
         if (qualificatifExistant.isPresent()) {
-            qualificatifRepository.deleteById(id);
+            try {
+                qualificatifRepository.deleteById(id);
+            } catch (LinkedToAnotherResourceException e) {
+                throw new LinkedToAnotherResourceException("Le qualificatif est lié à une autre ressource et ne peut pas être supprimé.");
+            } catch (DataAccessException e) {
+                throw new ResourceNotFoundException("Le qualificatif ne peut pas être supprimé pour des raisons techniques.");
+            }
         } else {
-            throw new ResourceNotFoundException("Pas de qualificatif avec ce id : " + id);
+            throw new ResourceNotFoundException("Le qualificatif n'existe pas avec cet id : " + id);
         }
-
     }
+
 }

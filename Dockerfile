@@ -1,9 +1,17 @@
-FROM openjdk:17-jdk-alpine
+FROM gradle:8.5.0-jdk21-alpine
 
 WORKDIR /app
 
-COPY build/libs/*.jar /app/app.jar
+COPY build.gradle .
+COPY settings.gradle .
+COPY gradlew .
 
-EXPOSE 8080
+COPY src src
 
-CMD ["java", "-jar", "/app/app.jar"]
+
+RUN gradle build -Pwar -x test
+
+EXPOSE 9091
+
+CMD ["java", "-jar", "build/libs/csa-back-0.0.1-SNAPSHOT.war"]
+
