@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "rubrique_question" )
 public class RubriqueQuestion {
+
     @EmbeddedId
     private RubriqueQuestionId id;
 

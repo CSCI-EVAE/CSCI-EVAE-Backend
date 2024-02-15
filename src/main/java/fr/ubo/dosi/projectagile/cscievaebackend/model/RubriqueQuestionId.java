@@ -2,6 +2,7 @@ package fr.ubo.dosi.projectagile.cscievaebackend.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
@@ -19,6 +20,12 @@ public class RubriqueQuestionId implements Serializable {
 
     @Column(name = "ID_RUBRIQUE", nullable = false)
     private Long idRubrique;
+    public RubriqueQuestionId(Long idQuestion, Long idRubrique) {
+        this.idQuestion = idQuestion;
+        this.idRubrique = idRubrique;
+    }
+    public RubriqueQuestionId() {
+    }
 
     @Override
     public boolean equals(Object o) {
