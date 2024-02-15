@@ -12,16 +12,17 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "rubrique_question" )
 public class RubriqueQuestion {
+
     @EmbeddedId
     private RubriqueQuestionId id;
 
     @MapsId("idQuestion")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "ID_QUESTION", nullable = false)
     private Question idQuestion;
 
     @MapsId("idRubrique")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "ID_RUBRIQUE", nullable = false)
     private Rubrique idRubrique;
 
