@@ -68,5 +68,4 @@ public class Evaluation {
     @NotNull
     @Column(name = "FIN_REPONSE", nullable = false)
     private LocalDate finReponse;
-
 }
