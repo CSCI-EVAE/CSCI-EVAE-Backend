@@ -1,13 +1,10 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.services.Impl;
 
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Role;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.User;
-import fr.ubo.dosi.projectagile.cscievaebackend.repository.UserRepository;
-import fr.ubo.dosi.projectagile.cscievaebackend.DTO.AuthRequestDTO;
-import fr.ubo.dosi.projectagile.cscievaebackend.services.RoleService;
+import fr.ubo.dosi.projectagile.cscievaebackend.DTO.UserDTO;
+import fr.ubo.dosi.projectagile.cscievaebackend.Model.Authentification;
+import fr.ubo.dosi.projectagile.cscievaebackend.repository.AuthentificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,33 +15,31 @@ public class userService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private UserRepository userRepository;
+    private AuthentificationRepository userRepository;
 
-    @Autowired
-    private RoleService roleService;
-
-    public void registerNewUser(User registrationRequest) {
-        if (userRepository.existsByUsername(registrationRequest.getUsername())) {
+    public void registerNewUser(Authentification registrationRequest) {
+        if (userRepository.existsByLoginConnection(registrationRequest.getPseudoConnection())) {
             throw new RuntimeException("Username already exists");
         }
-        // check if all roles exists in the database
-        for (Role role : registrationRequest.getRoles()) {
-            if (roleService.getRoleById(role.getId()).isEmpty()) {
-                throw new RuntimeException("Role does not exist");
-            }
-        }
+
         //get the password from the request and encode it
-        String encodedPassword = passwordEncoder.encode(registrationRequest.getPassword());
-        registrationRequest.setPassword(encodedPassword);
+        String encodedPassword = passwordEncoder.encode(registrationRequest.getMotPasse());
+        registrationRequest.setMotPasse(encodedPassword);
         userRepository.save(registrationRequest);
     }
 
-    public User getActualUser() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByUsername(username);
+
+    public Authentification getUserByUsername(String username) {
+        return userRepository.findByLoginConnection(username);
     }
 
-    public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public Authentification getCurrentUser() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByLoginConnection(username);
+    }
+
+    public UserDTO registerUser(Authentification user) {
+        registerNewUser(user);
+        return new UserDTO(user);
     }
 }

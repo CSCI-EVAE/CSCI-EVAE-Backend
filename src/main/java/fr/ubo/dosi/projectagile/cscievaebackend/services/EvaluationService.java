@@ -1,6 +1,6 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.services;
 
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
+import fr.ubo.dosi.projectagile.cscievaebackend.Model.Evaluation;
 
 import java.util.List;
 

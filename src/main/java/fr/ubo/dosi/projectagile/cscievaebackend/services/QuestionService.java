@@ -1,7 +1,7 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.services;
 
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Question;
+import fr.ubo.dosi.projectagile.cscievaebackend.Model.Question;
 import java.util.List;
 
 public interface QuestionService {

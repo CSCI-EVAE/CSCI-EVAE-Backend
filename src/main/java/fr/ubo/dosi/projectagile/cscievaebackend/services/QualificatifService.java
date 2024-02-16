@@ -3,7 +3,7 @@ package fr.ubo.dosi.projectagile.cscievaebackend.services;
 
 
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Qualificatif;
+import fr.ubo.dosi.projectagile.cscievaebackend.Model.Qualificatif;
 
 import java.util.List;
 import java.util.Optional;

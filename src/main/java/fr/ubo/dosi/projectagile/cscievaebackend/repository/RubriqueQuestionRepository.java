@@ -1,7 +1,7 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.repository;
 
-import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueQuestion;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueQuestionId;
+import fr.ubo.dosi.projectagile.cscievaebackend.Model.RubriqueQuestion;
+import fr.ubo.dosi.projectagile.cscievaebackend.Model.RubriqueQuestionId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
