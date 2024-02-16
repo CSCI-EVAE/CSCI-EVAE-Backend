@@ -36,7 +36,7 @@ public class UniteEnseignement {
     @Size(max = 3)
     @NotNull
     @Column(name = "SEMESTRE", nullable = false, length = 3)
-    private Character semestre;
+    private String semestre;
 
     @Size(max = 256)
     @Column(name = "DESCRIPTION", length = 256)

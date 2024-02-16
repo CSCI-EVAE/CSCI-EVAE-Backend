@@ -57,6 +57,7 @@ public class Evaluation {
     @Column(name = "ETAT", nullable = false, length = 3)
     private String etat;
 
+
     @Size(max = 64)
     @Column(name = "PERIODE", length = 64)
     private String periode;
