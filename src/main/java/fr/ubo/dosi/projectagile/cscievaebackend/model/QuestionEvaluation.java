@@ -5,35 +5,40 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "question_evaluation" )
+@Table(name = "QUESTION_EVALUATION")
 public class QuestionEvaluation {
     @Id
-    @Column(name = "id_question_evaluation", nullable = false)
-    private Long id;
-
-    @Size(max = 64)
-    @Column(name = "intitule", length = 64)
-    private String intitule;
+    @Column(name = "ID_QUESTION_EVALUATION", nullable = false)
+    private Integer id;
 
     @NotNull
-    @Column(name = "ordre", nullable = false)
-    private Byte ordre;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "ID_RUBRIQUE_EVALUATION", nullable = false)
+    private RubriqueEvaluation idRubriqueEvaluation;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_qualificatif")
-    private Qualificatif idQualificatif;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_question")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "ID_QUESTION")
     private Question idQuestion;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "ID_QUALIFICATIF")
+    private Qualificatif idQualificatif;
+
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "id_rubrique_evaluation", nullable = false)
-    private RubriqueEvaluation idRubriqueEvaluation;
+    @Column(name = "ORDRE", nullable = false)
+    private Short ordre;
+
+    @Size(max = 64)
+    @Column(name = "INTITULE", length = 64)
+    private String intitule;
 
 }

@@ -5,50 +5,50 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.math.BigDecimal;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "unite_enseignement" )
+@Table(name = "UNITE_ENSEIGNEMENT")
 public class UniteEnseignement {
-    @Id
-    @Size(max = 8)
-    @Column(name = "code_ue", nullable = false, length = 8)
-    private String codeUe;
+    @EmbeddedId
+    private UniteEnseignementId id;
 
-    @Size(max = 256)
-    @Column(name = "description", length = 256)
-    private String description;
-
-    @Size(max = 64)
-    @NotNull
-    @Column(name = "designation", nullable = false, length = 64)
-    private String designation;
-
-    @Column(name = "nbh_cm", precision = 38)
-    private BigDecimal nbhCm;
-
-    @Column(name = "nbh_td")
-    private Byte nbhTd;
-
-    @Column(name = "nbh_tp")
-    private Byte nbhTp;
-
-    @Size(max = 3)
-    @NotNull
-    @Column(name = "semestre", nullable = false, length = 3)
-    private String semestre;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "code_formation", nullable = false)
+    @MapsId("codeFormation")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "CODE_FORMATION", nullable = false)
     private Formation codeFormation;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "no_enseignant", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "NO_ENSEIGNANT", nullable = false)
     private Enseignant noEnseignant;
+
+    @Size(max = 64)
+    @NotNull
+    @Column(name = "DESIGNATION", nullable = false, length = 64)
+    private String designation;
+
+    @Size(max = 3)
+    @NotNull
+    @Column(name = "SEMESTRE", nullable = false, length = 3)
+    private String semestre;
+
+    @Size(max = 256)
+    @Column(name = "DESCRIPTION", length = 256)
+    private String description;
+
+    @Column(name = "NBH_CM")
+    private Long nbhCm;
+
+    @Column(name = "NBH_TD")
+    private Short nbhTd;
+
+    @Column(name = "NBH_TP")
+    private Short nbhTp;
 
 }

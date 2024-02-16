@@ -5,33 +5,37 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "question" )
+@Table(name = "QUESTION")
 public class Question {
     @Id
-    @Column(name = "id_question", nullable = false)
-    private Long id;
-
-    @Size(max = 64)
-    @NotNull
-    @Column(name = "`intitulֹ`", nullable = false, length = 64)
-    private String intitulֹ;
+    @Column(name = "ID_QUESTION", nullable = false)
+    private Integer id;
 
     @Size(max = 10)
     @NotNull
-    @Column(name = "type", nullable = false, length = 10)
+    @Column(name = "\"TYPE\"", nullable = false, length = 10)
     private String type;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "NO_ENSEIGNANT")
+    private Enseignant noEnseignant;
+
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "id_qualificatif", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "ID_QUALIFICATIF", nullable = false)
     private Qualificatif idQualificatif;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "no_enseignant")
-    private Enseignant noEnseignant;
+    @Size(max = 64)
+    @NotNull
+    @Column(name = "INTITULE", nullable = false, length = 64)
+    private String intitule;
 
 }

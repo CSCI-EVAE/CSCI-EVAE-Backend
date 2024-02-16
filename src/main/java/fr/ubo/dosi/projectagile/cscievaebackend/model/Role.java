@@ -1,5 +1,6 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.model;
 
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

@@ -5,31 +5,35 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "rubrique_evaluation" )
+@Table(name = "RUBRIQUE_EVALUATION")
 public class RubriqueEvaluation {
     @Id
-    @Column(name = "id_rubrique_evaluation", nullable = false)
-    private Long id;
-
-    @Size(max = 64)
-    @Column(name = "designation", length = 64)
-    private String designation;
+    @Column(name = "ID_RUBRIQUE_EVALUATION", nullable = false)
+    private Integer id;
 
     @NotNull
-    @Column(name = "ordre", nullable = false)
-    private Byte ordre;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "id_evaluation", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "ID_EVALUATION", nullable = false)
     private Evaluation idEvaluation;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_rubrique")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "ID_RUBRIQUE")
     private Rubrique idRubrique;
+
+    @NotNull
+    @Column(name = "ORDRE", nullable = false)
+    private Short ordre;
+
+    @Size(max = 64)
+    @Column(name = "DESIGNATION", length = 64)
+    private String designation;
 
 }

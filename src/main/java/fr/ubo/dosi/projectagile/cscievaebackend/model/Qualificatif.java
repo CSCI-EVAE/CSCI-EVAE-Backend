@@ -9,21 +9,29 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "qualificatif" )
+@Table(name = "QUALIFICATIF")
 public class Qualificatif {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_qualificatif", nullable = false)
-    private Long id;
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "QUA_SEQ"
+    )
+    @SequenceGenerator(
+            name = "QUA_SEQ",
+            sequenceName = "QUA_SEQ",
+            allocationSize = 1 // Set the allocation size to 1 to match the database sequence
+    )
+    @Column(name = "ID_QUALIFICATIF", nullable = false)
+    private Integer id;
 
     @Size(max = 16)
     @NotNull
-    @Column(name = "maximal", nullable = false, length = 16)
+    @Column(name = "MAXIMAL", nullable = false, length = 16)
     private String maximal;
 
     @Size(max = 16)
     @NotNull
-    @Column(name = "minimal", nullable = false, length = 16)
+    @Column(name = "MINIMAL", nullable = false, length = 16)
     private String minimal;
 
 }

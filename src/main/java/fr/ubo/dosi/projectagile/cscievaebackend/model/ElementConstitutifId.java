@@ -2,6 +2,8 @@ package fr.ubo.dosi.projectagile.cscievaebackend.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
@@ -13,15 +15,21 @@ import java.util.Objects;
 @Setter
 @Embeddable
 public class ElementConstitutifId implements Serializable {
-    private static final long serialVersionUID = -4618438916571038736L;
-    @Column(name = "code_ec", nullable = false, length = 8)
-    private String codeEc;
-
-    @Column(name = "code_formation", nullable = false, length = 8)
+    private static final long serialVersionUID = 4064066980719607628L;
+    @Size(max = 8)
+    @NotNull
+    @Column(name = "CODE_FORMATION", nullable = false, length = 8)
     private String codeFormation;
 
-    @Column(name = "code_ue", nullable = false, length = 8)
+    @Size(max = 8)
+    @NotNull
+    @Column(name = "CODE_UE", nullable = false, length = 8)
     private String codeUe;
+
+    @Size(max = 8)
+    @NotNull
+    @Column(name = "CODE_EC", nullable = false, length = 8)
+    private String codeEc;
 
     @Override
     public boolean equals(Object o) {

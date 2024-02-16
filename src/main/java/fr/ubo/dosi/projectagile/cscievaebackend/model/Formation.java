@@ -9,40 +9,40 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "formation")
+@Table(name = "FORMATION")
 public class Formation {
     @Id
     @Size(max = 8)
-    @Column(name = "code_formation", nullable = false, length = 8)
+    @Column(name = "CODE_FORMATION", nullable = false, length = 8)
     private String codeFormation;
-
-    @Column(name = "debut_habilitation")
-    private Instant debutHabilitation;
 
     @Size(max = 3)
     @NotNull
-    @Column(name = "diplome", nullable = false, length = 3)
+    @Column(name = "DIPLOME", nullable = false, length = 3)
     private String diplome;
 
     @NotNull
-    @Column(name = "double_diplome", nullable = false)
-    private Character doubleDiplome;
-
-    @Column(name = "fin_habilitation")
-    private Instant finHabilitation;
-
-    @NotNull
-    @Column(name = "n0_annee", nullable = false)
-    private Byte n0Annee;
+    @Column(name = "N0_ANNEE", nullable = false)
+    private Boolean n0Annee = false;
 
     @Size(max = 64)
     @NotNull
-    @Column(name = "nom_formation", nullable = false, length = 64)
+    @Column(name = "NOM_FORMATION", nullable = false, length = 64)
     private String nomFormation;
+
+    @NotNull
+    @Column(name = "DOUBLE_DIPLOME", nullable = false)
+    private char doubleDiplome;
+
+    @Column(name = "DEBUT_ACCREDITATION")
+    private LocalDate debutAccreditation;
+
+    @Column(name = "FIN_ACCREDITATION")
+    private LocalDate finAccreditation;
 
 }

@@ -5,56 +5,69 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "evaluation" )
+@Table(name = "EVALUATION")
 public class Evaluation {
     @Id
-    @Column(name = "id_evaluation", nullable = false)
-    private Long id;
+    @Column(name = "ID_EVALUATION", nullable = false)
+    private Integer id;
 
     @NotNull
-    @Column(name = "debut_reponse", nullable = false)
-    private Instant debutReponse;
-
-    @Size(max = 3)
-    @NotNull
-    @Column(name = "etat", nullable = false, length = 3)
-    private String etat;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "NO_ENSEIGNANT", nullable = false)
+    private Enseignant noEnseignant;
 
     @NotNull
-    @Column(name = "fin_reponse", nullable = false)
-    private Instant finReponse;
-
-    @NotNull
-    @Column(name = "no_evaluation", nullable = false)
-    private Byte noEvaluation;
-
-    @Size(max = 64)
-    @Column(name = "periode", length = 64)
-    private String periode;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "annee_pro", nullable = false)
-    private Promotion anneePro;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumns({
-            @JoinColumn(name = "code_ec", referencedColumnName = "code_ec", nullable = false),
-            @JoinColumn(name = "code_formation", referencedColumnName = "code_formation", nullable = false),
-            @JoinColumn(name = "code_ue", referencedColumnName = "code_ue", nullable = false)
+            @JoinColumn(name = "CODE_FORMATION", referencedColumnName = "CODE_FORMATION", nullable = false, insertable = false, updatable = false),
+            @JoinColumn(name = "CODE_UE", referencedColumnName = "CODE_UE", nullable = false,insertable = false, updatable = false),
+            @JoinColumn(name = "CODE_EC", referencedColumnName = "CODE_EC", nullable = false,insertable = false, updatable = false)
     })
+    @OnDelete(action = OnDeleteAction.RESTRICT)
     private ElementConstitutif elementConstitutif;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "no_enseignant", nullable = false)
-    private Enseignant noEnseignant;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumns({
+            @JoinColumn(name = "CODE_FORMATION", referencedColumnName = "ANNEE_UNIVERSITAIRE", nullable = false,insertable = false, updatable = false),
+            @JoinColumn(name = "ANNEE_UNIVERSITAIRE", referencedColumnName = "CODE_FORMATION", nullable = false,insertable = false, updatable = false)
+    })
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    private Promotion promotion;
+
+    @NotNull
+    @Column(name = "NO_EVALUATION", nullable = false)
+    private Short noEvaluation;
+
+    @Size(max = 16)
+    @NotNull
+    @Column(name = "DESIGNATION", nullable = false, length = 16)
+    private String designation;
+
+    @Size(max = 3)
+    @NotNull
+    @Column(name = "ETAT", nullable = false, length = 3)
+    private String etat;
+
+    @Size(max = 64)
+    @Column(name = "PERIODE", length = 64)
+    private String periode;
+
+    @NotNull
+    @Column(name = "DEBUT_REPONSE", nullable = false)
+    private LocalDate debutReponse;
+
+    @NotNull
+    @Column(name = "FIN_REPONSE", nullable = false)
+    private LocalDate finReponse;
 
 }

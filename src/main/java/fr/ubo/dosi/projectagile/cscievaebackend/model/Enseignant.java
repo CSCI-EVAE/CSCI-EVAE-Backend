@@ -12,106 +12,68 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "enseignant" )
+@Table(name = "ENSEIGNANT")
 public class Enseignant {
     @Id
-    @Column(name = "no_enseignant", nullable = false)
-    private Integer id;
+    @Column(name = "NO_ENSEIGNANT", nullable = false)
+    private Short id;
+
+    @Size(max = 5)
+    @NotNull
+    @Column(name = "\"TYPE\"", nullable = false, length = 5)
+    private String type;
+
+    @Size(max = 1)
+    @NotNull
+    @Column(name = "SEXE", nullable = false, length = 1)
+    private String sexe;
+
+    @Size(max = 50)
+    @NotNull
+    @Column(name = "NOM", nullable = false, length = 50)
+    private String nom;
+
+    @Size(max = 50)
+    @NotNull
+    @Column(name = "PRENOM", nullable = false, length = 50)
+    private String prenom;
 
     @Size(max = 255)
     @NotNull
-    @Column(name = "adresse", nullable = false)
+    @Column(name = "ADRESSE", nullable = false)
     private String adresse;
 
     @Size(max = 10)
     @NotNull
-    @Column(name = "cp", nullable = false, length = 10)
-    private String cp;
-
-    @Size(max = 255)
-    @Column(name = "enc_perso_email")
-    private String encPersoEmail;
-
-    @Size(max = 20)
-    @Column(name = "enc_perso_tel", length = 20)
-    private String encPersoTel;
-
-    @Size(max = 255)
-    @Column(name = "enc_ubo_email")
-    private String encUboEmail;
-
-    @Size(max = 20)
-    @Column(name = "enc_ubo_tel", length = 20)
-    private String encUboTel;
-
-    @Size(max = 50)
-    @Column(name = "int_fonction", length = 50)
-    private String intFonction;
-
-    @Size(max = 50)
-    @Column(name = "int_no_insee", length = 50)
-    private String intNoInsee;
-
-    @Size(max = 255)
-    @Column(name = "int_prof_email")
-    private String intProfEmail;
-
-    @Size(max = 20)
-    @Column(name = "int_prof_tel", length = 20)
-    private String intProfTel;
-
-    @Size(max = 255)
-    @Column(name = "int_soc_adresse")
-    private String intSocAdresse;
-
-    @Size(max = 10)
-    @Column(name = "int_soc_cp", length = 10)
-    private String intSocCp;
-
-    @Size(max = 50)
-    @Column(name = "int_soc_nom", length = 50)
-    private String intSocNom;
-
-    @Size(max = 255)
-    @Column(name = "int_soc_pays")
-    private String intSocPays;
-
-    @Size(max = 255)
-    @Column(name = "int_soc_ville")
-    private String intSocVille;
-
-    @Size(max = 50)
-    @NotNull
-    @Column(name = "nom", nullable = false, length = 50)
-    private String nom;
+    @Column(name = "CODE_POSTAL", nullable = false, length = 10)
+    private String codePostal;
 
     @Size(max = 255)
     @NotNull
-    @Column(name = "pays", nullable = false)
+    @Column(name = "VILLE", nullable = false)
+    private String ville;
+
+    @Size(max = 5)
+    @NotNull
+    @Column(name = "PAYS", nullable = false, length = 5)
     private String pays;
 
-    @Size(max = 50)
+    @Size(max = 20)
     @NotNull
-    @Column(name = "prenom", nullable = false, length = 50)
-    private String prenom;
-
-    @Size(max = 1)
-    @NotNull
-    @Column(name = "sexe", nullable = false, length = 1)
-    private String sexe;
+    @Column(name = "MOBILE", nullable = false, length = 20)
+    private String mobile;
 
     @Size(max = 20)
-    @Column(name = "tel_port", length = 20)
-    private String telPort;
-
-    @Size(max = 10)
-    @NotNull
-    @Column(name = "type", nullable = false, length = 10)
-    private String type;
+    @Column(name = "TELEPHONE", length = 20)
+    private String telephone;
 
     @Size(max = 255)
     @NotNull
-    @Column(name = "ville", nullable = false)
-    private String ville;
+    @Column(name = "EMAIL_UBO", nullable = false)
+    private String emailUbo;
+
+    @Size(max = 255)
+    @Column(name = "EMAIL_PERSO")
+    private String emailPerso;
 
 }
