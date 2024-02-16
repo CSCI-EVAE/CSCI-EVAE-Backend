@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-//@CrossOrigin(origins = "http://localhost:3000")
+
+
 @RequestMapping("/api/v1/admin/qualificatif")
 public class QualificatifController {
 
@@ -47,12 +48,12 @@ public class QualificatifController {
     }
 
     @PutMapping("/{id}")
-    public ApiResponse<Qualificatif> updateQualificatif(@PathVariable Long id, @RequestBody Qualificatif qualificatifModifie) {
+    public ApiResponse<Qualificatif> updateQualificatif(@PathVariable Long id, @RequestBody Qualificatif qualificatifModifie) throws ResourceNotFoundException {
         try {
             Qualificatif updated = qualificatifService.updateQualificatif(id, qualificatifModifie);
             return ApiResponse.ok(updated);
         } catch (ResourceNotFoundException e) {
-            return ApiResponse.error("Qualificatif not found", null);
+            throw new ResourceNotFoundException("Qualificatif not found");
         }
     }
 

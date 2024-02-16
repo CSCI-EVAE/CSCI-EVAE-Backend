@@ -37,7 +37,7 @@ public class Formation {
 
     @NotNull
     @Column(name = "DOUBLE_DIPLOME", nullable = false)
-    private char doubleDiplome;
+    private Character doubleDiplome = 'N';
 
     @Column(name = "DEBUT_ACCREDITATION")
     private LocalDate debutAccreditation;

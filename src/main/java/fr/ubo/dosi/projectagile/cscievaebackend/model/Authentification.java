@@ -32,7 +32,7 @@ public class Authentification {
     private String pseudoConnection;
 
     @Size(max = 255)
-    @Column(name = "MOT_PASSE")
+    @Column(name = "MOT_PASSE", length = 32)
     private String motPasse;
 
     @ManyToOne(fetch = FetchType.LAZY)

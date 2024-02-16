@@ -12,6 +12,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @Table(name = "RUBRIQUE_QUESTION")
 public class RubriqueQuestion {
+
     @EmbeddedId
     private RubriqueQuestionId id;
 

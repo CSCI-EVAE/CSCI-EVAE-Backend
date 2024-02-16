@@ -15,7 +15,7 @@ import java.util.Objects;
 @Setter
 @Embeddable
 public class UniteEnseignementId implements Serializable {
-    private static final long serialVersionUID = 8461393114706631262L;
+    private static final long serialVersionUID = 8791923725020776352L;
     @Size(max = 8)
     @NotNull
     @Column(name = "CODE_FORMATION", nullable = false, length = 8)

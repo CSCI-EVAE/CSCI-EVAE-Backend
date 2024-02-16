@@ -1,14 +1,12 @@
 # Compiled class file
 *.class
-# Gradle related
-*.properties
+
 .gradle/
-build/
+/build
 # Gradle wrapper jar binary
 !gradle/wrapper/gradle-wrapper.jar
 # Application binary
 *.jar
-
 
 # Log file
 *.log
@@ -16,21 +14,14 @@ build/
 # BlueJ files
 *.ctxt
 # IDE related
-.idea/
+.idea
 *.iml
 *.iws
 *.ipr
 .classpath
 .project
 .settings/
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-# Compiled bytecode
-**/bin/
-**/out/
-**/target/
-**/build/
-# Package Files #
+
 
 *.war
 *.nar
@@ -39,9 +30,4 @@ build/
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
 
-.idea
-.gradle

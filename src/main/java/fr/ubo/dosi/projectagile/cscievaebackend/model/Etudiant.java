@@ -104,5 +104,4 @@ public class Etudiant {
 
     @Column(name = "GROUPE_ANGLAIS")
     private Long groupeAnglais;
-
 }

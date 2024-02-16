@@ -1,13 +1,13 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -75,5 +75,11 @@ public class Enseignant {
     @Size(max = 255)
     @Column(name = "EMAIL_PERSO")
     private String emailPerso;
+
+    @OneToMany(mappedBy = "noEnseignant")
+    private Set<ElementConstitutif> elementConstitutifs = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "noEnseignant")
+    private Set<UniteEnseignement> uniteEnseignements = new LinkedHashSet<>();
 
 }
