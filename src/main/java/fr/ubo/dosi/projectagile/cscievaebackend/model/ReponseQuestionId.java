@@ -17,8 +17,8 @@ public class ReponseQuestionId implements Serializable {
     @Column(name = "ID_QUESTION_EVALUATION", nullable = false)
     private Long idQuestionEvaluation;
 
-    @Column(name = "ID_REPONSE_QUESTION", nullable = false)
-    private Long idReponseQuestion;
+    @Column(name = "ID_REPONSE_EVALUATION", nullable = false)
+    private Long idReponseEvaluation;
 
     @Override
     public boolean equals(Object o) {
@@ -26,12 +26,12 @@ public class ReponseQuestionId implements Serializable {
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         ReponseQuestionId entity = (ReponseQuestionId) o;
         return Objects.equals(this.idQuestionEvaluation, entity.idQuestionEvaluation) &&
-                Objects.equals(this.idReponseQuestion, entity.idReponseQuestion);
+                Objects.equals(this.idReponseEvaluation, entity.idReponseEvaluation);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idQuestionEvaluation, idReponseQuestion);
+        return Objects.hash(idQuestionEvaluation, idReponseEvaluation);
     }
 
 }
