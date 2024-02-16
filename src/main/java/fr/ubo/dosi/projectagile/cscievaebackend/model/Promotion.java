@@ -5,65 +5,57 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "promotion" )
+@Table(name = "PROMOTION")
 public class Promotion {
-    @Id
-    @Size(max = 10)
-    @Column(name = "annee_pro", nullable = false, length = 10)
-    private String anneePro;
+    @EmbeddedId
+    private PromotionId id;
 
-    @Size(max = 255)
-    @Column(name = "commentaire")
-    private String commentaire;
-
-    @Column(name = "date_rentree")
-    private Instant dateRentree;
-
-    @Column(name = "date_reponse_lalp")
-    private Instant dateReponseLalp;
-
-    @Column(name = "date_reponse_lp")
-    private Instant dateReponseLp;
-
-    @Size(max = 3)
-    @NotNull
-    @Column(name = "etat_preselection", nullable = false, length = 3)
-    private String etatPreselection;
-
-    @Size(max = 255)
-    @Column(name = "lieu_rentree")
-    private String lieuRentree;
-
-    @NotNull
-    @Column(name = "nb_etu_souhaite", nullable = false)
-    private Short nbEtuSouhaite;
-
-    @Size(max = 5)
-    @Column(name = "processus_stage", length = 5)
-    private String processusStage;
-
-    @Size(max = 5)
-    @NotNull
-    @Column(name = "sigle_pro", nullable = false, length = 5)
-    private String siglePro;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "code_formation")
+    @MapsId("codeFormation")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "CODE_FORMATION", nullable = false)
     private Formation codeFormation;
 
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "no_enseignant")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "NO_ENSEIGNANT")
     private Enseignant noEnseignant;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "no_evaluation")
-    private StructureEvaluation noEvaluation;
+    @Size(max = 16)
+    @Column(name = "SIGLE_PROMOTION", length = 16)
+    private String siglePromotion;
+
+    @NotNull
+    @Column(name = "NB_MAX_ETUDIANT", nullable = false)
+    private Short nbMaxEtudiant;
+
+    @Column(name = "DATE_REPONSE_LP")
+    private LocalDate dateReponseLp;
+
+    @Column(name = "DATE_REPONSE_LALP")
+    private LocalDate dateReponseLalp;
+
+    @Column(name = "DATE_RENTREE")
+    private LocalDate dateRentree;
+
+    @Size(max = 12)
+    @Column(name = "LIEU_RENTREE", length = 12)
+    private String lieuRentree;
+
+    @Size(max = 5)
+    @Column(name = "PROCESSUS_STAGE", length = 5)
+    private String processusStage;
+
+    @Size(max = 255)
+    @Column(name = "COMMENTAIRE")
+    private String commentaire;
 
 }

@@ -1,7 +1,6 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.security;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Role;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.User;
-import jakarta.transaction.Transactional;
+
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Authentification;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,20 +9,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class CustomUserDetails extends User implements UserDetails {
+public class CustomUserDetails extends Authentification implements UserDetails {
 
     private String username;
     private String password;
     Collection<? extends GrantedAuthority> authorities;
 
-    public CustomUserDetails(User byUsername) {
-        this.username = byUsername.getUsername();
-        this.password= byUsername.getPassword();
+    public CustomUserDetails(Authentification byUsername) {
+        this.username = byUsername.getLoginConnection();
+        this.password = byUsername.getMotPasse();
         List<GrantedAuthority> auths = new ArrayList<>();
 
-        for(Role role : byUsername.getRoles()){
-            auths.add(new SimpleGrantedAuthority(role.getName().toUpperCase()));
-        }
+        auths.add(new SimpleGrantedAuthority(byUsername.getRole().toUpperCase()));
         this.authorities = auths;
     }
 

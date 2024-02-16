@@ -1,9 +1,8 @@
 # Compiled class file
 *.class
 
-*.properties
 .gradle/
-build/
+/build
 # Gradle wrapper jar binary
 !gradle/wrapper/gradle-wrapper.jar
 # Application binary
@@ -32,4 +31,3 @@ build/
 *.rar
 
 
-src/main/resources/application.properties

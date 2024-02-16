@@ -14,3 +14,4 @@ RUN gradle build -Pwar -x test
 EXPOSE 9091
 
 CMD ["java", "-jar", "build/libs/csa-back-0.0.1-SNAPSHOT.war"]
+

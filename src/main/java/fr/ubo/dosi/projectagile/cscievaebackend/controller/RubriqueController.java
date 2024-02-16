@@ -1,9 +1,9 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 
 
+
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Etudiant;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Rubrique;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.RubriqueService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 
 @RestController
@@ -35,6 +34,13 @@ public class RubriqueController {
     @GetMapping
     public ResponseEntity<ApiResponse<List<Rubrique>>> getAllRubrique() {
         List<Rubrique> rubriques = rubriqueService.getAllRubrique();
+
+        return ResponseEntity.ok(ApiResponse.ok(rubriques));
+    }
+
+    @GetMapping("/ty/{type}")
+    public ResponseEntity<ApiResponse<List<Rubrique>>> getRubriqueByType(@PathVariable("type") String type)  {
+        List<Rubrique> rubriques = rubriqueService.getRubriqueByType(type);
         return ResponseEntity.ok(ApiResponse.ok(rubriques));
     }
 
@@ -42,12 +48,13 @@ public class RubriqueController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Rubrique>> getRubriqueById(@PathVariable Long id) {
         try {
+
             Rubrique rubrique = rubriqueService.getRubriqueById(id);
             return ResponseEntity.ok(ApiResponse.ok(rubrique));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(ApiResponse.error("Rubrique not found", null));
-                    
+
         }
     }
 

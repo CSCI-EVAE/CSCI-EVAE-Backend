@@ -1,9 +1,8 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.model;
 
-
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
@@ -15,12 +14,14 @@ import java.util.Objects;
 @Setter
 @Embeddable
 public class DroitId implements Serializable {
-    private static final long serialVersionUID = 6977159683579018962L;
+    private static final long serialVersionUID = 6202781662823004219L;
+    @NotNull
     @Column(name = "ID_EVALUATION", nullable = false)
-    private Long idEvaluation;
+    private Integer idEvaluation;
 
+    @NotNull
     @Column(name = "NO_ENSEIGNANT", nullable = false)
-    private Integer noEnseignant;
+    private Short noEnseignant;
 
     @Override
     public boolean equals(Object o) {
