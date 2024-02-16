@@ -38,6 +38,7 @@ public class UniteEnseignement {
     @Column(name = "SEMESTRE", nullable = false, length = 3)
     private String semestre;
 
+
     @Size(max = 256)
     @Column(name = "DESCRIPTION", length = 256)
     private String description;
