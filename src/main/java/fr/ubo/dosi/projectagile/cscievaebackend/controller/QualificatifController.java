@@ -2,17 +2,18 @@ package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 
 
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
+import fr.ubo.dosi.projectagile.cscievaebackend.exception.LinkedToAnotherResourceException;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Qualificatif;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.QualificatifService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-
 
 @RequestMapping("/api/v1/admin/qualificatif")
 public class QualificatifController {
@@ -59,12 +60,17 @@ public class QualificatifController {
 
     @DeleteMapping("/{id}")
     public ApiResponse<Void> deleteQualificatif(@PathVariable Long id) {
+
         try {
             qualificatifService.deleteQualificatif(id);
             return ApiResponse.ok(null);
-        } catch (ResourceNotFoundException e) {
+        }
+        catch (ResourceNotFoundException e) {
             return ApiResponse.error("Qualificatif not found", null);
+        } catch (SQLException e) {
+           return ApiResponse.error("Le qualificatif est lié à une question et ne peut pas être supprimé.", null);
         }
     }
-}
 
+
+}

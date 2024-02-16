@@ -7,8 +7,11 @@ import fr.ubo.dosi.projectagile.cscievaebackend.repository.QualificatifRepositor
 import fr.ubo.dosi.projectagile.cscievaebackend.services.QualificatifService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,17 +52,13 @@ public class QualificatifServiceImpl implements QualificatifService {
     @Override
     public void deleteQualificatif(Long id) throws ResourceNotFoundException, LinkedToAnotherResourceException {
         Optional<Qualificatif> qualificatifExistant = qualificatifRepository.findById(id);
-        if (qualificatifExistant.isPresent()) {
-            try {
-                qualificatifRepository.deleteById(id);
-            } catch (LinkedToAnotherResourceException e) {
-                throw new LinkedToAnotherResourceException("Le qualificatif est lié à une autre ressource et ne peut pas être supprimé.");
-            } catch (DataAccessException e) {
-                throw new ResourceNotFoundException("Le qualificatif ne peut pas être supprimé pour des raisons techniques.");
-            }
-        } else {
+        System.out.println(qualificatifExistant.get());
+        try {
+            qualificatifRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException("Le qualificatif n'existe pas avec cet id : " + id);
+        } catch (DataIntegrityViolationException e) {
+            throw new LinkedToAnotherResourceException("Le qualificatif est lié à une autre ressource et ne peut pas être supprimé.");
         }
     }
-
 }

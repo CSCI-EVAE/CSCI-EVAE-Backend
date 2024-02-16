@@ -55,7 +55,7 @@ public class Evaluation {
     @Size(max = 3)
     @NotNull
     @Column(name = "ETAT", nullable = false, length = 3)
-    private Character etat;
+    private String etat;
 
     @Size(max = 64)
     @Column(name = "PERIODE", length = 64)
