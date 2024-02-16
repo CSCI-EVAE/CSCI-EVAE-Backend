@@ -2,7 +2,7 @@ package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
-import fr.ubo.dosi.projectagile.cscievaebackend.Model.Question;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Question;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

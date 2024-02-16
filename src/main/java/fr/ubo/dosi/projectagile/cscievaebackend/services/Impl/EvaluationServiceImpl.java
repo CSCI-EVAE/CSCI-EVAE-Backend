@@ -1,5 +1,5 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.services.Impl;
-import fr.ubo.dosi.projectagile.cscievaebackend.Model.Evaluation;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.EvaluationRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;

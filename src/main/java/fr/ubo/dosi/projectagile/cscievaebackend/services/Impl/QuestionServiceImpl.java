@@ -1,7 +1,7 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.services.Impl;
 
-import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Question;
+import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,7 +38,7 @@ public Question updateQuestion(Long id, Question question) throws ResourceNotFou
     if (optionalQuestion.isPresent()) {
         Question questionUpdate=optionalQuestion.get();
         questionUpdate.setType(question.getType());
-        questionUpdate.setIntitulֹ(question.getIntitulֹ());
+        questionUpdate.setIntitule(question.getIntitule());
         questionUpdate.setIdQualificatif(question.getIdQualificatif());
         questionUpdate.setNoEnseignant(question.getNoEnseignant());
         return questionRepository.save(questionUpdate);

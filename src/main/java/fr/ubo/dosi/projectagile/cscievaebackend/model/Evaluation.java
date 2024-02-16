@@ -1,4 +1,4 @@
-package fr.ubo.dosi.projectagile.cscievaebackend.Model;
+package fr.ubo.dosi.projectagile.cscievaebackend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

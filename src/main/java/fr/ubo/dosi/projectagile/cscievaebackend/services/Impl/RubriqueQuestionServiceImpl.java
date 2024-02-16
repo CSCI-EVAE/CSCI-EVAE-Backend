@@ -55,11 +55,7 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
     @Override
     public RubriqueQuestionDTO getRubriqueQuestionById(RubriqueQuestionId rubriqueQuestionId) {
          Optional<RubriqueQuestion> rubriqueQuestionOptional = rubriqueQuestionRepository.findById(rubriqueQuestionId);
-    if (rubriqueQuestionOptional.isPresent()) {
-        return convertToDto(rubriqueQuestionOptional.get());
-    } else {
-        return null;
-    }
+        return rubriqueQuestionOptional.map(this::convertToDto).orElse(null);
     }
 
 

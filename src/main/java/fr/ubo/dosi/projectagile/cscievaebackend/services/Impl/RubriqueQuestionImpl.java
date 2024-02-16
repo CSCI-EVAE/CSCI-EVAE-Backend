@@ -1,8 +1,8 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.services.Impl;
 
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Rubrique;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.EmptyRequestBodyException;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Rubrique;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.RubriqueRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.RubriqueService;
 import org.springframework.beans.factory.annotation.Autowired;

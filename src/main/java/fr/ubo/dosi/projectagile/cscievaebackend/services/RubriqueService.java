@@ -1,7 +1,7 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.services;
 
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
-import fr.ubo.dosi.projectagile.cscievaebackend.Model.Rubrique;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Rubrique;
 
 import java.util.List;
 

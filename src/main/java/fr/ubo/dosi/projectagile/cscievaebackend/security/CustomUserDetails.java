@@ -1,6 +1,6 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.security;
 
-import fr.ubo.dosi.projectagile.cscievaebackend.Model.Authentification;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Authentification;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

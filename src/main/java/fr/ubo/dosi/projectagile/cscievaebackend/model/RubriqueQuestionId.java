@@ -1,4 +1,4 @@
-package fr.ubo.dosi.projectagile.cscievaebackend.Model;
+package fr.ubo.dosi.projectagile.cscievaebackend.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.Objects;

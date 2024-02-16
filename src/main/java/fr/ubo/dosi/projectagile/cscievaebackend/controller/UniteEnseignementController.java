@@ -1,10 +1,10 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 
 
-import fr.ubo.dosi.projectagile.cscievaebackend.Model.UniteEnseignement;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.UniteEnseignement;
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.userService;
-import fr.ubo.dosi.projectagile.cscievaebackend.Model.Authentification ;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Authentification ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

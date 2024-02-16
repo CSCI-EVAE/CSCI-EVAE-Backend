@@ -1,6 +1,6 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.security;
 
-import fr.ubo.dosi.projectagile.cscievaebackend.Model.Authentification;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Authentification;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.AuthentificationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

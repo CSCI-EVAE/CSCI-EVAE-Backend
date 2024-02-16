@@ -4,7 +4,7 @@ package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.AuthRequestDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.JwtResponseDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.UserDTO;
-import fr.ubo.dosi.projectagile.cscievaebackend.Model.Authentification;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Authentification;
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.security.JwtService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.userService;

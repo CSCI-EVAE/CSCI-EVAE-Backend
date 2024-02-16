@@ -1,6 +1,6 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.DTO;
 
-import fr.ubo.dosi.projectagile.cscievaebackend.Model.Authentification;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Authentification;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

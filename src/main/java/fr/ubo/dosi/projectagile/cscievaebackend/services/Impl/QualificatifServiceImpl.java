@@ -2,7 +2,7 @@ package fr.ubo.dosi.projectagile.cscievaebackend.services.Impl;
 
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.LinkedToAnotherResourceException;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
-import fr.ubo.dosi.projectagile.cscievaebackend.Model.Qualificatif;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Qualificatif;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.QualificatifRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.QualificatifService;
 import org.springframework.beans.factory.annotation.Autowired;

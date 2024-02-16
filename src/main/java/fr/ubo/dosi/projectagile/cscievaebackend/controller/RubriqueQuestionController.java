@@ -1,8 +1,8 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.RubriqueQuestionDTO;
-import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueQuestion;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueQuestionId;
+import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.RubriqueQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

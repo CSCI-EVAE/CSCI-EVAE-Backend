@@ -1,4 +1,4 @@
-package fr.ubo.dosi.projectagile.cscievaebackend.Model;
+package fr.ubo.dosi.projectagile.cscievaebackend.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

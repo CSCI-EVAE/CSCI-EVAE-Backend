@@ -1,7 +1,7 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.services.Impl;
 
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.UserDTO;
-import fr.ubo.dosi.projectagile.cscievaebackend.Model.Authentification;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Authentification;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.AuthentificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
