@@ -14,6 +14,15 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name = "REPONSE_EVALUATION")
 public class ReponseEvaluation {
     @Id
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "RPE_SEQ"
+    )
+    @SequenceGenerator(
+            name = "RPE_SEQ",
+            sequenceName = "RPE_SEQ",
+            allocationSize = 1
+    )
     @Column(name = "ID_REPONSE_EVALUATION", nullable = false)
     private Integer id;
 

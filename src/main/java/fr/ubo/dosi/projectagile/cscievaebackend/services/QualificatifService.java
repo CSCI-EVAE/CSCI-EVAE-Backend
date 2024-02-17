@@ -5,6 +5,7 @@ package fr.ubo.dosi.projectagile.cscievaebackend.services;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.LinkedToAnotherResourceException;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Qualificatif;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Question;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -20,5 +21,6 @@ public interface QualificatifService {
     public Qualificatif updateQualificatif(Long id, Qualificatif qualificatif) throws ResourceNotFoundException;
 
     void deleteQualificatif(Long id) throws ResourceNotFoundException, LinkedToAnotherResourceException, SQLException;
+
 
 }

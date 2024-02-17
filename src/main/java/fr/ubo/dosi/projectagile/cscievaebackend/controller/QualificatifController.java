@@ -2,10 +2,11 @@ package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 
 
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
-import fr.ubo.dosi.projectagile.cscievaebackend.exception.LinkedToAnotherResourceException;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Qualificatif;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Question;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.QualificatifService;
+import fr.ubo.dosi.projectagile.cscievaebackend.services.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +22,12 @@ public class QualificatifController {
     @Autowired
     private final QualificatifService qualificatifService;
 
-    public QualificatifController(QualificatifService qualificatifService) {
+    @Autowired
+    private final QuestionService questionService;
+
+    public QualificatifController(QualificatifService qualificatifService, QuestionService questionService) {
         this.qualificatifService = qualificatifService;
+        this.questionService = questionService;
     }
 
     @GetMapping
@@ -60,17 +65,30 @@ public class QualificatifController {
 
     @DeleteMapping("/{id}")
     public ApiResponse<Void> deleteQualificatif(@PathVariable Long id) {
-
         try {
-            qualificatifService.deleteQualificatif(id);
-            return ApiResponse.ok(null);
-        }
-        catch (ResourceNotFoundException e) {
-            return ApiResponse.error("Qualificatif not found", null);
+            Optional<Qualificatif> qualificatif = qualificatifService.getQualificatifById(id);
+            if (qualificatif.isPresent()) {
+                List<Question> relatedQuestions = questionService.findQuestionsByQualificatifId(qualificatif.get());
+                if (!relatedQuestions.isEmpty()) {
+                    return ApiResponse.error("Ce qualificatif ne peut pas etre supprimer car il est lié a "+ relatedQuestions.size()+" Questions", null);
+                }
+                else {
+                    qualificatifService.deleteQualificatif(id);
+                    return ApiResponse.ok(null);
+                }
+            }
+            else{
+                return ApiResponse.error("Ce qualificatif n'existe pas", null);
+
+            }
         } catch (SQLException e) {
-           return ApiResponse.error("Le qualificatif est lié à une question et ne peut pas être supprimé.", null);
+            return ApiResponse.error("Error deleting qualificatif", null);
+        } catch (ResourceNotFoundException e) {
+            return ApiResponse.error("Qualificatif not found", null);
         }
     }
+
+
 
 
 }
