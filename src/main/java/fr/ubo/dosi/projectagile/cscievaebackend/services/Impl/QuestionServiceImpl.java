@@ -1,5 +1,6 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.services.Impl;
 
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Qualificatif;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Question;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.QuestionRepository;
@@ -54,5 +55,11 @@ public Question updateQuestion(Long id, Question question) throws ResourceNotFou
         } else {
             throw new ResourceNotFoundException("Question not found for this id :: " + id);
         }
+    }
+
+
+    @Override
+    public List<Question> findQuestionsByQualificatifId(Qualificatif idQualificatif) {
+        return questionRepository.findByIdQualificatif(idQualificatif);
     }
 }
