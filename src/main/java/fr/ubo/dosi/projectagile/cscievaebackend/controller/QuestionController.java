@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
-@PreAuthorize("hasAuthority('ADMIN')")
 @RequestMapping("/api/v1/admin/questions")
 public class QuestionController {
 
@@ -30,6 +29,7 @@ public class QuestionController {
     }
 
     @GetMapping
+
     public ResponseEntity<ApiResponse<List<Question>>> getAllQuestions() {
         List<Question> questions = questionService.getAllQuestions();
         logger.info("questions : " + questions);

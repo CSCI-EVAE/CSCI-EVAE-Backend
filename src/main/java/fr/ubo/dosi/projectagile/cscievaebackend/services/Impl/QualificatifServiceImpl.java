@@ -3,12 +3,12 @@ package fr.ubo.dosi.projectagile.cscievaebackend.services.Impl;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.LinkedToAnotherResourceException;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Qualificatif;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Question;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.QualificatifRepository;
+import fr.ubo.dosi.projectagile.cscievaebackend.repository.QuestionRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.QualificatifService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -20,6 +20,8 @@ public class QualificatifServiceImpl implements QualificatifService {
 
     @Autowired
     private QualificatifRepository qualificatifRepository;
+    @Autowired
+    private QuestionRepository questionRepository;
 
     @Override
     public Qualificatif createQualificatif(Qualificatif qualificatif) {
@@ -50,15 +52,31 @@ public class QualificatifServiceImpl implements QualificatifService {
     }
 
     @Override
-    public void deleteQualificatif(Long id) throws ResourceNotFoundException, LinkedToAnotherResourceException {
+    public void deleteQualificatif(Long id) throws ResourceNotFoundException, LinkedToAnotherResourceException, SQLException {
         Optional<Qualificatif> qualificatifExistant = qualificatifRepository.findById(id);
-        System.out.println(qualificatifExistant.get());
-        try {
-            qualificatifRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
+
+        if (qualificatifExistant.isPresent()) {
+            try {
+                checkAndDeleteLinkedRecords(qualificatifExistant.get());
+
+                qualificatifRepository.deleteById(id);
+            } catch (DataAccessException e) {
+                throw new ResourceNotFoundException("Le qualificatif ne peut pas être supprimé pour des raisons techniques.");
+            }
+        } else {
             throw new ResourceNotFoundException("Le qualificatif n'existe pas avec cet id : " + id);
-        } catch (DataIntegrityViolationException e) {
-            throw new LinkedToAnotherResourceException("Le qualificatif est lié à une autre ressource et ne peut pas être supprimé.");
         }
+    }
+
+
+
+    private void checkAndDeleteLinkedRecords(Qualificatif qualificatif) throws LinkedToAnotherResourceException {
+
+        List<Question> linkedQuestions = questionRepository.findByIdQualificatif(qualificatif);
+        if (!linkedQuestions.isEmpty()) {
+            throw new LinkedToAnotherResourceException("Le qualificatif est lié à une ou plusieurs questions.");
+        }
+
+
     }
 }

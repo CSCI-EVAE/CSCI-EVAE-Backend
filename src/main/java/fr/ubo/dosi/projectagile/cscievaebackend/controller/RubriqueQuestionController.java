@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
-@PreAuthorize("hasAuthority('ADMIN')")
-@RequestMapping("/api/v1/rubriqueQuestion")
+@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/api/v1/admin/rubriqueQuestion")
 public class RubriqueQuestionController {
     @Autowired
     private RubriqueQuestionService rubriqueQuestionService;

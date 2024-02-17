@@ -16,6 +16,15 @@ import java.time.LocalDate;
 @Table(name = "EVALUATION")
 public class Evaluation {
     @Id
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "EVE_SEQ"
+    )
+    @SequenceGenerator(
+            name = "EVE_SEQ",
+            sequenceName = "EVE_SEQ",
+            allocationSize = 1
+    )
     @Column(name = "ID_EVALUATION", nullable = false)
     private Integer id;
 
