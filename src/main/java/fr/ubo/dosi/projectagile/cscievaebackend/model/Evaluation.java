@@ -18,6 +18,15 @@ import java.util.Set;
 @Table(name = "EVALUATION")
 public class Evaluation {
     @Id
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "EVE_SEQ"
+    )
+    @SequenceGenerator(
+            name = "EVE_SEQ",
+            sequenceName = "EVE_SEQ",
+            allocationSize = 1
+    )
     @Column(name = "ID_EVALUATION", nullable = false)
     private Integer id;
 
@@ -57,7 +66,7 @@ public class Evaluation {
     @Size(max = 3)
     @NotNull
     @Column(name = "ETAT", nullable = false, length = 3)
-    private Character etat;
+    private String etat;
 
     @Size(max = 64)
     @Column(name = "PERIODE", length = 64)

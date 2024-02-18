@@ -18,11 +18,12 @@ public class userService {
     private AuthentificationRepository userRepository;
 
     public void registerNewUser(Authentification registrationRequest) {
+
         if (userRepository.findByLoginConnection(registrationRequest.getLoginConnection())!=null) {
+
             throw new RuntimeException("Username already exists");
         }
 
-        //get the password from the request and encode it
         String encodedPassword = passwordEncoder.encode(registrationRequest.getMotPasse());
         registrationRequest.setMotPasse(encodedPassword);
         userRepository.save(registrationRequest);

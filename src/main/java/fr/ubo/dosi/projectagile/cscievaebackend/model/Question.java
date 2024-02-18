@@ -1,5 +1,7 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -14,12 +16,21 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name = "QUESTION")
 public class Question {
     @Id
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "QUE_SEQ"
+    )
+    @SequenceGenerator(
+            name = "QUE_SEQ",
+            sequenceName = "QUE_SEQ",
+            allocationSize = 1
+    )
     @Column(name = "ID_QUESTION", nullable = false)
     private Integer id;
 
     @Size(max = 10)
     @NotNull
-    @Column(name = "\"TYPE\"", nullable = false, length = 10)
+    @Column(name = "TYPE", nullable = false, length = 10)
     private String type;
 
     @ManyToOne(fetch = FetchType.LAZY)

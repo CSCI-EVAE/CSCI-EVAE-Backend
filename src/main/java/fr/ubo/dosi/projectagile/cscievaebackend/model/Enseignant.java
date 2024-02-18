@@ -15,6 +15,15 @@ import java.util.Set;
 @Table(name = "ENSEIGNANT")
 public class Enseignant {
     @Id
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "ENS_SEQ"
+    )
+    @SequenceGenerator(
+            name = "ENS_SEQ",
+            sequenceName = "ENS_SEQ",
+            allocationSize = 1
+    )
     @Column(name = "NO_ENSEIGNANT", nullable = false)
     private Short id;
 
