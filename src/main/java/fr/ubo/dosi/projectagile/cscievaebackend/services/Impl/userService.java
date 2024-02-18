@@ -18,7 +18,7 @@ public class userService {
     private AuthentificationRepository userRepository;
 
     public void registerNewUser(Authentification registrationRequest) {
-        if (userRepository.existsByLoginConnection(registrationRequest.getPseudoConnection())) {
+        if (userRepository.findByLoginConnection(registrationRequest.getLoginConnection())!=null) {
             throw new RuntimeException("Username already exists");
         }
 
