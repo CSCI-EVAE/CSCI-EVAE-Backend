@@ -9,6 +9,8 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -77,5 +79,14 @@ public class Evaluation {
     @NotNull
     @Column(name = "FIN_REPONSE", nullable = false)
     private LocalDate finReponse;
+
+    @OneToMany(mappedBy = "idEvaluation")
+    private Set<Droit> droits = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idEvaluation")
+    private Set<ReponseEvaluation> reponseEvaluations = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idEvaluation")
+    private Set<RubriqueEvaluation> rubriqueEvaluations = new LinkedHashSet<>();
 
 }
