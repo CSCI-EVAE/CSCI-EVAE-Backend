@@ -22,7 +22,6 @@
 .project
 .settings/
 
-
 *.war
 *.nar
 *.ear
