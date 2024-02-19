@@ -47,7 +47,7 @@ public class Evaluation {
     private ElementConstitutif elementConstitutif;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY , optional = false)
     @JoinColumns({
             @JoinColumn(name = "CODE_FORMATION", referencedColumnName = "ANNEE_UNIVERSITAIRE", nullable = false, insertable = false, updatable = false),
             @JoinColumn(name = "ANNEE_UNIVERSITAIRE", referencedColumnName = "CODE_FORMATION", nullable = false, insertable = false, updatable = false)
@@ -86,7 +86,7 @@ public class Evaluation {
     @OneToMany(mappedBy = "idEvaluation")
     private Set<ReponseEvaluation> reponseEvaluations = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idEvaluation")
+    @OneToMany(mappedBy = "idEvaluation",fetch = FetchType.LAZY)
     private Set<RubriqueEvaluation> rubriqueEvaluations = new LinkedHashSet<>();
 
 }

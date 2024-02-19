@@ -1,28 +1,51 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 
 
+import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationDetailsDTO;
+import fr.ubo.dosi.projectagile.cscievaebackend.DTO.RubriqueDTO;
+import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Authentification;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Enseignant;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueEvaluation;
+import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.AuthentificationServiceImpl;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.EvaluationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
-@RequestMapping("/api/v1/admin/evaluation")
-@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/api/v1/evaluation")
+//@CrossOrigin(origins = "http://localhost:3000")
 public class EvaluationController {
 
     @Autowired
     private EvaluationServiceImpl es;
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @Autowired
+    private AuthentificationServiceImpl as;
+
+    @PreAuthorize("hasAuthority('ENS')")
     @GetMapping("getAll")
-    public List<Evaluation> getAll(){
-        return es.getAll();
+    public ApiResponse<Set<Evaluation>> getAll(@AuthenticationPrincipal UserDetails currentUser){
+
+        return ApiResponse.ok(as.getAuhtentification(currentUser.getUsername()).getNoEnseignant().getEvaluations());
+
+    }
+
+    @PreAuthorize("hasAuthority('ENS')")
+    @GetMapping("details/{Id}")
+    public ApiResponse<EvaluationDetailsDTO> getDetails (@PathVariable Long Id, @AuthenticationPrincipal UserDetails currentUser ){
+    // Todo: On doit s'assurer que l'évaluation appartient à l'enseignant connecté
+        Evaluation evaluation= es.getEvaluationById(Id);
+        EvaluationDetailsDTO evaluationDetails = new EvaluationDetailsDTO();
+        evaluationDetails.setEtat(evaluation.getEtat());
+        evaluationDetails.setDesignation(evaluation.getDesignation());
+        return ApiResponse.ok(evaluationDetails);
     }
 }
