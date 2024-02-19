@@ -9,6 +9,8 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -16,6 +18,15 @@ import java.time.LocalDate;
 @Table(name = "EVALUATION")
 public class Evaluation {
     @Id
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "EVE_SEQ"
+    )
+    @SequenceGenerator(
+            name = "EVE_SEQ",
+            sequenceName = "EVE_SEQ",
+            allocationSize = 1
+    )
     @Column(name = "ID_EVALUATION", nullable = false)
     private Integer id;
 
@@ -55,7 +66,7 @@ public class Evaluation {
     @Size(max = 3)
     @NotNull
     @Column(name = "ETAT", nullable = false, length = 3)
-    private Character etat;
+    private String etat;
 
     @Size(max = 64)
     @Column(name = "PERIODE", length = 64)
@@ -68,5 +79,14 @@ public class Evaluation {
     @NotNull
     @Column(name = "FIN_REPONSE", nullable = false)
     private LocalDate finReponse;
+
+    @OneToMany(mappedBy = "idEvaluation")
+    private Set<Droit> droits = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idEvaluation")
+    private Set<ReponseEvaluation> reponseEvaluations = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idEvaluation")
+    private Set<RubriqueEvaluation> rubriqueEvaluations = new LinkedHashSet<>();
 
 }

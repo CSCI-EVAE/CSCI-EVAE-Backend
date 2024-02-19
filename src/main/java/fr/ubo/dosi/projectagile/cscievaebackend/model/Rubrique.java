@@ -14,12 +14,21 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name = "RUBRIQUE")
 public class Rubrique {
     @Id
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "RUB_SEQ"
+    )
+    @SequenceGenerator(
+            name = "RUB_SEQ",
+            sequenceName = "RUB_SEQ",
+            allocationSize = 1
+    )
     @Column(name = "ID_RUBRIQUE", nullable = false)
     private Integer id;
 
     @Size(max = 10)
     @NotNull
-    @Column(name = "\"TYPE\"", nullable = false, length = 10)
+    @Column(name = "TYPE", nullable = false, length = 10)
     private String type;
 
     @ManyToOne(fetch = FetchType.LAZY)
