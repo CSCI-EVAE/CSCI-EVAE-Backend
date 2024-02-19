@@ -30,7 +30,8 @@ public class QualificatifServiceImpl implements QualificatifService {
 
     @Override
     public Optional<Qualificatif> getQualificatifById(Long id) throws ResourceNotFoundException {
-        return qualificatifRepository.findById(id);
+        return Optional.ofNullable(qualificatifRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("qualificatif non trouver de cet id: ")));
+        //        return rubriqueRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Rubrique non trouver de cet id: "+ id));
     }
 
     @Override
