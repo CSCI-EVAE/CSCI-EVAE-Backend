@@ -1,13 +1,10 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 
 
-import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationDetailsDTO;
-import fr.ubo.dosi.projectagile.cscievaebackend.DTO.RubriqueDTO;
+import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Authentification;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Enseignant;
+import fr.ubo.dosi.projectagile.cscievaebackend.mappers.EvaluationMapper;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueEvaluation;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.AuthentificationServiceImpl;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.EvaluationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +13,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -29,6 +25,8 @@ public class EvaluationController {
 
     @Autowired
     private AuthentificationServiceImpl as;
+    @Autowired
+    private EvaluationMapper evaluationMapper;
 
     @PreAuthorize("hasAuthority('ENS')")
     @GetMapping("getAll")
@@ -40,12 +38,9 @@ public class EvaluationController {
 
     @PreAuthorize("hasAuthority('ENS')")
     @GetMapping("details/{Id}")
-    public ApiResponse<EvaluationDetailsDTO> getDetails (@PathVariable Long Id, @AuthenticationPrincipal UserDetails currentUser ){
+    public ApiResponse<EvaluationDTO> getDetails (@PathVariable Long Id, @AuthenticationPrincipal UserDetails currentUser ){
     // Todo: On doit s'assurer que l'évaluation appartient à l'enseignant connecté
-        Evaluation evaluation= es.getEvaluationById(Id);
-        EvaluationDetailsDTO evaluationDetails = new EvaluationDetailsDTO();
-        evaluationDetails.setEtat(evaluation.getEtat());
-        evaluationDetails.setDesignation(evaluation.getDesignation());
+        EvaluationDTO evaluationDetails = evaluationMapper.evaluationToEvaluationDTO(es.getEvaluationById(Id));
         return ApiResponse.ok(evaluationDetails);
     }
 }
