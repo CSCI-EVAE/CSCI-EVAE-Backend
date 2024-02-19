@@ -48,7 +48,7 @@ public class RubriqueEvaluation {
     @Column(name = "DESIGNATION", length = 64)
     private String designation;
 
-    @OneToMany(mappedBy = "idRubriqueEvaluation")
+    @OneToMany(mappedBy = "idRubriqueEvaluation",fetch = FetchType.LAZY)
     private Set<QuestionEvaluation> questionEvaluations = new LinkedHashSet<>();
 
 }

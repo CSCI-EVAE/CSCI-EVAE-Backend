@@ -28,8 +28,7 @@ public class Enseignant {
     private Short id;
 
     @Size(max = 5)
-    @NotNull
-    @Column(name = "\"TYPE\"", nullable = false, length = 5)
+    @Column(name = "TYPE", nullable = false, length = 5)
     private String type;
 
     @Size(max = 1)
@@ -90,5 +89,23 @@ public class Enseignant {
 
     @OneToMany(mappedBy = "noEnseignant")
     private Set<UniteEnseignement> uniteEnseignements = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "noEnseignant")
+    private Set<Authentification> authentifications = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "noEnseignant")
+    private Set<Droit> droits = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "noEnseignant")
+    private Set<Evaluation> evaluations = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "noEnseignant")
+    private Set<Promotion> promotions = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "noEnseignant")
+    private Set<Question> questions = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "noEnseignant")
+    private Set<Rubrique> rubriques = new LinkedHashSet<>();
 
 }
