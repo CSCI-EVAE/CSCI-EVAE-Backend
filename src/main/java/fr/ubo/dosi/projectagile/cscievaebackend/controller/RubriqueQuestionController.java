@@ -1,4 +1,6 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.controller;
+
+import fr.ubo.dosi.projectagile.cscievaebackend.DTO.IncomingRubriqueQuestionDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.RubriqueQuestionDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.RubriqueQuestionsDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueQuestion;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -38,12 +41,23 @@ public class RubriqueQuestionController {
         }
     }
 
-    @PostMapping("/add")
+    /**
+     * This method is used to add a new RubriqueQuestion.
+     * It is mapped to the "/add" endpoint and the HTTP POST method.
+     *
+     * @param rubriqueQuestionAddDTO A DTO object which contains the data of the RubriqueQuestion to be added.
+     *                               This object is automatically deserialized from the JSON body of the HTTP request.
+     * @return ResponseEntity<ApiResponse < RubriqueQuestionDTO>> Returns a ResponseEntity which contains an ApiResponse.
+     * The ApiResponse contains the created RubriqueQuestionDTO and the HTTP status.
+     * If the RubriqueQuestion is successfully created, the HTTP status is 201 (CREATED).
+     * The created RubriqueQuestionDTO is the data of the newly created RubriqueQuestion.
+     */
+  /*  @PostMapping("/add")
     public ResponseEntity<ApiResponse<RubriqueQuestionDTO>> addRubriqueQuestion(@RequestBody RubriqueQuestionDTO rubriqueQuestionAddDTO) {
         RubriqueQuestionDTO createdRubriqueQuestion = rubriqueQuestionService.addRubriqueQuestion(rubriqueQuestionAddDTO);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.ok(createdRubriqueQuestion));
-    }
+    }*/
 
     @DeleteMapping("/delete")
     public ResponseEntity<ApiResponse<Void>> deleteRubriqueQuestion(@RequestBody RubriqueQuestion rubriqueQuestion) {
@@ -53,6 +67,17 @@ public class RubriqueQuestionController {
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(ApiResponse.error("Error deleting Rubrique Question", null));
+        }
+    }
+
+    @PostMapping("/process")
+    public ApiResponse<String> processRubriqueQuestions(@RequestBody List<IncomingRubriqueQuestionDTO> incomingData) {
+        String result = rubriqueQuestionService.processAndStore(incomingData);
+
+        if (result.equals("tout les données sont bien enregistrées")) {
+            return ApiResponse.ok(result);
+        } else {
+            return ApiResponse.error(result, null);
         }
     }
 }

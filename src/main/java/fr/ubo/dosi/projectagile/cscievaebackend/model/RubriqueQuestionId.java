@@ -34,6 +34,11 @@ public class RubriqueQuestionId implements Serializable {
 
     }
 
+    public RubriqueQuestionId(Integer id, Integer id1) {
+        this.idQuestion = id;
+        this.idRubrique = id1;
+    }
+
 
     @Override
     public boolean equals(Object o) {

@@ -56,15 +56,6 @@ public class RubriqueQuestionControllerTest {
         verify(rubriqueQuestionService, times(1)).getRubriqueQuestionById(rubriqueQuestionId);
     }
 
-    @Test
-    public void testAddRubriqueQuestion() {
-        RubriqueQuestionDTO rubriqueQuestionToAdd = new RubriqueQuestionDTO();
-        when(rubriqueQuestionService.addRubriqueQuestion(any(RubriqueQuestionDTO.class))).thenReturn(rubriqueQuestionToAdd);
-        ResponseEntity<ApiResponse<RubriqueQuestionDTO>> response = rubriqueQuestionController.addRubriqueQuestion(rubriqueQuestionToAdd);
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(ApiResponse.ok(rubriqueQuestionToAdd), response.getBody());
-        verify(rubriqueQuestionService, times(1)).addRubriqueQuestion(rubriqueQuestionToAdd);
-    }
 
     @Test
     public void testDeleteRubriqueQuestion() {

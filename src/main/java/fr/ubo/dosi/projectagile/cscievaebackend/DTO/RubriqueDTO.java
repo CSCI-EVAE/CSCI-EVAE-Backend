@@ -11,7 +11,6 @@ import java.util.Set;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class RubriqueDTO {
     private Integer id;
     @NotNull
@@ -20,8 +19,5 @@ public class RubriqueDTO {
     @NotNull
     @Size(max = 32)
     private String designation;
-    private Short ordre;
-    private Set<QuestionDTO> questionEvaluations = new LinkedHashSet<>();
-
-
+    private Long ordre;
 }
