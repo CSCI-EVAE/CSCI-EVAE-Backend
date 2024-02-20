@@ -1,11 +1,16 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.DTO;
 
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Qualificatif;
-import lombok.Data;
+import lombok.*;
 
 @Data
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class QuestionDTO {
-    private Integer id;
+    private QualificatifDTO idQualificatif;
     private String type;
-    private Qualificatif idQualificatif;
+    private Integer id;
+    private String intitule;
 }
