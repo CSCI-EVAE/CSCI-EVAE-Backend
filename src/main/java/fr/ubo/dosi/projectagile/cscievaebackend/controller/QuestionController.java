@@ -37,7 +37,7 @@ public class QuestionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Question>> getQuestionById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Question>> getQuestionById(@PathVariable Integer id) {
         try {
             Question question = questionService.getQuestionById(id);
             return ResponseEntity.ok(ApiResponse.ok(question));
@@ -48,7 +48,7 @@ public class QuestionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Question>> updateQuestion(@PathVariable Long id, @RequestBody Question question) {
+    public ResponseEntity<ApiResponse<Question>> updateQuestion(@PathVariable Integer id, @RequestBody Question question) {
         try {
             Question updatedQuestion = questionService.updateQuestion(id, question);
             return ResponseEntity.ok(ApiResponse.ok(updatedQuestion));
@@ -61,7 +61,7 @@ public class QuestionController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteQuestion(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>> deleteQuestion(@PathVariable Integer id) {
         try {
            questionService.deleteQuestion(id);
            return ResponseEntity.ok(ApiResponse.ok(null));

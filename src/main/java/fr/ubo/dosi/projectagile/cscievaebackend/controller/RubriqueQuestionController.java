@@ -28,7 +28,7 @@ public class RubriqueQuestionController {
     }
 
     @GetMapping("/{idQuestion}/{idRubrique}")
-    public ResponseEntity<ApiResponse<RubriqueQuestionDTO>> getRubriqueQuestionById(@PathVariable Long idQuestion, @PathVariable Long idRubrique) {
+    public ResponseEntity<ApiResponse<RubriqueQuestionDTO>> getRubriqueQuestionById(@PathVariable Integer idQuestion, @PathVariable Integer idRubrique) {
         RubriqueQuestionId rubriqueQuestionId = new RubriqueQuestionId(idQuestion, idRubrique);
         RubriqueQuestionDTO rubriqueQuestionDTO = rubriqueQuestionService.getRubriqueQuestionById(rubriqueQuestionId);
         if (rubriqueQuestionDTO != null) {

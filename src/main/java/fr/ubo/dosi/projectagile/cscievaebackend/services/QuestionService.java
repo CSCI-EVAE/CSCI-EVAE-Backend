@@ -8,9 +8,9 @@ import java.util.List;
 public interface QuestionService {
     public Question createQuestion(Question question);
     public List<Question> getAllQuestions();
-    public Question getQuestionById(Long id)throws ResourceNotFoundException;
-    public Question updateQuestion(Long id, Question question) throws ResourceNotFoundException;
-    public void deleteQuestion(Long id) throws ResourceNotFoundException ;
+    public Question getQuestionById(Integer id)throws ResourceNotFoundException;
+    public Question updateQuestion(Integer id, Question question) throws ResourceNotFoundException;
+    public void deleteQuestion(Integer id) throws ResourceNotFoundException ;
     public List<Question> findQuestionsByQualificatifId(Qualificatif idQualificatif);
 
     }

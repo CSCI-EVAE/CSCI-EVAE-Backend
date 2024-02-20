@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +38,8 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
     // auestion repository
     @Autowired
     private QuestionRepository questionRepository;
+
+    Logger logger = Logger.getLogger(RubriqueQuestionServiceImpl.class.getName());
 
 
     @Override
@@ -112,15 +115,21 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
                 Rubrique rubrique = rubriqueRepository.findById(dto.getIdRubrique())
                         .orElseThrow(() -> new EntityNotFoundException("Rubrique not found: " + dto.getIdRubrique()));
 
-                for (Long questionId : dto.getQuestionIds()) {
+                for (Integer questionId : dto.getQuestionIds()) {
                     Question question = questionRepository.findById(questionId)
                             .orElseThrow(() -> new EntityNotFoundException("Question not found: " + questionId));
-
-                    if (rubriqueQuestionRepository.existsByIdRubriqueAndIdQuestion(rubrique, question)==0) {
+                    logger.info("RubriqueQuestion added: Rubrique: "+rubrique+", Question: "+question);
+                    if (rubriqueQuestionRepository.existsByIdRubriqueAndIdQuestion(rubrique.getId(), question.getId()) == 0) {
+                        // logeer info
+                        logger.info("RubriqueQuestion added: Rubrique: "+rubrique+", Question: "+question);
                         RubriqueQuestion rubriqueQuestion = new RubriqueQuestion();
+                        rubriqueQuestion.setId(new RubriqueQuestionId(rubrique.getId(), question.getId()));
                         rubriqueQuestion.setIdRubrique(rubrique);
+                        logger.info("RubriqueQuestion added: Rubrique: "+rubriqueQuestion.getIdRubrique());
                         rubriqueQuestion.setIdQuestion(question);
+                        logger.info("RubriqueQuestion added: Question: "+rubriqueQuestion.getIdQuestion());
                         rubriqueQuestion.setOrdre(dto.getOrdre());
+                        logger.info("RubriqueQuestion added: Ordre: "+rubriqueQuestion.getOrdre());
                         rubriqueQuestionRepository.save(rubriqueQuestion);
                         resultMessage.append("RubriqueQuestion added: ")
                                 .append("Rubrique: ").append(rubrique.getId())
@@ -139,14 +148,9 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
         }
 
         if (resultMessage.isEmpty()) {
-            // If no errors were encountered
             return "All data processed successfully.";
         } else {
-            // If there were errors
             return resultMessage.toString();
         }
     }
-
-
-
 }
