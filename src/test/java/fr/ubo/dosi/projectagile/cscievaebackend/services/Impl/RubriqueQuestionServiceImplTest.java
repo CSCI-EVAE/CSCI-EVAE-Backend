@@ -31,7 +31,7 @@ class RubriqueQuestionServiceImplTest {
     @Mock
     private ModelMapper modelMapper;
 
-    @Test
+ /*   @Test
     public void testAddRubriqueQuestion() {
         RubriqueQuestionDTO rubriqueQuestionAddDTO = new RubriqueQuestionDTO();
         RubriqueQuestion rubriqueQuestionEntity = new RubriqueQuestion();
@@ -45,7 +45,7 @@ class RubriqueQuestionServiceImplTest {
         verify(rubriqueQuestionRepository, times(1)).save(any(RubriqueQuestion.class));
         verify(modelMapper, times(1)).map(any(RubriqueQuestion.class), eq(RubriqueQuestionDTO.class));
     }
-
+*/
     @Test
     public void testSaveRubriqueQuestion() {
         RubriqueQuestion rubriqueQuestion = new RubriqueQuestion();

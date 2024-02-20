@@ -1,5 +1,7 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.DTO;
 
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Question;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Rubrique;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -12,11 +14,9 @@ import java.math.BigDecimal;
 @Builder
 public class RubriqueQuestionDTO {
     @NotNull
-    private Long idQuestion;
+    private RubriqueDTO idRubrique;
     @NotNull
-    private Long idRubrique;
-    @NotNull
-    private String designation;
+    private QuestionDTO idQuestion ;
     @NotNull
     private Long ordre;
 }
