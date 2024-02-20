@@ -10,6 +10,8 @@ import java.math.BigDecimal;
 @Builder
 public class RubriqueQuestionDTO {
     private Long idQuestion;
-    private Long idRubrique;
+    private RubriqueDTO idRubrique;
+    private String designation;
+
     private BigDecimal ordre;
 }
