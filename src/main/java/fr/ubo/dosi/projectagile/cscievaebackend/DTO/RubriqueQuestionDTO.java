@@ -6,5 +6,4 @@ public class RubriqueQuestionDTO {
     private Long ordre;
     private RubriqueDTO idRubrique;
     private QuestionDTO idQuestion;
-
 }

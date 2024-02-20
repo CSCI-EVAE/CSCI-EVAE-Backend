@@ -1,16 +1,18 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.services.Impl;
 
-import fr.ubo.dosi.projectagile.cscievaebackend.DTO.QuestionDTO;
-import fr.ubo.dosi.projectagile.cscievaebackend.DTO.QuestionOrdreDTO;
-import fr.ubo.dosi.projectagile.cscievaebackend.DTO.RubriqueQuestionDTO;
-import fr.ubo.dosi.projectagile.cscievaebackend.DTO.RubriqueQuestionsDTO;
+import fr.ubo.dosi.projectagile.cscievaebackend.DTO.*;
 import fr.ubo.dosi.projectagile.cscievaebackend.mappers.QuestionMapper;
 import fr.ubo.dosi.projectagile.cscievaebackend.mappers.RubriqueMapper;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Question;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Rubrique;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueQuestion;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueQuestionId;
+import fr.ubo.dosi.projectagile.cscievaebackend.repository.QuestionRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.RubriqueQuestionRepository;
+import fr.ubo.dosi.projectagile.cscievaebackend.repository.RubriqueRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.RubriqueQuestionService;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,13 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
     private RubriqueMapper rubriqueMapper;
     @Autowired
     private QuestionMapper questionMapper;
+    @Autowired
+    private RubriqueRepository rubriqueRepository;
+    // auestion repository
+    @Autowired
+    private QuestionRepository questionRepository;
+
+
     @Override
     public RubriqueQuestionDTO addRubriqueQuestion(RubriqueQuestionDTO rubriqueQuestionAddDTO) {
         RubriqueQuestion rubriqueQuestion = convertToEntity(rubriqueQuestionAddDTO);
@@ -93,5 +102,51 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
          Optional<RubriqueQuestion> rubriqueQuestionOptional = rubriqueQuestionRepository.findById(rubriqueQuestionId);
         return rubriqueQuestionOptional.map(this::convertToDto).orElse(null);
     }
+    @Override
+    @Transactional
+    public String processAndStore(List<IncomingRubriqueQuestionDTO> incomingData) {
+        StringBuilder resultMessage = new StringBuilder();
+
+        for (IncomingRubriqueQuestionDTO dto : incomingData) {
+            try {
+                Rubrique rubrique = rubriqueRepository.findById(dto.getIdRubrique())
+                        .orElseThrow(() -> new EntityNotFoundException("Rubrique not found: " + dto.getIdRubrique()));
+
+                for (Long questionId : dto.getQuestionIds()) {
+                    Question question = questionRepository.findById(questionId)
+                            .orElseThrow(() -> new EntityNotFoundException("Question not found: " + questionId));
+
+                    if (rubriqueQuestionRepository.existsByIdRubriqueAndIdQuestion(rubrique, question)==0) {
+                        RubriqueQuestion rubriqueQuestion = new RubriqueQuestion();
+                        rubriqueQuestion.setIdRubrique(rubrique);
+                        rubriqueQuestion.setIdQuestion(question);
+                        rubriqueQuestion.setOrdre(dto.getOrdre());
+                        rubriqueQuestionRepository.save(rubriqueQuestion);
+                        resultMessage.append("RubriqueQuestion added: ")
+                                .append("Rubrique: ").append(rubrique.getId())
+                                .append(", Question: ").append(question.getId())
+                                .append("\n");
+                    } else {
+                        resultMessage.append("RubriqueQuestion already exists: ")
+                                .append("Rubrique: ").append(rubrique.getId())
+                                .append(", Question: ").append(question.getId())
+                                .append("\n");
+                    }
+                }
+            } catch (EntityNotFoundException e) {
+                resultMessage.append(e.getMessage()).append("\n");
+            }
+        }
+
+        if (resultMessage.isEmpty()) {
+            // If no errors were encountered
+            return "All data processed successfully.";
+        } else {
+            // If there were errors
+            return resultMessage.toString();
+        }
+    }
+
+
 
 }

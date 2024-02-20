@@ -1,4 +1,5 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.controller;
+import fr.ubo.dosi.projectagile.cscievaebackend.DTO.IncomingRubriqueQuestionDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.RubriqueQuestionDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.RubriqueQuestionsDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueQuestion;
@@ -53,6 +54,17 @@ public class RubriqueQuestionController {
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(ApiResponse.error("Error deleting Rubrique Question", null));
+        }
+    }
+
+    @PostMapping("/process")
+    public  ApiResponse<String> processRubriqueQuestions(@RequestBody List<IncomingRubriqueQuestionDTO> incomingData) {
+        String result = rubriqueQuestionService.processAndStore(incomingData);
+
+        if (result.equals("tout les données sont bien enregistrées")) {
+            return ApiResponse.ok(result);
+        } else {
+            return ApiResponse.error(result, null);
         }
     }
 }

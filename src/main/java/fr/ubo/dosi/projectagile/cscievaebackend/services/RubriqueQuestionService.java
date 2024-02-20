@@ -1,5 +1,6 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.services;
 
+import fr.ubo.dosi.projectagile.cscievaebackend.DTO.IncomingRubriqueQuestionDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.RubriqueQuestionDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.RubriqueQuestionsDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueQuestion;
@@ -15,5 +16,7 @@ public interface RubriqueQuestionService {
     public void deleteRubriqueQuestion(RubriqueQuestion rubriqueQuestion);
     public RubriqueQuestionDTO getRubriqueQuestionById(RubriqueQuestionId rubriqueQuestionId);
     public RubriqueQuestionDTO addRubriqueQuestion(RubriqueQuestionDTO rubriqueQuestionAddDTO);
+    public String processAndStore(List<IncomingRubriqueQuestionDTO> incomingData);
+
 
 }
