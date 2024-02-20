@@ -22,4 +22,9 @@ public class ApiResponse<T> {
     public static <T> ApiResponse<T> error(String message, T data) {
         return new ApiResponse<>(false, message, data);
     }
+
+
+    public int getStatus() {
+        return success ? 200 : 500;
+    }
 }
