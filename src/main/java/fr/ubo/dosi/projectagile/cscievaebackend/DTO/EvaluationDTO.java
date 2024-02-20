@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 public class EvaluationDTO  {
     private Integer id;
-
+    private String etat;
     private String designation;
     private LocalDate debutReponse;
     private LocalDate finReponse;
