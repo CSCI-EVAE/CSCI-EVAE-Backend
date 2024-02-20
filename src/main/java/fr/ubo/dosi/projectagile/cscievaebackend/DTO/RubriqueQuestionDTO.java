@@ -12,6 +12,7 @@ public class RubriqueQuestionDTO {
     @NotNull
     private QuestionDTO idQuestion;
     private String designation;
+    private Long ordre;
     @NotNull
     private Long idRubrique;
 
