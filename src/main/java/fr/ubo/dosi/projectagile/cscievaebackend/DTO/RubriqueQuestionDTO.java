@@ -18,6 +18,5 @@ public class RubriqueQuestionDTO {
     @NotNull
     private String designation;
     @NotNull
-    @DecimalMin(value = "0", inclusive = false)
-    private BigDecimal ordre;
+    private Long ordre;
 }
