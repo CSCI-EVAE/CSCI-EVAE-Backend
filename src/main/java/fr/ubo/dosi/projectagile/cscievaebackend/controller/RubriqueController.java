@@ -16,8 +16,9 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/v1/rubrique")
-@PreAuthorize("hasAuthority('ADMIN')")
+@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/api/v1/admin/rubrique")
+
 
 public class RubriqueController {
 

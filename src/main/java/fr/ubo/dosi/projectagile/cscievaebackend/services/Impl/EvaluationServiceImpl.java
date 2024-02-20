@@ -21,4 +21,11 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
     }
 
+
+
+    @Override
+    public Evaluation getEvaluationById(Long id) {
+        return er.findById(id).get();
+    }
+
 }
