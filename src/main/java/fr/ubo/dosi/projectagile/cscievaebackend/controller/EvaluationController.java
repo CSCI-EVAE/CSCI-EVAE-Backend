@@ -39,7 +39,6 @@ public class EvaluationController {
     @PreAuthorize("hasAuthority('ENS')")
     @GetMapping("details/{Id}")
     public ApiResponse<EvaluationDTO> getDetails (@PathVariable Long Id, @AuthenticationPrincipal UserDetails currentUser ){
-    // Todo: On doit s'assurer que l'évaluation appartient à l'enseignant connecté
         EvaluationDTO evaluationDetails = evaluationMapper.evaluationToEvaluationDTO(es.getEvaluationById(Id));
         return ApiResponse.ok(evaluationDetails);
     }

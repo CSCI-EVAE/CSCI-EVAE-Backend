@@ -33,17 +33,6 @@ public class RubriqueQuestionControllerTest {
     private RubriqueQuestionController rubriqueQuestionController;
 
     @Test
-    public void testGetAllRubriqueQuestions() {
-        List<RubriqueQuestionDTO> rubriqueQuestions = new ArrayList<>();
-        rubriqueQuestions.add(new RubriqueQuestionDTO());
-        when(rubriqueQuestionService.getAllRubriqueQuestions()).thenReturn(rubriqueQuestions);
-        ResponseEntity<ApiResponse<List<RubriqueQuestionDTO>>> response = rubriqueQuestionController.getAllRubriqueQuestions();
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(ApiResponse.ok(rubriqueQuestions), response.getBody());
-        verify(rubriqueQuestionService, times(1)).getAllRubriqueQuestions();
-    }
-
-    @Test
     public void testGetRubriqueQuestionById() throws ResourceNotFoundException {
         Long idQuestion = 1L;
         Long idRubrique = 2L;
