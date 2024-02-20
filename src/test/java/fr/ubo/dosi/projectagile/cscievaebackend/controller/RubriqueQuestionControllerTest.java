@@ -47,6 +47,7 @@ public class RubriqueQuestionControllerTest {
     public void testGetRubriqueQuestionById() throws ResourceNotFoundException {
         Integer idQuestion = 1;
         Integer idRubrique = 2;
+
         RubriqueQuestionId rubriqueQuestionId = new RubriqueQuestionId(idQuestion, idRubrique);
         RubriqueQuestionDTO rubriqueQuestionDTO = new RubriqueQuestionDTO();
         when(rubriqueQuestionService.getRubriqueQuestionById(rubriqueQuestionId)).thenReturn(rubriqueQuestionDTO);
@@ -59,6 +60,7 @@ public class RubriqueQuestionControllerTest {
     public void testGetRubriqueQuestionById_NotFound() throws ResourceNotFoundException {
         Integer idQuestion = 1;
         Integer idRubrique = 2;
+
         RubriqueQuestionId rubriqueQuestionId = new RubriqueQuestionId(idQuestion, idRubrique);
         when(rubriqueQuestionService.getRubriqueQuestionById(rubriqueQuestionId)).thenReturn(null);
         ResponseEntity<ApiResponse<RubriqueQuestionDTO>> response = rubriqueQuestionController.getRubriqueQuestionById(idQuestion, idRubrique);

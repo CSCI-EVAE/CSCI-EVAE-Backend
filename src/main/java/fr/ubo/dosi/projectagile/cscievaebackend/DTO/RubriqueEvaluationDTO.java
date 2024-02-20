@@ -19,6 +19,7 @@ public class RubriqueEvaluationDTO {
     private String designation;
     @NotNull
     private RubriqueDTO idRubrique;
+
     private Long ordre;
 
     private List<QuestionEvaluationDTO> questionEvaluations;

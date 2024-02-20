@@ -51,17 +51,20 @@ public class QuestionControllerTest {
           Integer id = 1;
           Question question = new Question();
           question.setId(id);
+
           when(questionService.getQuestionById(id)).thenReturn(question);
           ResponseEntity<ApiResponse<Question>> response = questionController.getQuestionById(id);
           assertEquals(HttpStatus.OK, response.getStatusCode());
           assertEquals(ApiResponse.ok(question), response.getBody());
           verify(questionService, times(1)).getQuestionById(id);
+
       }
 
 
     @Test
     public void testGetQuestionById_NotFound() throws ResourceNotFoundException {
         Integer id = 1;
+
         when(questionService.getQuestionById(id)).thenThrow(ResourceNotFoundException.class);
         ResponseEntity<ApiResponse<Question>> response = questionController.getQuestionById(id);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -72,6 +75,7 @@ public class QuestionControllerTest {
     @Test
     public void testUpdateQuestion() throws ResourceNotFoundException {
         Integer id = 1;
+
         Question questionToUpdate = new Question();
         when(questionService.updateQuestion(eq(id), any(Question.class))).thenReturn(questionToUpdate);
         ResponseEntity<ApiResponse<Question>> response = questionController.updateQuestion(id, questionToUpdate);
@@ -83,6 +87,7 @@ public class QuestionControllerTest {
     @Test
     public void testUpdateQuestion_NotFound() throws ResourceNotFoundException {
         Integer id = 1;
+
         Question questionToUpdate = new Question();
         when(questionService.updateQuestion(eq(id), any(Question.class))).thenThrow(ResourceNotFoundException.class);
         ResponseEntity<ApiResponse<Question>> response = questionController.updateQuestion(id, questionToUpdate);
@@ -93,7 +98,9 @@ public class QuestionControllerTest {
 
     @Test
     public void testDeleteQuestion() throws ResourceNotFoundException {
+
         Integer id = 1;
+
         ResponseEntity<ApiResponse<Void>> response = questionController.deleteQuestion(id);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(ApiResponse.ok(null), response.getBody());
@@ -102,7 +109,9 @@ public class QuestionControllerTest {
 
     @Test
     public void testDeleteQuestion_NotFound() throws ResourceNotFoundException {
+
         Integer id = 1;
+
         doThrow(ResourceNotFoundException.class).when(questionService).deleteQuestion(id);
         ResponseEntity<ApiResponse<Void>> response = questionController.deleteQuestion(id);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());

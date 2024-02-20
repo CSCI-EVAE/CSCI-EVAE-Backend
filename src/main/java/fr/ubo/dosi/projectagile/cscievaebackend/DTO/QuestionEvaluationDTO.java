@@ -1,5 +1,8 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.DTO;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Question;
 import lombok.*;
 import jakarta.validation.constraints.NotNull;
@@ -18,6 +21,5 @@ public class QuestionEvaluationDTO {
     private String intitule;
     @NotNull
     private Question idQuestion;
-
     private Short ordre;
 }
