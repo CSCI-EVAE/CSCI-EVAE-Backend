@@ -1,10 +1,9 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.DTO;
-import lombok.*;
+
+import lombok.Data;
 
 @Data
-public class RubriqueQuestionDTO {
+public class QuestionOrdreDTO {
     private Long ordre;
-    private RubriqueDTO idRubrique;
     private QuestionDTO idQuestion;
-
 }
