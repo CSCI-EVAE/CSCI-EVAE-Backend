@@ -1,13 +1,14 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.mappers;
 
-
+import fr.ubo.dosi.projectagile.cscievaebackend.DTO.QuestionEvaluationDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.RubriqueDTO;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.QuestionEvaluation;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Rubrique;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface RubriqueMapper {
+public interface RubriqueMapper
+{
     RubriqueDTO rubriqueToRubriqueDTO(Rubrique rubrique);
-    Rubrique rubriqueDTOToRubrique(RubriqueDTO rubriqueDTO);
 
 }

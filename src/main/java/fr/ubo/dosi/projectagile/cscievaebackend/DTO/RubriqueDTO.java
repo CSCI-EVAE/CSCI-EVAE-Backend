@@ -1,14 +1,22 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.DTO;
 
 import fr.ubo.dosi.projectagile.cscievaebackend.model.QuestionEvaluation;
-import lombok.Data;
+import lombok.*;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 @Data
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class RubriqueDTO {
-    private Long idRubrique;
+    private Integer id;
     private String type;
     private String designation;
-    private Long ordre;
+    private Short ordre;
+
+    private Set<QuestionDTO> questionEvaluations = new LinkedHashSet<>();
+
+
 }
