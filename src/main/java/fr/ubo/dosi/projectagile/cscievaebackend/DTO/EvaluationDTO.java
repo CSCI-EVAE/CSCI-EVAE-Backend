@@ -18,6 +18,7 @@ public class EvaluationDTO  {
     private Integer id;
     @NotNull
     @Size(max = 16)
+    private String etat;
     private String designation;
     @NotNull
     private LocalDate debutReponse;
