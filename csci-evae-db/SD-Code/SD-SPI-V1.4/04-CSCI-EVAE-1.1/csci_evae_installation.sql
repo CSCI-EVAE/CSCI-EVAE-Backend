@@ -3,63 +3,63 @@
 -- Ph. Saliou - 17 janvier 2014
 --	
 
--- Crï¿½ation des ï¿½lï¿½ments DDL :  tables, vues, index, ...
-@@01-CREATION/01-DDL/csci_evae_tab
-@@01-CREATION/01-DDL/csci_evae_vw
-@@01-CREATION/01-DDL/csci_evae_pk
-@@01-CREATION/01-DDL/csci_evae_uk
-@@01-CREATION/01-DDL/csci_evae_fk
-@@01-CREATION/01-DDL/csci_evae_ck
-@@01-CREATION/01-DDL/csci_evae_ind
-@@01-CREATION/01-DDL/csci_evae_seq
-@@01-CREATION/01-DDL/csci_evae_avt
+-- Création des éléments DDL :  tables, vues, index, ...
+@@01-CREATION\01-DDL\csci_evae_tab
+@@01-CREATION\01-DDL\csci_evae_vw
+@@01-CREATION\01-DDL\csci_evae_pk
+@@01-CREATION\01-DDL\csci_evae_uk
+@@01-CREATION\01-DDL\csci_evae_fk
+@@01-CREATION\01-DDL\csci_evae_ck
+@@01-CREATION\01-DDL\csci_evae_ind
+@@01-CREATION\01-DDL\csci_evae_seq
+@@01-CREATION\01-DDL\csci_evae_avt
 
--- Crï¿½ation de l'API de la table EVALUATION
-@@01-CREATION/02-API/EVE.PKS
-@@01-CREATION/02-API/EVE.PKB
-@@01-CREATION/02-API/EVE.TRG
+-- Création de l'API de la table EVALUATION
+@@01-CREATION\02-API\EVE.pks
+@@01-CREATION\02-API\EVE.pkb
+@@01-CREATION\02-API\EVE.trg
 
--- Crï¿½ation de l'API de la table QUALIFICATIF
-@@01-CREATION/02-API/QUA.PKS
-@@01-CREATION/02-API/QUA.PKB
-@@01-CREATION/02-API/QUA.TRG
+-- Création de l'API de la table QUALIFICATIF
+@@01-CREATION\02-API\QUA.pks
+@@01-CREATION\02-API\QUA.pkb
+@@01-CREATION\02-API\QUA.trg
 
--- Crï¿½ation de l'API de la table QUESTION
-@@01-CREATION/02-API/QUE.PKS
-@@01-CREATION/02-API/QUE.PKB
-@@01-CREATION/02-API/QUE.TRG
+-- Création de l'API de la table QUESTION
+@@01-CREATION\02-API\QUE.pks
+@@01-CREATION\02-API\QUE.pkb
+@@01-CREATION\02-API\QUE.trg
 
--- Crï¿½ation de l'API de la table QUESTION_EVALUATION
-@@01-CREATION/02-API/QEV.PKS
-@@01-CREATION/02-API/QEV.PKB
-@@01-CREATION/02-API/QEV.TRG
+-- Création de l'API de la table QUESTION_EVALUATION
+@@01-CREATION\02-API\QEV.pks
+@@01-CREATION\02-API\QEV.pkb
+@@01-CREATION\02-API\QEV.trg
 
--- Crï¿½ation de l'API de la table REPONSE_EVALUATION
-@@01-CREATION/02-API/RPE.PKS
-@@01-CREATION/02-API/RPE.PKB
-@@01-CREATION/02-API/RPE.TRG
+-- Création de l'API de la table REPONSE_EVALUATION
+@@01-CREATION\02-API\RPE.pks
+@@01-CREATION\02-API\RPE.pkb
+@@01-CREATION\02-API\RPE.trg
 
--- Crï¿½ation de l'API de la table RUBRIQUE
-@@01-CREATION/02-API/RUB.PKS
-@@01-CREATION/02-API/RUB.PKB
-@@01-CREATION/02-API/RUB.TRG
+-- Création de l'API de la table RUBRIQUE
+@@01-CREATION\02-API\RUB.pks
+@@01-CREATION\02-API\RUB.pkb
+@@01-CREATION\02-API\RUB.trg
 
--- Crï¿½ation de l'API de la table RUBRIQUE_EVALUATION
-@@01-CREATION/02-API/REV.PKS
-@@01-CREATION/02-API/REV.PKB
-@@01-CREATION/02-API/REV.TRG
+-- Création de l'API de la table RUBRIQUE_EVALUATION
+@@01-CREATION\02-API\REV.pks
+@@01-CREATION\02-API\REV.pkb
+@@01-CREATION\02-API\REV.trg
 
--- Crï¿½ation du jeu d'essai
-@@02-JEU-ESSAI/QUALIFICATIF
-@@02-JEU-ESSAI/QUESTION
-@@02-JEU-ESSAI/RUBRIQUE
-@@02-JEU-ESSAI/RUBRIQUE_QUESTION
-@@02-JEU-ESSAI/EVALUATION
-@@02-JEU-ESSAI/DROIT
-@@02-JEU-ESSAI/RUBRIQUE_EVALUATION
-@@02-JEU-ESSAI/QUESTION_EVALUATION
-@@02-JEU-ESSAI/REPONSE_EVALUATION
-@@02-JEU-ESSAI/REPONSE_QUESTION
+-- Création du jeu d'essai
+@@02-JEU-ESSAI\qualificatif
+@@02-JEU-ESSAI\question
+@@02-JEU-ESSAI\rubrique
+@@02-JEU-ESSAI\rubrique_question
+@@02-JEU-ESSAI\evaluation
+@@02-JEU-ESSAI\droit
+@@02-JEU-ESSAI\rubrique_evaluation
+@@02-JEU-ESSAI\question_evaluation
+@@02-JEU-ESSAI\reponse_evaluation
+@@02-JEU-ESSAI\reponse_question
 
 
 commit;

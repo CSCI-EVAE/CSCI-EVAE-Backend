@@ -1,15 +1,16 @@
-REM INSERTING into       QUALIFICATIF
-SET DEFINE OFF;
-Insert into       QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values ('1','Pauvre','Riche');
-Insert into       QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values ('2','Faible','Fort');
-Insert into       QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values ('3','Insatisfaisant','Satisfaisant');
-Insert into       QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values ('4','Lent','Rapide');
-Insert into       QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values ('5','Faible','Active');
-Insert into       QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values ('6','Peu clair','Tres clair');
-Insert into       QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values ('7','Faible','Forte');
-Insert into       QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values ('8','Facile','Difficile');
-Insert into       QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values ('9','Insuffisant','Suffisant');
-Insert into       QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values ('10','Faible','Importante');
-Insert into       QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values ('11','Mauvaise','Bonne');
-Insert into       QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values ('12','Insuffisant','Excessif');
-Insert into       QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values ('13','Insuffisant','Trop nombreux');
+--
+--  Création du jeu d'essai de la table QUALIFICATIF
+--
+Insert into QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values (null,'Pauvre','Riche');
+Insert into QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values (null,'Faible','Fort');
+Insert into QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values (null,'Insatisfaisant','Satisfaisant');
+Insert into QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values (null,'Lent','Rapide');
+Insert into QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values (null,'Faible','Active');
+Insert into QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values (null,'Peu clair','Très clair');
+Insert into QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values (null,'Faible','Forte');
+Insert into QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values (null,'Facile','Difficile');
+Insert into QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values (null,'Insuffisant','Suffisant');
+Insert into QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values (null,'Faible','Importante');
+Insert into QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values (null,'Mauvaise','Bonne');
+Insert into QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values (null,'Insuffisant','Excessif');
+Insert into QUALIFICATIF (ID_QUALIFICATIF,MAXIMAL,MINIMAL) values (null,'Insuffisant','Trop nombreux');
