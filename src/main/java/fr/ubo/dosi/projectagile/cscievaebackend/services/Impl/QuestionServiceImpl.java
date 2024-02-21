@@ -49,6 +49,7 @@ public class QuestionServiceImpl implements QuestionService {
             questionUpdate.setType(question.getType());
             questionUpdate.setIntitule(question.getIntitule());
             questionUpdate.setIdQualificatif(question.getIdQualificatif());
+            questionUpdate.setNoEnseignant(question.getNoEnseignant());
             return questionRepository.save(questionUpdate);
         } else {
             throw new ResourceNotFoundException("Question not found for this id :: " + id);

@@ -88,7 +88,10 @@ public class QuestionController {
            return ResponseEntity.ok(ApiResponse.ok(null));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ApiResponse.error("Question not found", null));
+                    .body(ApiResponse.error("la question n'a pas été trouvée ou lien avec une rubrique", null));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("Erreur lors de la suppression de la question", null));
         }
     }
 }
