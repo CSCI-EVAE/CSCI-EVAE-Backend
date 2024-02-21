@@ -34,15 +34,22 @@ public class AuthController {
         this.userService = userService;
     }
 
+    /**
+     * Authentifie l'utilisateur et génère un token JWT.
+     *
+     * @param authRequestDTO L'objet contenant les informations d'authentification de l'utilisateur (nom d'utilisateur et mot de passe).
+     * @return ApiResponse contenant un objet JwtResponseDTO si l'authentification est réussie,
+     * sinon une exception UsernameNotFoundException est lancée.
+     */
     @PostMapping("/api/v1/login")
     public ResponseEntity<ApiResponse<JwtResponseDTO>> AuthenticateAndGetToken(@RequestBody AuthRequestDTO authRequestDTO) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDTO.getUsername(), authRequestDTO.getPassword()));
         logger.info("authentication : " + authentication);
         if (authentication.isAuthenticated()) {
-
-            return ResponseEntity.ok(new ApiResponse<>(true, "success", new JwtResponseDTO(jwtService.GenerateToken(authRequestDTO.getUsername()), new UserDTO(userService.getUserByUsername(authRequestDTO.getUsername())))));
+            return ResponseEntity.ok(new ApiResponse<>(true, "La connexion a réussi"
+                    , new JwtResponseDTO(jwtService.GenerateToken(authRequestDTO.getUsername()), new UserDTO(userService.getUserByUsername(authRequestDTO.getUsername())))));
         } else {
-            throw new UsernameNotFoundException("invalid user request..!!");
+            throw new UsernameNotFoundException("Mot de passe ou nom d'utilisateur incorrect");
         }
     }
 

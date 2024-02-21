@@ -1,4 +1,5 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.services.Impl;
+import fr.ubo.dosi.projectagile.cscievaebackend.DTO.QualificatifDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.LinkedToAnotherResourceException;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Qualificatif;
@@ -52,7 +53,7 @@ class QualificatifServiceImplTest {
     public void testGetAllQualificatifs() {
         List<Qualificatif> expectedQualificatifs = new ArrayList<>();
         when(qualificatifRepository.findAll()).thenReturn(expectedQualificatifs);
-        List<Qualificatif> result = qualificatifService.getAllQualificatifs();
+        List<QualificatifDTO> result = qualificatifService.getAllQualificatifs();
         assertEquals(expectedQualificatifs.size(), result.size());
     }
 
@@ -67,12 +68,13 @@ class QualificatifServiceImplTest {
         assertEquals(id, result.get().getId());
     }
 
-     @Test
-     public void testGetQualificatifById_NotFound() {
-      long id = 1;
-      when(qualificatifRepository.findById(id)).thenReturn(Optional.empty());
-      assertThrows(ResourceNotFoundException.class, () -> qualificatifService.getQualificatifById(id));
+    @Test
+    public void testGetQualificatifById_NotFound() {
+        long id = 1;
+        when(qualificatifRepository.findById(id)).thenReturn(Optional.empty());
+        assertThrows(ResourceNotFoundException.class, () -> qualificatifService.getQualificatifById(id));
     }
+
     @Test
     public void testUpdateQualificatif_Success() throws ResourceNotFoundException {
         Integer id = 1;
