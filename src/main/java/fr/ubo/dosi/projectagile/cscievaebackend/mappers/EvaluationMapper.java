@@ -10,4 +10,5 @@ import java.util.List;
 public interface EvaluationMapper {
     EvaluationDTO evaluationToEvaluationDTO(Evaluation evaluation);
     List<EvaluationDTO> evaluationsToEvaluationDTOs(List<Evaluation> evaluations);
+
 }
