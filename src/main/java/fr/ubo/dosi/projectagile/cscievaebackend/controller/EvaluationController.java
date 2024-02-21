@@ -2,12 +2,14 @@ package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 
 
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationDTO;
+import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationSaveOrUpdateDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.mappers.EvaluationMapper;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.AuthentificationServiceImpl;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.EvaluationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +29,8 @@ public class EvaluationController {
     private AuthentificationServiceImpl as;
     @Autowired
     private EvaluationMapper evaluationMapper;
+    @Autowired
+    private EvaluationServiceImpl evaluationService;
 
     @PreAuthorize("hasAuthority('ENS')")
     @GetMapping("getAll")
@@ -41,5 +45,11 @@ public class EvaluationController {
     public ApiResponse<EvaluationDTO> getDetails (@PathVariable Long Id, @AuthenticationPrincipal UserDetails currentUser ){
         EvaluationDTO evaluationDetails = evaluationMapper.evaluationToEvaluationDTO(es.getEvaluationById(Id));
         return ApiResponse.ok(evaluationDetails);
+    }
+    @PreAuthorize("hasAuthority('ENS')")
+    @PostMapping("/saveOrUpdate")
+    public ResponseEntity<ApiResponse<String>> saveOrUpdateEvaluation(@RequestBody EvaluationSaveOrUpdateDTO evaluationDTO) {
+        ApiResponse<String> response = evaluationService.saveOrUpdateEvaluation(evaluationDTO);
+        return ResponseEntity.ok(response);
     }
 }

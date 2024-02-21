@@ -1,5 +1,5 @@
 REM 
-REM Création Utilisateur DOSI1
+REM Crï¿½ation Utilisateur DOSI1
 REM
 
 drop user DOSI1 cascade;

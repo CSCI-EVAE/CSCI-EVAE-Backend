@@ -26,4 +26,5 @@ public class EvaluationDTO  {
     @NotNull
     private LocalDate finReponse;
     private Set<RubriqueEvaluationDTO> rubriqueEvaluations;
+
 }

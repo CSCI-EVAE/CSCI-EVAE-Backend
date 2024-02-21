@@ -14,4 +14,5 @@ public interface EvaluationRepository extends JpaRepository<Evaluation, Long> {
         @Query(value = "SELECT * FROM EVALUATION e WHERE e.CODE_UE = :codeUE", nativeQuery = true)
         List<Evaluation> findByCodeUE(@Param("codeUE") String codeUE);
         List<Evaluation> findAllByNoEnseignant(Enseignant noEnseignant);
+        Optional<Evaluation> findById(Integer id);
 }
