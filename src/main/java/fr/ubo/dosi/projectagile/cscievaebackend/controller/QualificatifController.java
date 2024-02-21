@@ -11,6 +11,7 @@ import fr.ubo.dosi.projectagile.cscievaebackend.services.QuestionService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -85,10 +86,15 @@ public class QualificatifController {
      */
     @PreAuthorize("hasAuthority('ADM')")
     @PostMapping
-    public ApiResponse<Qualificatif> addQualificatif(@RequestBody Qualificatif qualificatif) {
+    public ResponseEntity <ApiResponse<Qualificatif>> addQualificatif(@RequestBody Qualificatif qualificatif) {
         Qualificatif qualificatifAjouter = qualificatifService.createQualificatif(qualificatif);
-        return ApiResponse.ok(qualificatifAjouter);
+        if (qualificatifAjouter == null) {
+            return ResponseEntity.status(409)
+                    .body(ApiResponse.error("Le qualificatif existe déjà", null));
+        }
+        return ResponseEntity.ok(ApiResponse.ok(qualificatifAjouter));
     }
+
 
 
     /**

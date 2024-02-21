@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,12 @@ public class QualificatifServiceImpl implements QualificatifService {
 
     @Override
     public Qualificatif createQualificatif(Qualificatif qualificatif) {
+        List<Qualificatif> qualificatifs = qualificatifRepository.findAll();
+        for (Qualificatif q : qualificatifs) {
+            if (Objects.equals(q.getMinimal(), qualificatif.getMinimal()) && Objects.equals(q.getMaximal(), qualificatif.getMaximal())) {
+                return null;
+            }
+        }
         return qualificatifRepository.save(qualificatif);
     }
 
