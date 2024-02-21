@@ -18,4 +18,6 @@ public interface RubriqueQuestionService {
     String processAndStore(List<IncomingRubriqueQuestionDTO> incomingData);
 
     String AjouterRubriqueQuestion(IncomingRubriqueQuestionDTO incomingData);
+
+    String updateRubriqueQuestions(IncomingRubriqueQuestionDTO incomingData);
 }

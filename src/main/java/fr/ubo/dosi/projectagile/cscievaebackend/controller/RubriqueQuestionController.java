@@ -35,7 +35,7 @@ public class RubriqueQuestionController {
     @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @GetMapping("/{idQuestion}/{idRubrique}")
     public ResponseEntity<ApiResponse<RubriqueQuestionDTO>> getRubriqueQuestionById(@PathVariable Long idQuestion, @PathVariable Long idRubrique) {
-        RubriqueQuestionId rubriqueQuestionId = new RubriqueQuestionId(idQuestion, idRubrique);
+        RubriqueQuestionId rubriqueQuestionId = new RubriqueQuestionId(idQuestion.intValue(), idRubrique.intValue());
         RubriqueQuestionDTO rubriqueQuestionDTO = rubriqueQuestionService.getRubriqueQuestionById(rubriqueQuestionId);
         if (rubriqueQuestionDTO != null) {
             return ResponseEntity.ok(ApiResponse.ok(rubriqueQuestionDTO));
@@ -82,5 +82,21 @@ public class RubriqueQuestionController {
     }
 
     // ajouter update rubrique question
+    @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
+    @PostMapping("/update")
+    public ApiResponse<RubriqueQuestion> addRubriqueQuestion(@RequestBody RubriqueQuestion rubriqueQuestion) {
+        RubriqueQuestion rubriqueQuestionAjouter = rubriqueQuestionService.saveRubriqueQuestion(rubriqueQuestion);
+        return ApiResponse.ok(rubriqueQuestionAjouter);
+    }
 
+    @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
+    @PostMapping("/UpdateRubriqueQuestions")
+    public ApiResponse<String> updateRubriqueQuestions(@RequestBody IncomingRubriqueQuestionDTO incomingData) {
+        try {
+            String result = rubriqueQuestionService.updateRubriqueQuestions(incomingData);
+            return ApiResponse.ok(result);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage(), null);
+        }
+    }
 }

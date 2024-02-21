@@ -136,6 +136,50 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
         }
     }
 
+    @Override
+    @Transactional
+    public String updateRubriqueQuestions(IncomingRubriqueQuestionDTO dto) {
+        StringBuilder resultMessage = new StringBuilder();
+
+        List<RubriqueQuestion> existingQuestions = rubriqueQuestionRepository.findByRubriqueId(dto.getIdRubrique());
+        logger.info("Existing RubriqueQuestions: " + existingQuestions);
+        Set<Long> existingQuestionIds = existingQuestions.stream()
+                .map(rubriqueQuestion -> rubriqueQuestion.getIdQuestion().getId().longValue())
+                .collect(Collectors.toSet());
+        logger.info("Existing QuestionIds: " + existingQuestionIds);
+        Set<Long> incomingQuestionIds = new HashSet<>(dto.getQuestionIds());
+
+        // Determine questions to add
+        Set<Long> toAdd = new HashSet<>(incomingQuestionIds);
+        toAdd.removeAll(existingQuestionIds);
+        logger.info("Questions to add: " + toAdd);
+        // Determine questions to remove
+        Set<Long> toRemove = new HashSet<>(existingQuestionIds);
+        toRemove.removeAll(incomingQuestionIds);
+        logger.info("Questions to remove: " + toRemove);
+        // Remove questions
+        toRemove.forEach(questionId -> {
+            rubriqueQuestionRepository.deleteByIdRubriqueAndIdQuestion(dto.getIdRubrique(), questionId);
+            resultMessage.append("On a supprimé la question: Rubrique: ").append(dto.getIdRubrique()).append(", Question: ").append(questionId).append("\n");
+        });
+        logger.info("Removed RubriqueQuestions: " + toRemove);
+
+        toAdd.forEach(questionId -> {
+            try {
+                Question question = questionRepository.findById(questionId)
+                        .orElseThrow(() -> new EntityNotFoundException("Question not found: " + questionId));
+                RubriqueQuestion rubriqueQuestion = new RubriqueQuestion(new RubriqueQuestionId(dto.getIdRubrique().intValue(), questionId.intValue()), rubriqueRepository.findById(dto.getIdRubrique()).get(), question, dto.getOrdre());
+                rubriqueQuestionRepository.save(rubriqueQuestion);
+                resultMessage.append("Added RubriqueQuestion: Rubrique: ").append(dto.getIdRubrique()).append(", Question: ").append(questionId).append("\n");
+            } catch (EntityNotFoundException e) {
+                resultMessage.append(e.getMessage()).append("\n");
+            }
+        });
+
+        return resultMessage.toString();
+    }
+
+
     private void AddRubriqueQuestions(IncomingRubriqueQuestionDTO dto, StringBuilder resultMessage) {
         try {
             Rubrique rubrique = rubriqueRepository.findById(dto.getIdRubrique())
@@ -171,5 +215,6 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
             resultMessage.append(e.getMessage()).append("\n");
         }
     }
+
 
 }

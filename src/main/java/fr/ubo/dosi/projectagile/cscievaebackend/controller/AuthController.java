@@ -49,7 +49,7 @@ public class AuthController {
             return ResponseEntity.ok(new ApiResponse<>(true, "La connexion a réussi"
                     , new JwtResponseDTO(jwtService.GenerateToken(authRequestDTO.getUsername()), new UserDTO(userService.getUserByUsername(authRequestDTO.getUsername())))));
         } else {
-            throw new UsernameNotFoundException("Mot de passe ou nom d'utilisateur incorrect");
+            throw new UsernameNotFoundException("L'Utilisateur de nom d'utilisateur " + authRequestDTO.getUsername() + " n'a pas été trouvé");
         }
     }
 

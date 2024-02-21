@@ -3,9 +3,7 @@ package fr.ubo.dosi.projectagile.cscievaebackend.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.Hibernate;
 
 import java.io.Serializable;
@@ -15,6 +13,8 @@ import java.util.Objects;
 @Setter
 @Embeddable
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class RubriqueQuestionId implements Serializable {
     private static final long serialVersionUID = -7866618796749009494L;
     @NotNull
@@ -25,19 +25,6 @@ public class RubriqueQuestionId implements Serializable {
     @Column(name = "ID_QUESTION", nullable = false)
     private Integer idQuestion;
 
-    public RubriqueQuestionId(Long idQuestion, Long idRubrique) {
-        this.idQuestion = idQuestion.intValue();
-        this.idRubrique = idRubrique.intValue();
-    }
-
-    public RubriqueQuestionId() {
-
-    }
-
-    public RubriqueQuestionId(Integer id, Integer id1) {
-        this.idQuestion = id;
-        this.idRubrique = id1;
-    }
 
 
     @Override
