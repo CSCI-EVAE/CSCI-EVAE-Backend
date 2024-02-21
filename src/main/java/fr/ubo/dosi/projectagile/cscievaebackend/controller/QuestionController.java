@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
-@RequestMapping("/api/v1/admin/questions")
+@RequestMapping("/api/v1/questions")
 public class QuestionController {
 
     @Autowired
@@ -21,6 +21,7 @@ public class QuestionController {
 
     Logger logger = Logger.getLogger(QuestionController.class.getName());
 
+    @PreAuthorize("hasAuthority('ADM')")
     @PostMapping
     public ResponseEntity<ApiResponse<Question>> createQuestion(@RequestBody Question question) {
         Question createdQuestion = questionService.createQuestion(question);
@@ -28,6 +29,7 @@ public class QuestionController {
                 .body(ApiResponse.ok(createdQuestion));
     }
 
+    @PreAuthorize("hasAnyAuthority('ADM', 'ENS')")
     @GetMapping
     public ResponseEntity<ApiResponse<List<Question>>> getAllQuestions() {
         List<Question> questions = questionService.getAllQuestions();
@@ -35,6 +37,7 @@ public class QuestionController {
         return ResponseEntity.ok(ApiResponse.ok(questions));
     }
 
+    @PreAuthorize("hasAnyAuthority('ADM', 'ENS')")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Question>> getQuestionById(@PathVariable Long id) {
         try {
@@ -46,6 +49,7 @@ public class QuestionController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ADM')")
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Question>> updateQuestion(@PathVariable Long id, @RequestBody Question question) {
         try {
@@ -59,6 +63,7 @@ public class QuestionController {
 
 
 
+    @PreAuthorize("hasAuthority('ADM')")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteQuestion(@PathVariable Long id) {
         try {
