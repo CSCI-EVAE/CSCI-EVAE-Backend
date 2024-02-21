@@ -19,7 +19,7 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/api/v1/admin/rubrique")
+@RequestMapping("/api/v1rubrique")
 public class RubriqueController {
 
     @Autowired
@@ -31,6 +31,7 @@ public class RubriqueController {
      * @param rubrique La rubrique à créer.
      * @return La rubrique créée.
      */
+    @PreAuthorize("hasAuthority('ADM')")
     @PostMapping
     public ResponseEntity<ApiResponse<Rubrique>> createRubrique(@RequestBody Rubrique rubrique) {
         Rubrique createdRubrique = rubriqueService.creerRubrique(rubrique);
@@ -43,6 +44,7 @@ public class RubriqueController {
      *
      * @return La liste de toutes les rubriques.
      */
+    @PreAuthorize("hasAnyAuthority('ADM', 'ENS')")
     @GetMapping
     public ResponseEntity<ApiResponse<List<Rubrique>>> getAllRubrique() {
         List<Rubrique> rubriques = rubriqueService.getAllRubrique();
@@ -55,6 +57,7 @@ public class RubriqueController {
      * @param type Le type de rubrique à récupérer.
      * @return La liste des rubriques du type spécifié.
      */
+    @PreAuthorize("hasAnyAuthority('ADM', 'ENS')")
     @GetMapping("/type/{type}")
     public ResponseEntity<ApiResponse<List<Rubrique>>> getRubriqueByType(@PathVariable("type") String type)  {
         List<Rubrique> rubriques = rubriqueService.getRubriqueByType(type);
@@ -67,6 +70,7 @@ public class RubriqueController {
      * @param id L'ID de la rubrique à récupérer.
      * @return La rubrique avec l'ID spécifié.
      */
+    @PreAuthorize("hasAnyAuthority('ADM', 'ENS')")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Rubrique>> getRubriqueById(@PathVariable Long id) {
         try {
@@ -85,6 +89,7 @@ public class RubriqueController {
      * @param rubrique Les nouvelles informations de la rubrique.
      * @return La rubrique mise à jour.
      */
+    @PreAuthorize("hasAuthority('ADM')")
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Rubrique>> updateRubrique(@PathVariable Long id, @RequestBody Rubrique rubrique) {
         try {
@@ -102,6 +107,7 @@ public class RubriqueController {
      * @param id L'ID de la rubrique à supprimer.
      * @return Une réponse vide.
      */
+    @PreAuthorize("hasAuthority('ADM')")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteRubrique(@PathVariable Long id) {
         try {
