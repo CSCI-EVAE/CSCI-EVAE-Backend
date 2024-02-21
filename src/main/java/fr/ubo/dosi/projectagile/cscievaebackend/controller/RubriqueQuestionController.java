@@ -80,4 +80,7 @@ public class RubriqueQuestionController {
             return ApiResponse.error(result, null);
         }
     }
+
+    // ajouter update rubrique question
+
 }

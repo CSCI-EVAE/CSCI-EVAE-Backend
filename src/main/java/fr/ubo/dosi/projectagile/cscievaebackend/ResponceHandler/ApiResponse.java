@@ -23,8 +23,4 @@ public class ApiResponse<T> {
         return new ApiResponse<>(false, message, data);
     }
 
-
-    public int getStatus() {
-        return success ? 200 : 500;
-    }
 }
