@@ -18,6 +18,9 @@ public class RubriqueQuestionImpl implements RubriqueService {
     private RubriqueRepository rubriqueRepository;
 
     public Rubrique creerRubrique(Rubrique rubrique){
+        if(rubriqueRepository.existsByDesignation(rubrique.getDesignation())){
+            throw new EmptyRequestBodyException("Rubrique existe deja avec cette designation: "+ rubrique.getDesignation());
+        }
        return rubriqueRepository.save(rubrique);
     }
 

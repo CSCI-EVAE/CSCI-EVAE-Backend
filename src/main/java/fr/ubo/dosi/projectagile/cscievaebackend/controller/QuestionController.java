@@ -33,6 +33,10 @@ public class QuestionController {
     @PostMapping
     public ResponseEntity<ApiResponse<QuestionDTO>> createQuestion(@RequestBody Question question) {
         Question createdQuestion = questionService.createQuestion(question);
+        if (createdQuestion == null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(ApiResponse.error("Question already exists", null));
+        }
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.ok(questionMapper.questionToQuestionDTO(createdQuestion)));
     }
@@ -62,6 +66,10 @@ public class QuestionController {
     public ResponseEntity<ApiResponse<QuestionDTO>> updateQuestion(@PathVariable Long id, @RequestBody Question question) {
         try {
             Question updatedQuestion = questionService.updateQuestion(id, question);
+            if (updatedQuestion == null) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body(ApiResponse.error("Question already exists", null));
+            }
             return ResponseEntity.ok(ApiResponse.ok(questionMapper.questionToQuestionDTO(updatedQuestion)));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)

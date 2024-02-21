@@ -9,4 +9,6 @@ import java.util.List;
 public interface RubriqueRepository extends JpaRepository<Rubrique, Long> {
 
     List<Rubrique> findAllByType(String type);
+
+    boolean existsByDesignation(String designation);
 }

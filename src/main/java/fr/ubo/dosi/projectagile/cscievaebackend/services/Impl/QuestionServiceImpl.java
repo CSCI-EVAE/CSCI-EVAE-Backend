@@ -21,6 +21,12 @@ public class QuestionServiceImpl implements QuestionService {
     @Transactional
     @Override
     public Question createQuestion(Question question) {
+        List<Question> questions = questionRepository.findAll();
+        for (Question q : questions) {
+            if (q.getIntitule().equals(question.getIntitule())) {
+                return null;
+            }
+        }
         return questionRepository.save(question);
     }
 
