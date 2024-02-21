@@ -29,7 +29,6 @@ public class QuestionController {
     }
 
     @GetMapping
-
     public ResponseEntity<ApiResponse<List<Question>>> getAllQuestions() {
         List<Question> questions = questionService.getAllQuestions();
         logger.info("questions : " + questions);

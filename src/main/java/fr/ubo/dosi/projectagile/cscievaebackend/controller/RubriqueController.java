@@ -14,17 +14,23 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+/**
+ * Contrôleur pour les opérations CRUD sur les rubriques.
+ */
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/v1/admin/rubrique")
-
-
 public class RubriqueController {
 
     @Autowired
     private RubriqueService rubriqueService;
 
+    /**
+     * Crée une nouvelle rubrique.
+     *
+     * @param rubrique La rubrique à créer.
+     * @return La rubrique créée.
+     */
     @PostMapping
     public ResponseEntity<ApiResponse<Rubrique>> createRubrique(@RequestBody Rubrique rubrique) {
         Rubrique createdRubrique = rubriqueService.creerRubrique(rubrique);
@@ -32,33 +38,53 @@ public class RubriqueController {
                 .body(ApiResponse.ok(createdRubrique));
     }
 
+    /**
+     * Récupère toutes les rubriques.
+     *
+     * @return La liste de toutes les rubriques.
+     */
     @GetMapping
     public ResponseEntity<ApiResponse<List<Rubrique>>> getAllRubrique() {
         List<Rubrique> rubriques = rubriqueService.getAllRubrique();
-
         return ResponseEntity.ok(ApiResponse.ok(rubriques));
     }
 
-    @GetMapping("/ty/{type}")
+    /**
+     * Récupère les rubriques par type.
+     *
+     * @param type Le type de rubrique à récupérer.
+     * @return La liste des rubriques du type spécifié.
+     */
+    @GetMapping("/type/{type}")
     public ResponseEntity<ApiResponse<List<Rubrique>>> getRubriqueByType(@PathVariable("type") String type)  {
         List<Rubrique> rubriques = rubriqueService.getRubriqueByType(type);
         return ResponseEntity.ok(ApiResponse.ok(rubriques));
     }
 
-
+    /**
+     * Récupère une rubrique par son ID.
+     *
+     * @param id L'ID de la rubrique à récupérer.
+     * @return La rubrique avec l'ID spécifié.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Rubrique>> getRubriqueById(@PathVariable Long id) {
         try {
-
             Rubrique rubrique = rubriqueService.getRubriqueById(id);
             return ResponseEntity.ok(ApiResponse.ok(rubrique));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(ApiResponse.error("Rubrique not found", null));
-
         }
     }
 
+    /**
+     * Met à jour une rubrique.
+     *
+     * @param id L'ID de la rubrique à mettre à jour.
+     * @param rubrique Les nouvelles informations de la rubrique.
+     * @return La rubrique mise à jour.
+     */
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Rubrique>> updateRubrique(@PathVariable Long id, @RequestBody Rubrique rubrique) {
         try {
@@ -70,6 +96,12 @@ public class RubriqueController {
         }
     }
 
+    /**
+     * Supprime une rubrique.
+     *
+     * @param id L'ID de la rubrique à supprimer.
+     * @return Une réponse vide.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteRubrique(@PathVariable Long id) {
         try {
@@ -80,5 +112,4 @@ public class RubriqueController {
                     .body(ApiResponse.error("Rubrique not found", null));
         }
     }
-
 }

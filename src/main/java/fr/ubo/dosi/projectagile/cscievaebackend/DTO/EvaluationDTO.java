@@ -1,29 +1,20 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.DTO;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.*;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
 
 
 @Data
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class EvaluationDTO  {
+public class EvaluationDTO {
     private Integer id;
-    @NotNull
-    @Size(max = 16)
-    private String etat;
+    private String codeFormation;
+    private String anneeUniversitaire;
+    private String nomEnseignant;
+    private Integer noEvaluation;
     private String designation;
-    @NotNull
-    private LocalDate debutReponse;
-    @NotNull
-    private LocalDate finReponse;
-    private Set<RubriqueEvaluationDTO> rubriqueEvaluations;
+    private String etat;
+    private String periode;
+    private String debutReponse;
+    private String finReponse;
 }
+
+
