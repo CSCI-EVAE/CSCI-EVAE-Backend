@@ -63,9 +63,10 @@ public class QuestionController {
 
     @PreAuthorize("hasAuthority('ADM')")
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<QuestionDTO>> updateQuestion(@PathVariable Long id, @RequestBody Question question) {
+    public ResponseEntity<ApiResponse<QuestionDTO>> updateQuestion(@PathVariable Long id, @RequestBody QuestionDTO question) {
         try {
-            Question updatedQuestion = questionService.updateQuestion(id, question);
+            Question updatedQuestion = questionService.updateQuestion(id , questionMapper.questionDTOToQuestion(question));
+            logger.info("updatedQuestion : " + updatedQuestion);
             if (updatedQuestion == null) {
                 return ResponseEntity.status(HttpStatus.CONFLICT)
                         .body(ApiResponse.error("Question already exists", null));
