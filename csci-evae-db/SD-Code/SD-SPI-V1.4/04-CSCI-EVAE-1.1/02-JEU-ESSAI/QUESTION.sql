@@ -1,26 +1,24 @@
---
---  Creation du jeu d'essai de la table QUESTION
---
-
-Insert into QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values (null,'QUS',null,'1','Contenu');
-Insert into QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values (null,'QUS',null,'2','Interet');
-Insert into QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values (null,'QUS',null,'8','Assimilite (Ce cours est-il facile e assimiler ?)');
-Insert into QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values (null,'QUS',null,'3','Support de cours');
-Insert into QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values (null,'QUS',null,'4','Rythme');
-Insert into QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values (null,'QUS',null,'13','Nombre de seances');
-Insert into QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values (null,'QUS',null,'5','Attention, participation des etudiants');
-Insert into QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values (null,'QUS',null,'6','Clarte de lenseignant');
-Insert into QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values (null,'QUS',null,'7','Competence de lenseignant (vis-e-vis) du domaine)');
-Insert into QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values (null,'QUS',null,'7','Utilitte des TD pour assimiler le cours');
-Insert into QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values (null,'QUS',null,'6','Niveau des exercices');
-Insert into QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values (null,'QUS',null,'6','Clarte des enonces');
-Insert into QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values (null,'QUS',null,'10','Utilite des TPpour assimiler le cours');
-Insert into QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values (null,'QUS',null,'9','Explications individuelles');
-Insert into QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values (null,'QUS',null,'8','Difficulte du sujet');
-Insert into QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values (null,'QUS',null,'10','Utilite du projet pour assimiler le cours');
-Insert into QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values (null,'QUS',null,'2','Interet personnel');
-Insert into QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values (null,'QUS',null,'11','Impression generale');
-Insert into QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values (null,'QUS',null,'2','Investissement personnel');
-Insert into QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values (null,'QUS',null,'2','Interet e priori pour cet enseignement');
-Insert into QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values (null,'QUS',null,'2','Interet e posteriori pour cet enseignement');
-Insert into QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values (null,'QUS',null,'12','Volume global horaire');
+REM INSERTING into        QUESTION
+SET DEFINE OFF;
+Insert into        QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values ('1','QUS',null,'1','Contenu');
+Insert into        QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values ('2','QUS',null,'2','Interet');
+Insert into        QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values ('3','QUS',null,'8','Assimilite (Ce cours est-il facile e assimiler ?)');
+Insert into        QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values ('4','QUS',null,'3','Support de cours');
+Insert into        QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values ('5','QUS',null,'4','Rythme');
+Insert into        QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values ('6','QUS',null,'13','Nombre de seances');
+Insert into        QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values ('7','QUS',null,'5','Attention, participation des etudiants');
+Insert into        QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values ('8','QUS',null,'6','Clarte de lenseignant');
+Insert into        QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values ('9','QUS',null,'7','Competence de lenseignant (vis-e-vis) du domaine)');
+Insert into        QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values ('10','QUS',null,'7','Utilitte des TD pour assimiler le cours');
+Insert into        QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values ('11','QUS',null,'6','Niveau des exercices');
+Insert into        QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values ('12','QUS',null,'6','Clarte des enonces');
+Insert into        QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values ('13','QUS',null,'10','Utilite des TPpour assimiler le cours');
+Insert into        QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values ('14','QUS',null,'9','Explications individuelles');
+Insert into        QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values ('15','QUS',null,'8','Difficulte du sujet');
+Insert into        QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values ('16','QUS',null,'10','Utilite du projet pour assimiler le cours');
+Insert into        QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values ('17','QUS',null,'2','Interet personnel');
+Insert into        QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values ('18','QUS',null,'11','Impression generale');
+Insert into        QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values ('19','QUS',null,'2','Investissement personnel');
+Insert into        QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values ('20','QUS',null,'2','Interet e priori pour cet enseignement');
+Insert into        QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values ('21','QUS',null,'2','Interet e posteriori pour cet enseignement');
+Insert into        QUESTION (ID_QUESTION,TYPE,NO_ENSEIGNANT,ID_QUALIFICATIF,INTITULE) values ('22','QUS',null,'12','Volume global horaire');
