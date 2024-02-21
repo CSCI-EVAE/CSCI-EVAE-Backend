@@ -146,7 +146,6 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
                         .orElseThrow(() -> new EntityNotFoundException("Question not found: " + questionId));
                 logger.info("RubriqueQuestion added: Rubrique: " + rubrique + ", Question: " + question);
                 if (!rubriqueQuestionRepository.existsByIdRubriqueAndIdQuestion(rubrique.getId(), question.getId())) {
-                    // logeer info
                     logger.info("RubriqueQuestion added: Rubrique: " + rubrique + ", Question: " + question);
                     RubriqueQuestion rubriqueQuestion = new RubriqueQuestion();
                     rubriqueQuestion.setId(new RubriqueQuestionId(rubrique.getId(), question.getId()));

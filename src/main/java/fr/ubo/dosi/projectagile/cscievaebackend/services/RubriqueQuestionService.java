@@ -15,8 +15,6 @@ public interface RubriqueQuestionService {
 
     public void deleteRubriqueQuestion(RubriqueQuestion rubriqueQuestion);
     public RubriqueQuestionDTO getRubriqueQuestionById(RubriqueQuestionId rubriqueQuestionId);
-//    public RubriqueQuestionDTO addRubriqueQuestion(RubriqueQuestionDTO rubriqueQuestionAddDTO);
-
     String processAndStore(List<IncomingRubriqueQuestionDTO> incomingData);
 
     String AjouterRubriqueQuestion(IncomingRubriqueQuestionDTO incomingData);
