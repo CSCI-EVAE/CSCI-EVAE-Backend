@@ -2,10 +2,12 @@ package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 
 
 
+import fr.ubo.dosi.projectagile.cscievaebackend.DTO.RubriqueDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Rubrique;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.RubriqueService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,17 +15,20 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Contrôleur pour les opérations CRUD sur les rubriques.
  */
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/api/v1rubrique")
+@RequestMapping("/api/v1/rubrique")
 public class RubriqueController {
 
     @Autowired
     private RubriqueService rubriqueService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     /**
      * Crée une nouvelle rubrique.
@@ -32,7 +37,7 @@ public class RubriqueController {
      * @return La rubrique créée.
      */
     @PreAuthorize("hasAuthority('ADM')")
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<ApiResponse<Rubrique>> createRubrique(@RequestBody Rubrique rubrique) {
         Rubrique createdRubrique = rubriqueService.creerRubrique(rubrique);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -45,10 +50,10 @@ public class RubriqueController {
      * @return La liste de toutes les rubriques.
      */
     @PreAuthorize("hasAnyAuthority('ADM', 'ENS')")
-    @GetMapping
-    public ResponseEntity<ApiResponse<List<Rubrique>>> getAllRubrique() {
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<List<RubriqueDTO>>> getAllRubrique() {
         List<Rubrique> rubriques = rubriqueService.getAllRubrique();
-        return ResponseEntity.ok(ApiResponse.ok(rubriques));
+        return ResponseEntity.ok(ApiResponse.ok(rubriques.stream().map((element) -> modelMapper.map(element, RubriqueDTO.class)).collect(Collectors.toList())));
     }
 
     /**
@@ -72,10 +77,10 @@ public class RubriqueController {
      */
     @PreAuthorize("hasAnyAuthority('ADM', 'ENS')")
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Rubrique>> getRubriqueById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<RubriqueDTO>> getRubriqueById(@PathVariable Long id) {
         try {
             Rubrique rubrique = rubriqueService.getRubriqueById(id);
-            return ResponseEntity.ok(ApiResponse.ok(rubrique));
+            return ResponseEntity.ok(ApiResponse.ok(modelMapper.map(rubrique, RubriqueDTO.class)));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(ApiResponse.error("Rubrique not found", null));

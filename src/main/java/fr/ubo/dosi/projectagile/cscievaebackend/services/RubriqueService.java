@@ -12,7 +12,7 @@ public interface RubriqueService {
     public Rubrique updateRubrique(Long id, Rubrique rubrique) throws ResourceNotFoundException;
 
 
-    public List<Rubrique> getAllRubrique();
+     List<Rubrique> getAllRubrique();
 
     void deleteRubrique(Long id) throws ResourceNotFoundException;
 
