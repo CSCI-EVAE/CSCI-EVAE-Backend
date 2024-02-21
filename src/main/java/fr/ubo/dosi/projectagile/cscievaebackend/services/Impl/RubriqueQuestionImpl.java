@@ -52,9 +52,6 @@ public class RubriqueQuestionImpl implements RubriqueService {
     @Override
     public void deleteRubrique(Long id) throws ResourceNotFoundException {
         Optional<Rubrique> rubriqueOptional = rubriqueRepository.findById(id);
-        if (rubriqueOptional == null) {
-            throw new EmptyRequestBodyException("Empty request body");
-        }
         if (rubriqueOptional.isEmpty()) {
             throw new ResourceNotFoundException("Rubrique not found with id: " + id);
         }

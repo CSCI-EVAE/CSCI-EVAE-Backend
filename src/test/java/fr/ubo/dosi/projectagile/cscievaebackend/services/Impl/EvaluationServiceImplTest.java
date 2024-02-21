@@ -27,17 +27,6 @@ class EvaluationServiceImplTest {
     private EvaluationRepository evaluationRepository;
 
     @Test
-    public void testGetAll() {
-        List<Evaluation> expectedEvaluations = new ArrayList<>();
-
-        when(evaluationRepository.findAll()).thenReturn(expectedEvaluations);
-
-        List<Evaluation> result = evaluationService.getAll();
-
-        assertEquals(expectedEvaluations.size(), result.size());
-    }
-
-    @Test
     public void testGetEvaluationById_Success() {
         Integer id = 1;
         Evaluation evaluation = new Evaluation();

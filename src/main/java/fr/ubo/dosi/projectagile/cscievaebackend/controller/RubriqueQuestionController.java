@@ -41,24 +41,6 @@ public class RubriqueQuestionController {
         }
     }
 
-    /**
-     * This method is used to add a new RubriqueQuestion.
-     * It is mapped to the "/add" endpoint and the HTTP POST method.
-     *
-     * @param rubriqueQuestionAddDTO A DTO object which contains the data of the RubriqueQuestion to be added.
-     *                               This object is automatically deserialized from the JSON body of the HTTP request.
-     * @return ResponseEntity<ApiResponse < RubriqueQuestionDTO>> Returns a ResponseEntity which contains an ApiResponse.
-     * The ApiResponse contains the created RubriqueQuestionDTO and the HTTP status.
-     * If the RubriqueQuestion is successfully created, the HTTP status is 201 (CREATED).
-     * The created RubriqueQuestionDTO is the data of the newly created RubriqueQuestion.
-     */
-  /*  @PostMapping("/add")
-    public ResponseEntity<ApiResponse<RubriqueQuestionDTO>> addRubriqueQuestion(@RequestBody RubriqueQuestionDTO rubriqueQuestionAddDTO) {
-        RubriqueQuestionDTO createdRubriqueQuestion = rubriqueQuestionService.addRubriqueQuestion(rubriqueQuestionAddDTO);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.ok(createdRubriqueQuestion));
-    }*/
-
     @DeleteMapping("/delete")
     public ResponseEntity<ApiResponse<Void>> deleteRubriqueQuestion(@RequestBody RubriqueQuestion rubriqueQuestion) {
         try {

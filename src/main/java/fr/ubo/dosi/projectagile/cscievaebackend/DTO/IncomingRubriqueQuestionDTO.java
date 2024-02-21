@@ -7,6 +7,6 @@ import java.util.List;
 @Data
 public class IncomingRubriqueQuestionDTO {
     private Long idRubrique;
-    private List<Long> questionIds; // Assuming these are IDs of questions
+    private List<Long> questionIds;
     private Long ordre;
 }
