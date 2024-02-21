@@ -83,7 +83,7 @@ public class RubriqueController {
             return ResponseEntity.ok(ApiResponse.ok(modelMapper.map(rubrique, RubriqueDTO.class)));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ApiResponse.error("Rubrique not found", null));
+                    .body(ApiResponse.error("La rubrique n'a pas été trouvée", null));
         }
     }
 
@@ -102,7 +102,10 @@ public class RubriqueController {
             return ResponseEntity.ok(ApiResponse.ok(updatedRubrique));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ApiResponse.error("Rubrique not found", null));
+                    .body(ApiResponse.error("La rubrique n'a pas été trouvée", null));
+        }catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("La rubrique n'a pas été trouvée ou lien avec une rubrique", null));
         }
     }
 
@@ -120,7 +123,10 @@ public class RubriqueController {
             return ResponseEntity.ok(ApiResponse.ok(null));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ApiResponse.error("Rubrique not found", null));
+                    .body(ApiResponse.error(" La rubrique n'a pas été trouvée ou lien avec une rubrique", null));
+        }catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error(" La rubrique n'a pas été trouvée ou lien avec une rubrique", null));
         }
     }
 }

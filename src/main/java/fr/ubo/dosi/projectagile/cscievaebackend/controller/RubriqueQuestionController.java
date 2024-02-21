@@ -81,7 +81,6 @@ public class RubriqueQuestionController {
         }
     }
 
-    // ajouter update rubrique question
     @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @PostMapping("/update")
     public ApiResponse<RubriqueQuestion> addRubriqueQuestion(@RequestBody RubriqueQuestion rubriqueQuestion) {
@@ -99,7 +98,6 @@ public class RubriqueQuestionController {
             return ApiResponse.error(e.getMessage(), null);
         }
     }
-    //delete all the rubrique question where rubrique id = id
     @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @DeleteMapping("/deleteAll/{id}")
     public ApiResponse<String> deleteAllRubriqueQuestion(@PathVariable Long id) {
