@@ -3,6 +3,7 @@ package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.QuestionDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
+import fr.ubo.dosi.projectagile.cscievaebackend.mappers.QuestionMapper;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Question;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.QuestionService;
 import org.modelmapper.ModelMapper;
@@ -25,13 +26,15 @@ public class QuestionController {
     Logger logger = Logger.getLogger(QuestionController.class.getName());
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private QuestionMapper questionMapper;
 
     @PreAuthorize("hasAuthority('ADM')")
     @PostMapping
-    public ResponseEntity<ApiResponse<Question>> createQuestion(@RequestBody Question question) {
+    public ResponseEntity<ApiResponse<QuestionDTO>> createQuestion(@RequestBody Question question) {
         Question createdQuestion = questionService.createQuestion(question);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.ok(createdQuestion));
+                .body(ApiResponse.ok(questionMapper.questionToQuestionDTO(createdQuestion)));
     }
 
     @PreAuthorize("hasAnyAuthority('ADM', 'ENS')")
@@ -39,15 +42,15 @@ public class QuestionController {
     public ResponseEntity<ApiResponse<List<QuestionDTO>>> getAllQuestions() {
         List<Question> questions = questionService.getAllQuestions();
         logger.info("questions : " + questions);
-        return ResponseEntity.ok(ApiResponse.ok(questions.stream().map((element) -> modelMapper.map(element, QuestionDTO.class)).collect(Collectors.toList())));
+        return ResponseEntity.ok(ApiResponse.ok(questions.stream().map(questionMapper::questionToQuestionDTO).collect(Collectors.toList())));
     }
 
     @PreAuthorize("hasAnyAuthority('ADM', 'ENS')")
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Question>> getQuestionById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<QuestionDTO>> getQuestionById(@PathVariable Long id) {
         try {
             Question question = questionService.getQuestionById(id);
-            return ResponseEntity.ok(ApiResponse.ok(question));
+            return ResponseEntity.ok(ApiResponse.ok(questionMapper.questionToQuestionDTO(question)));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(ApiResponse.error("Question not found", null));
@@ -56,13 +59,13 @@ public class QuestionController {
 
     @PreAuthorize("hasAuthority('ADM')")
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Question>> updateQuestion(@PathVariable Long id, @RequestBody Question question) {
+    public ResponseEntity<ApiResponse<QuestionDTO>> updateQuestion(@PathVariable Long id, @RequestBody Question question) {
         try {
             Question updatedQuestion = questionService.updateQuestion(id, question);
-            return ResponseEntity.ok(ApiResponse.ok(updatedQuestion));
+            return ResponseEntity.ok(ApiResponse.ok(questionMapper.questionToQuestionDTO(updatedQuestion)));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ApiResponse.error("Question not found", null));
+                    .body(ApiResponse.error("Question pas trouvée", null));
         }
     }
 

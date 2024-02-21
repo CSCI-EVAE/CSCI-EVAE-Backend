@@ -10,6 +10,7 @@ import fr.ubo.dosi.projectagile.cscievaebackend.model.Promotion;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.EvaluationRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -18,11 +19,14 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class EvaluationServiceImpl implements EvaluationService {
     @Autowired
     private EvaluationRepository er;
+
+    Logger logger = Logger.getLogger(EvaluationServiceImpl.class.getName());
 
     @Autowired
     private EvaluationMapper evaluationMapper;
@@ -36,15 +40,14 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
     }
 
-    @Override
-    public Evaluation getEvaluationById(Long id) {
-        Optional<Evaluation> evaluation = er.findById(id);
-        return evaluation.orElseThrow(() -> new NoSuchElementException("Aucune évaluation avec l'id " + id + " n'a été trouvée"));
+    public EvaluationDTO getEvaluationById(Long id) throws ChangeSetPersister.NotFoundException {
+        Evaluation evaluation = er.findById(id).orElseThrow(ChangeSetPersister.NotFoundException::new);
+        logger.info("Evaluation found: " + evaluation);
+        return evaluationMapper.evaluationToEvaluationDTO(evaluation);
     }
 
     @Override
     public List<Evaluation> getEvaluationsForEnseignantLastYear(Long enseignantId) {
-
         String lastYear = String.valueOf(LocalDate.now().getYear() - 1);
         return er.findAllByEnseignantAndLastYear(enseignantId, lastYear);
     }
@@ -68,4 +71,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
 
+    public Evaluation createEvaluation(Evaluation evaluation) {
+        return er.save(evaluation);
+    }
 }

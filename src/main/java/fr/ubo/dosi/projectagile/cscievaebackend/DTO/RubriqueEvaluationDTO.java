@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Getter
@@ -20,5 +21,5 @@ public class RubriqueEvaluationDTO {
     private RubriqueDTO idRubrique;
     @NotNull
     private Short ordre;
-    private List<QuestionEvaluationDTO> questionEvaluations;
+    private Set<QuestionEvaluationDTO> questionEvaluations;
 }

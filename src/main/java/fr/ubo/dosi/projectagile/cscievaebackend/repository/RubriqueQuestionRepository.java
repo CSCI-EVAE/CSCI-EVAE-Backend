@@ -19,4 +19,8 @@ public interface RubriqueQuestionRepository extends JpaRepository<RubriqueQuesti
 
     @Query("SELECT r FROM RubriqueQuestion r WHERE r.idRubrique.id = ?1")
     List<RubriqueQuestion> findByRubriqueId(Long idRubrique);
+
+    @Modifying
+    @Query("DELETE FROM RubriqueQuestion r WHERE r.idRubrique.id = ?1")
+    int deleteAllByRubriqueId(Integer id);
 }

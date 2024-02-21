@@ -17,6 +17,6 @@ public class QuestionEvaluationDTO {
     @Size(max = 64)
     private String intitule;
     @NotNull
-    private Question idQuestion;
+    private QuestionDTO idQuestion;
     private Short ordre;
 }

@@ -7,10 +7,12 @@ import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundExcept
 import fr.ubo.dosi.projectagile.cscievaebackend.mappers.EvaluationMapper;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Authentification;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
+import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.AuthentificationServiceImpl;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.EvaluationServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @RestController
@@ -27,12 +30,16 @@ public class EvaluationController {
     private final AuthentificationServiceImpl as;
     private final EvaluationMapper evaluationMapper;
     private final ModelMapper modelMapper;
+    private final EvaluationService evaluationService;
+    Logger logger = Logger.getLogger(EvaluationController.class.getName());
 
-    public EvaluationController(EvaluationServiceImpl es, AuthentificationServiceImpl as, EvaluationMapper evaluationMapper, ModelMapper modelMapper) {
+    @Autowired
+    public EvaluationController(EvaluationServiceImpl es, AuthentificationServiceImpl as, EvaluationMapper evaluationMapper, ModelMapper modelMapper, EvaluationService evaluationService) {
         this.es = es;
         this.as = as;
         this.evaluationMapper = evaluationMapper;
         this.modelMapper = modelMapper;
+        this.evaluationService = evaluationService;
     }
 
     /**
@@ -60,7 +67,7 @@ public class EvaluationController {
     public ApiResponse<EvaluationDTO> soumettreEvaluation(@PathVariable Long id) throws ResourceNotFoundException {
         try {
 
-            EvaluationDTO updated = es.updateEvaluation(id);
+            EvaluationDTO updated = evaluationService.updateEvaluation(id);
             System.out.println("Checking security permissions...");
             return ApiResponse.ok(updated);
         } catch (ResourceNotFoundException e) {
@@ -68,12 +75,15 @@ public class EvaluationController {
         }
     }
 
-    @PreAuthorize("hasAuthority('ENS')")
+    @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @GetMapping("details/{Id}")
     public ApiResponse<EvaluationDTO> getDetails(@PathVariable Long Id) {
-        Evaluation evaluation = es.getEvaluationById(Id);
-        EvaluationDTO evaluationDetails = evaluationMapper.evaluationToEvaluationDTO(evaluation);
-        return ApiResponse.ok(evaluationDetails);
+        try {
+            EvaluationDTO evaluationDetails = es.getEvaluationById(Id);
+            return ApiResponse.ok(evaluationDetails);
+        } catch (ChangeSetPersister.NotFoundException e) {
+            return ApiResponse.error("Evaluation not found", null);
+        }
     }
 
 
@@ -98,6 +108,16 @@ public class EvaluationController {
         List<Evaluation> evaluations = es.getEvaluationsForEnseignantLastYear(Long.valueOf(enseignantId));
         List<EvaluationDTO> evaluationDTOs = evaluations.stream().map((element) -> modelMapper.map(element, EvaluationDTO.class)).collect(Collectors.toList());
         return ApiResponse.ok(evaluationDTOs);
+    }
+
+    //  creer une evaluation from Dto
+    @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
+    @PostMapping("create")
+    public ApiResponse<EvaluationDTO> createEvaluation(@RequestBody EvaluationDTO evaluationDTO) {
+        Evaluation evaluation = modelMapper.map(evaluationDTO, Evaluation.class);
+        logger.info("Evaluation to be saved: " + evaluation);
+        Evaluation saved = es.createEvaluation(evaluation);
+        return ApiResponse.ok(modelMapper.map(saved, EvaluationDTO.class));
     }
 
 

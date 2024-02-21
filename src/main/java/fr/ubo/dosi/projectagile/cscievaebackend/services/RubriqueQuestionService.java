@@ -20,4 +20,6 @@ public interface RubriqueQuestionService {
     String AjouterRubriqueQuestion(IncomingRubriqueQuestionDTO incomingData);
 
     String updateRubriqueQuestions(IncomingRubriqueQuestionDTO incomingData);
+
+    String deleteAllRubriqueQuestion(Long id);
 }

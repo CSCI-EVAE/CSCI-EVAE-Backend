@@ -179,6 +179,13 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
         return resultMessage.toString();
     }
 
+    @Transactional
+    @Override
+    public String deleteAllRubriqueQuestion(Long id) {
+        int result = rubriqueQuestionRepository.deleteAllByRubriqueId(id.intValue());
+        return "On a supprimé " + result + " RubriqueQuestions";
+    }
+
 
     private void AddRubriqueQuestions(IncomingRubriqueQuestionDTO dto, StringBuilder resultMessage) {
         try {

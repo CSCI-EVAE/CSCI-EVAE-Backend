@@ -4,6 +4,7 @@ import fr.ubo.dosi.projectagile.cscievaebackend.model.Qualificatif;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Question;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.QuestionRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.QuestionService;
@@ -17,6 +18,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Autowired
     private QuestionRepository questionRepository;
 
+    @Transactional
     @Override
     public Question createQuestion(Question question) {
         return questionRepository.save(question);

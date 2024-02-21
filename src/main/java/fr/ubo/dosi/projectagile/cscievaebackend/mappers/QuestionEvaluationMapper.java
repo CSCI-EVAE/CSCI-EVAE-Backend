@@ -9,5 +9,5 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface QuestionEvaluationMapper {
     QuestionEvaluationDTO questionEvaluationToQuestionEvaluationDTO(QuestionEvaluation questionEvaluation);
-    List<QuestionEvaluationDTO> questionEvaluationsToQuestionEvaluationDTOs(List<QuestionEvaluation> questionEvaluations);
+
 }

@@ -99,4 +99,15 @@ public class RubriqueQuestionController {
             return ApiResponse.error(e.getMessage(), null);
         }
     }
+    //delete all the rubrique question where rubrique id = id
+    @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
+    @DeleteMapping("/deleteAll/{id}")
+    public ApiResponse<String> deleteAllRubriqueQuestion(@PathVariable Long id) {
+        try {
+            String result = rubriqueQuestionService.deleteAllRubriqueQuestion(id);
+            return ApiResponse.ok(result);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage(), null);
+        }
+    }
 }

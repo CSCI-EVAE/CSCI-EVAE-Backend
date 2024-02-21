@@ -3,11 +3,14 @@ package fr.ubo.dosi.projectagile.cscievaebackend.services;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
-import java.util.List;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+@Service
 public interface EvaluationService {
 
-    Evaluation getEvaluationById(Long id);
+    EvaluationDTO getEvaluationById(Long id) throws ChangeSetPersister.NotFoundException;
 
     List<Evaluation> getEvaluationsForEnseignantLastYear(Long enseignantId);
 

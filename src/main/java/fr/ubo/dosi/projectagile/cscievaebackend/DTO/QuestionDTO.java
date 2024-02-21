@@ -12,7 +12,7 @@ import lombok.*;
 @Builder
 public class QuestionDTO {
     @NotNull
-    private Qualificatif idQualificatif;
+    private QualificatifDTO idQualificatif;
     @NotNull
     @Size(max = 10)
     private String type;
