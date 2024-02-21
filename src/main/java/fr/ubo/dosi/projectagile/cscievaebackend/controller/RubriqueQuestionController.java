@@ -10,6 +10,7 @@ import fr.ubo.dosi.projectagile.cscievaebackend.services.RubriqueQuestionService
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,18 +18,21 @@ import java.util.logging.Logger;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/api/v1/admin/rubriqueQuestion")
+@RequestMapping("/api/v1/rubriqueQuestion")
 public class RubriqueQuestionController {
     @Autowired
     private RubriqueQuestionService rubriqueQuestionService;
 
     Logger logger = Logger.getLogger(RubriqueQuestionController.class.getName());
 
+    @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @GetMapping("/all")
     public ApiResponse<List<RubriqueQuestionsDTO>> getQuestionsForAllRubriques() {
         return ApiResponse.ok(rubriqueQuestionService.findAllQuestionsForRubriques());
     }
 
+
+    @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @GetMapping("/{idQuestion}/{idRubrique}")
     public ResponseEntity<ApiResponse<RubriqueQuestionDTO>> getRubriqueQuestionById(@PathVariable Long idQuestion, @PathVariable Long idRubrique) {
         RubriqueQuestionId rubriqueQuestionId = new RubriqueQuestionId(idQuestion, idRubrique);
@@ -41,6 +45,7 @@ public class RubriqueQuestionController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ADM')")
     @DeleteMapping("/delete")
     public ResponseEntity<ApiResponse<Void>> deleteRubriqueQuestion(@RequestBody RubriqueQuestion rubriqueQuestion) {
         try {
@@ -52,9 +57,22 @@ public class RubriqueQuestionController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @PostMapping("/process")
     public ApiResponse<String> processRubriqueQuestions(@RequestBody List<IncomingRubriqueQuestionDTO> incomingData) {
         String result = rubriqueQuestionService.processAndStore(incomingData);
+
+        if (result.equals("tout les données sont bien enregistrées")) {
+            return ApiResponse.ok(result);
+        } else {
+            return ApiResponse.error(result, null);
+        }
+    }
+
+    @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
+    @PostMapping("/AjouterRubriqueQuestion")
+    public ApiResponse<String> processRubriqueQuestions(@RequestBody IncomingRubriqueQuestionDTO incomingData) {
+        String result = rubriqueQuestionService.AjouterRubriqueQuestion(incomingData);
 
         if (result.equals("tout les données sont bien enregistrées")) {
             return ApiResponse.ok(result);

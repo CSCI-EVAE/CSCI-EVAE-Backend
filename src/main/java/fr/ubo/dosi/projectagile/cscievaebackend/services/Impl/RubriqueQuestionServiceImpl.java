@@ -114,46 +114,62 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
         StringBuilder resultMessage = new StringBuilder();
 
         for (IncomingRubriqueQuestionDTO dto : incomingData) {
-            try {
-                Rubrique rubrique = rubriqueRepository.findById(dto.getIdRubrique())
-                        .orElseThrow(() -> new EntityNotFoundException("Rubrique not found: " + dto.getIdRubrique()));
-
-                for (Long questionId : dto.getQuestionIds()) {
-                    Question question = questionRepository.findById(questionId)
-                            .orElseThrow(() -> new EntityNotFoundException("Question not found: " + questionId));
-                    logger.info("RubriqueQuestion added: Rubrique: " + rubrique + ", Question: " + question);
-                    if (!rubriqueQuestionRepository.existsByIdRubriqueAndIdQuestion(rubrique.getId(), question.getId())) {
-                        // logeer info
-                        logger.info("RubriqueQuestion added: Rubrique: " + rubrique + ", Question: " + question);
-                        RubriqueQuestion rubriqueQuestion = new RubriqueQuestion();
-                        rubriqueQuestion.setId(new RubriqueQuestionId(rubrique.getId(), question.getId()));
-                        rubriqueQuestion.setIdRubrique(rubrique);
-                        logger.info("RubriqueQuestion added: Rubrique: " + rubriqueQuestion.getIdRubrique());
-                        rubriqueQuestion.setIdQuestion(question);
-                        logger.info("RubriqueQuestion added: Question: " + rubriqueQuestion.getIdQuestion());
-                        rubriqueQuestion.setOrdre(dto.getOrdre());
-                        logger.info("RubriqueQuestion added: Ordre: " + rubriqueQuestion.getOrdre());
-                        rubriqueQuestionRepository.save(rubriqueQuestion);
-                        resultMessage.append("RubriqueQuestion added: ")
-                                .append("Rubrique: ").append(rubrique.getId())
-                                .append(", Question: ").append(question.getId())
-                                .append("\n");
-                    } else {
-                        resultMessage.append("RubriqueQuestion already exists: ")
-                                .append("Rubrique: ").append(rubrique.getId())
-                                .append(", Question: ").append(question.getId())
-                                .append("\n");
-                    }
-                }
-            } catch (EntityNotFoundException e) {
-                resultMessage.append(e.getMessage()).append("\n");
-            }
+            AddRubriqueQuestions(dto, resultMessage);
         }
 
         if (resultMessage.isEmpty()) {
             return "All data processed successfully.";
         } else {
             return resultMessage.toString();
+        }
+    }
+
+    @Override
+    public String AjouterRubriqueQuestion(IncomingRubriqueQuestionDTO dto) {
+        StringBuilder resultMessage = new StringBuilder();
+        AddRubriqueQuestions(dto, resultMessage);
+
+        if (resultMessage.isEmpty()) {
+            return "All data processed successfully.";
+        } else {
+            return resultMessage.toString();
+        }
+    }
+
+    private void AddRubriqueQuestions(IncomingRubriqueQuestionDTO dto, StringBuilder resultMessage) {
+        try {
+            Rubrique rubrique = rubriqueRepository.findById(dto.getIdRubrique())
+                    .orElseThrow(() -> new EntityNotFoundException("Rubrique not found: " + dto.getIdRubrique()));
+
+            for (Long questionId : dto.getQuestionIds()) {
+                Question question = questionRepository.findById(questionId)
+                        .orElseThrow(() -> new EntityNotFoundException("Question not found: " + questionId));
+                logger.info("RubriqueQuestion added: Rubrique: " + rubrique + ", Question: " + question);
+                if (!rubriqueQuestionRepository.existsByIdRubriqueAndIdQuestion(rubrique.getId(), question.getId())) {
+                    // logeer info
+                    logger.info("RubriqueQuestion added: Rubrique: " + rubrique + ", Question: " + question);
+                    RubriqueQuestion rubriqueQuestion = new RubriqueQuestion();
+                    rubriqueQuestion.setId(new RubriqueQuestionId(rubrique.getId(), question.getId()));
+                    rubriqueQuestion.setIdRubrique(rubrique);
+                    logger.info("RubriqueQuestion added: Rubrique: " + rubriqueQuestion.getIdRubrique());
+                    rubriqueQuestion.setIdQuestion(question);
+                    logger.info("RubriqueQuestion added: Question: " + rubriqueQuestion.getIdQuestion());
+                    rubriqueQuestion.setOrdre(dto.getOrdre());
+                    logger.info("RubriqueQuestion added: Ordre: " + rubriqueQuestion.getOrdre());
+                    rubriqueQuestionRepository.save(rubriqueQuestion);
+                    resultMessage.append("RubriqueQuestion added: ")
+                            .append("Rubrique: ").append(rubrique.getId())
+                            .append(", Question: ").append(question.getId())
+                            .append("\n");
+                } else {
+                    resultMessage.append("RubriqueQuestion already exists: ")
+                            .append("Rubrique: ").append(rubrique.getId())
+                            .append(", Question: ").append(question.getId())
+                            .append("\n");
+                }
+            }
+        } catch (EntityNotFoundException e) {
+            resultMessage.append(e.getMessage()).append("\n");
         }
     }
 
