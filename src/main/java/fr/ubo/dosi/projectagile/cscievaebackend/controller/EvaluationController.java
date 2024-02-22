@@ -7,6 +7,7 @@ import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundExcept
 import fr.ubo.dosi.projectagile.cscievaebackend.mappers.EvaluationMapper;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Authentification;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Enseignant;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Etudiant;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.AuthentificationServiceImpl;
@@ -14,6 +15,7 @@ import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.EvaluationServiceI
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -97,8 +99,16 @@ public class EvaluationController {
      */
     @PreAuthorize("hasAuthority('ETU')")
     @GetMapping("getEvaluationsByUser")
-    public ApiResponse<Set<EvaluationDTO>> getEvaluationsByUser(@AuthenticationPrincipal UserDetails currentUser) {
-        return ApiResponse.ok(as.getAuhtentification(currentUser.getUsername()).getNoEtudiant().getPromotion().getEvaluations().stream().map(evaluationMapper::evaluationToEvaluationDTO).collect(Collectors.toSet()));
+    public ResponseEntity <ApiResponse<?>> getEvaluationsByUser(@AuthenticationPrincipal UserDetails currentUser) {
+        Etudiant etudiant = as.getAuhtentification(currentUser.getUsername()).getNoEtudiant();
+       logger.info("Etudiant found: " + etudiant);
+        Set<Evaluation> evaluations = evaluationService.getEvaluationsByUser(etudiant);
+        if (evaluations == null) {
+            return ResponseEntity.internalServerError().body(ApiResponse.ok("Aucune évaluation n'est disponible pour cet étudiant"));
+        }
+        Set<EvaluationDTO> evaluationDTOs = evaluations.stream().map(evaluationMapper::evaluationToEvaluationDTO).collect(Collectors.toSet());
+        return ResponseEntity.ok(ApiResponse.ok(evaluationDTOs));
+
     }
 
     @PreAuthorize("hasAuthority('ETU')")
@@ -110,10 +120,9 @@ public class EvaluationController {
         return ApiResponse.ok(evaluationDTOs);
     }
 
-    //  creer une evaluation from Dto
     @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @PostMapping("create")
-    public ApiResponse<EvaluationDTO> createEvaluation(@RequestBody EvaluationDTO evaluationDTO, @AuthenticationPrincipal UserDetails currentUser) {
+    public ApiResponse<EvaluationDTO> createEvaluation(@RequestBody Evaluation evaluationDTO, @AuthenticationPrincipal UserDetails currentUser) {
         Enseignant enseignant = as.getAuhtentification(currentUser.getUsername()).getNoEnseignant();
         Evaluation saved = es.createEvaluation(evaluationDTO, enseignant);
         return ApiResponse.ok(modelMapper.map(saved, EvaluationDTO.class));
