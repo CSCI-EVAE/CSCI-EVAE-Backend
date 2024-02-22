@@ -71,10 +71,9 @@ public class EvaluationController {
         try {
 
             EvaluationDTO updated = evaluationService.updateEvaluation(id);
-            System.out.println("Checking security permissions...");
             return ApiResponse.ok(updated);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException("Evaluation not found");
+            throw new ResourceNotFoundException("L'evaluation n'existe pas avec cet id : " + id);
         }
     }
 
@@ -85,7 +84,7 @@ public class EvaluationController {
             EvaluationDTO evaluationDetails = es.getEvaluationById(Id);
             return ApiResponse.ok(evaluationDetails);
         } catch (ChangeSetPersister.NotFoundException e) {
-            return ApiResponse.error("Evaluation not found", null);
+            return ApiResponse.error("L'evaluation n'existe pas avec cet id : " + Id, null);
         }
     }
 

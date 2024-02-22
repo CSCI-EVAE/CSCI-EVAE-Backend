@@ -114,7 +114,7 @@ public class QualificatifController {
             Qualificatif updated = qualificatifService.updateQualificatif(id, qualificatifModifie);
             return ApiResponse.ok(updated);
         } catch (ResourceNotFoundException e) {
-            return ApiResponse.error("Qualificatif not found", null);
+            return ApiResponse.error("Qualificatif n'existe pas", null);
         }
     }
 
@@ -131,7 +131,7 @@ public class QualificatifController {
      */
     @PreAuthorize("hasAuthority('ADM')")
     @DeleteMapping("/{id}")
-    public ApiResponse<Void> deleteQualificatif(@PathVariable Long id) {
+    public ApiResponse<?> deleteQualificatif(@PathVariable Long id) {
         try {
             Optional<Qualificatif> qualificatif = qualificatifService.getQualificatifById(id);
             if (qualificatif.isPresent()) {
@@ -140,7 +140,7 @@ public class QualificatifController {
                     return ApiResponse.error("Ce qualificatif ne peut pas etre supprimer car il est lié a " + relatedQuestions.size() + " Questions", null);
                 } else {
                     qualificatifService.deleteQualificatif(id);
-                    return ApiResponse.ok(null);
+                    return ApiResponse.ok(true);
                 }
             } else {
                 return ApiResponse.error("Ce qualificatif n'existe pas", null);

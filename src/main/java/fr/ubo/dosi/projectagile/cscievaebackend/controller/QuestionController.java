@@ -35,7 +35,7 @@ public class QuestionController {
         Question createdQuestion = questionService.createQuestion(question);
         if (createdQuestion == null) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(ApiResponse.error("Question already exists", null));
+                    .body(ApiResponse.error(" Question existe deja", null));
         }
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.ok(questionMapper.questionToQuestionDTO(createdQuestion)));
@@ -57,7 +57,7 @@ public class QuestionController {
             return ResponseEntity.ok(ApiResponse.ok(questionMapper.questionToQuestionDTO(question)));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ApiResponse.error("Question not found", null));
+                    .body(ApiResponse.error("la question n'a pas été trouvée", null));
         }
     }
 
@@ -69,7 +69,7 @@ public class QuestionController {
             logger.info("updatedQuestion : " + updatedQuestion);
             if (updatedQuestion == null) {
                 return ResponseEntity.status(HttpStatus.CONFLICT)
-                        .body(ApiResponse.error("Question already exists", null));
+                        .body(ApiResponse.error("Question exists deja", null));
             }
             return ResponseEntity.ok(ApiResponse.ok(questionMapper.questionToQuestionDTO(updatedQuestion)));
         } catch (ResourceNotFoundException ex) {

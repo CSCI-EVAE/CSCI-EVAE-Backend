@@ -41,7 +41,7 @@ public class RubriqueQuestionController {
             return ResponseEntity.ok(ApiResponse.ok(rubriqueQuestionDTO));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ApiResponse.error("Rubrique Question not found", null));
+                    .body(ApiResponse.error("la rubrique question n'a pas été trouvée", null));
         }
     }
 
@@ -53,7 +53,7 @@ public class RubriqueQuestionController {
             return ResponseEntity.ok(ApiResponse.ok(null));
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(ApiResponse.error("Error deleting Rubrique Question", null));
+                    .body(ApiResponse.error("on peut pas supprimer cette rubrique question", null));
         }
     }
 
