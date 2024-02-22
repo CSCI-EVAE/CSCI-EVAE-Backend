@@ -65,7 +65,6 @@ public class UniteEnseignementController {
                 tmp.setDesignation(eva.getDesignation());
                 tmp.setDebutReponse(eva.getDebutReponse());
                 tmp.setFinReponse(eva.getFinReponse());
-                //if(eva.getElementConstitutif().getId().getCodeEc()!=null)tmp.setCodeEc(eva.getElementConstitutif().getId().getCodeEc());
                 tmp.setEtat(evr.findByCodeUE(u.getId().getCodeUe()).get(0).getEtat());
                 tmp.setEvaExiste(true);
             }

@@ -6,6 +6,7 @@ import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.mappers.EvaluationMapper;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Authentification;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Enseignant;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.AuthentificationServiceImpl;
@@ -86,7 +87,6 @@ public class EvaluationController {
         }
     }
 
-
     /**
      * Endpoint to get all evaluations for the currently authenticated student.
      * The user must have the 'ETU' authority.
@@ -113,10 +113,9 @@ public class EvaluationController {
     //  creer une evaluation from Dto
     @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @PostMapping("create")
-    public    ApiResponse<EvaluationDTO> createEvaluation(@RequestBody EvaluationDTO evaluationDTO) {
-        Evaluation evaluation = modelMapper.map(evaluationDTO, Evaluation.class);
-        logger.info("Evaluation to be saved: " + evaluation);
-        Evaluation saved = es.createEvaluation(evaluation);
+    public ApiResponse<EvaluationDTO> createEvaluation(@RequestBody EvaluationDTO evaluationDTO, @AuthenticationPrincipal UserDetails currentUser) {
+        Enseignant enseignant = as.getAuhtentification(currentUser.getUsername()).getNoEnseignant();
+        Evaluation saved = es.createEvaluation(evaluationDTO, enseignant);
         return ApiResponse.ok(modelMapper.map(saved, EvaluationDTO.class));
     }
 

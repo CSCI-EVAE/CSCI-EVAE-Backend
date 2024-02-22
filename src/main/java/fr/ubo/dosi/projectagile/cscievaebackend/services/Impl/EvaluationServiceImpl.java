@@ -1,12 +1,10 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.services.Impl;
 
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationDTO;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Etudiant;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.*;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.mappers.EvaluationMapper;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Promotion;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.EvaluationRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,8 +68,12 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
     }
 
-
-    public Evaluation createEvaluation(Evaluation evaluation) {
-        return er.save(evaluation);
+    public Evaluation createEvaluation(EvaluationDTO evaluation, Enseignant enseignant) {
+        if (er.existsByNoEvaluation(evaluation.getNoEvaluation())) {
+            throw new IllegalArgumentException("L'évaluation existe déjà");
+        }
+        Evaluation newEvaluation = evaluationMapper.evaluationDTOToEvaluation(evaluation);
+        newEvaluation.setNoEnseignant(enseignant);
+        return er.save(newEvaluation);
     }
 }
