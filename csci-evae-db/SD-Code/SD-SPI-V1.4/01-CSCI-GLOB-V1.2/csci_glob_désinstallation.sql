@@ -4,15 +4,15 @@
 --	
 
 -- Suppression des API de table
-@@03-SUPPRESSION/csci_glob_drop_api
+@@03-SUPPRESSION\csci_glob_drop_api
 
 -- Suppression des tables
-@@03-SUPPRESSION/csci_glob_drop_tab;
+@@03-SUPPRESSION\csci_glob_drop_tab;
 
 -- Suppression des sequences
-@@03-SUPPRESSION/csci_glob_drop_seq;
+@@03-SUPPRESSION\csci_glob_drop_seq;
 
 -- Suppression des packages PLSQL
-@@03-SUPPRESSION/csci_glob_drop_plsql;
+@@03-SUPPRESSION\csci_glob_drop_plsql;
 
 

@@ -48,18 +48,3 @@
 @@01-CREATION\02-API\REV.pks
 @@01-CREATION\02-API\REV.pkb
 @@01-CREATION\02-API\REV.trg
-
--- Création du jeu d'essai
-@@02-JEU-ESSAI\qualificatif
-@@02-JEU-ESSAI\question
-@@02-JEU-ESSAI\rubrique
-@@02-JEU-ESSAI\rubrique_question
-@@02-JEU-ESSAI\evaluation
-@@02-JEU-ESSAI\droit
-@@02-JEU-ESSAI\rubrique_evaluation
-@@02-JEU-ESSAI\question_evaluation
-@@02-JEU-ESSAI\reponse_evaluation
-@@02-JEU-ESSAI\reponse_question
-
-
-commit;

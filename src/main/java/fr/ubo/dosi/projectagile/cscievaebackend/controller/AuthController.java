@@ -52,7 +52,6 @@ public class AuthController {
             throw new UsernameNotFoundException("L'Utilisateur de nom d'utilisateur " + authRequestDTO.getUsername() + " n'a pas été trouvé");
         }
     }
-
     @PostMapping("/api/v1/register")
     public ApiResponse<UserDTO> registerUser(@RequestBody Authentification userDTO) {
         return ApiResponse.ok(userService.registerUser(userDTO));

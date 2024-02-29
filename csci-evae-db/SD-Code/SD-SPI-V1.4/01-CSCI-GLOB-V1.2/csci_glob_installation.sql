@@ -2,21 +2,21 @@
 -- Script d'installation de l'article de configuration CSCI-GLOB
 --	
 
--- Crï¿½ation des ï¿½lï¿½ments DDL :  tables, vues, index, ...
-@@01-CREATION/01-DDL/csci_glob_tab
-@@01-CREATION/01-DDL/csci_glob_pk
-@@01-CREATION/01-DDL/csci_glob_seq
-@@01-CREATION/01-DDL/csci_glob_ind
+-- Création des éléments DDL :  tables, vues, index, ...
+@@01-CREATION\01-DDL\csci_glob_tab
+@@01-CREATION\01-DDL\csci_glob_pk
+@@01-CREATION\01-DDL\csci_glob_seq
+@@01-CREATION\01-DDL\csci_glob_ind
 
--- Crï¿½ation du package CG$ERROS nï¿½cessaire aux API de tabme
-@@01-CREATION/03-PLSQL/CDSAPER.PKS
-@@01-CREATION/03-PLSQL/CDSAPER.PKB
+-- Création du package CG$ERROS nécessaire aux API de tabme
+@@01-CREATION\03-PLSQL\cdsaper.PKS
+@@01-CREATION\03-PLSQL\cdsaper.PKB
 
--- Crï¿½ation de l'API de la table CG_REF_CODES
-@@01-CREATION/02-API/CGRC.PKS
-@@01-CREATION/02-API/CGRC.PKB
-@@01-CREATION/02-API/CGRC.TRG
+-- Création de l'API de la table CG_REF_CODES
+@@01-CREATION\02-API\CGRC.pks
+@@01-CREATION\02-API\CGRC.pkb
+@@01-CREATION\02-API\CGRC.trg
 
 
--- Crï¿½ation des domaines dynamiques
-@@01-CREATION/01-DDL/csci_glob_avt
+-- Création des domaines dynamiques
+@@01-CREATION\01-DDL\csci_glob_avt

@@ -3,5 +3,4 @@
 -- Ph. Saliou 
 --
 
-drop sequence "CGRC_SEQ";
 drop sequence "AUT_SEQ";
