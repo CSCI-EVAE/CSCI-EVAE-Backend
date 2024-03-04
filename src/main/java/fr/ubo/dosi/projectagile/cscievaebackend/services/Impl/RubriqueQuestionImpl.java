@@ -19,7 +19,7 @@ public class RubriqueQuestionImpl implements RubriqueService {
 
     public Rubrique creerRubrique(Rubrique rubrique){
         if(rubriqueRepository.existsByDesignation(rubrique.getDesignation())){
-            throw new EmptyRequestBodyException("Rubrique existe deja avec cette designation: "+ rubrique.getDesignation());
+            throw new IllegalArgumentException("Rubrique existe deja avec cette designation: "+ rubrique.getDesignation());
         }
        return rubriqueRepository.save(rubrique);
     }
@@ -29,6 +29,9 @@ public class RubriqueQuestionImpl implements RubriqueService {
     }
 
     public List<Rubrique> getRubriqueByType(String type) {
+        if(!rubriqueRepository.existsByType(type)){
+            throw new IllegalArgumentException("Rubrique non trouver de ce type: "+ type);
+        }
         return rubriqueRepository.findAllByType(type);
     }
 
@@ -49,7 +52,7 @@ public class RubriqueQuestionImpl implements RubriqueService {
     }
 
     public List<Rubrique> getAllRubrique(){
-        return rubriqueRepository.findAll();
+        return rubriqueRepository.findAllOrderByDesignation();
     }
 
     @Override

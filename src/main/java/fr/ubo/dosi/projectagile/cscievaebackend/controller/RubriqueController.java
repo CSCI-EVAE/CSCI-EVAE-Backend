@@ -1,7 +1,6 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 
 
-
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.RubriqueDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
@@ -9,9 +8,12 @@ import fr.ubo.dosi.projectagile.cscievaebackend.model.Rubrique;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.RubriqueService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,17 +38,14 @@ public class RubriqueController {
      * @return La rubrique créée.
      */
     @PostMapping("/create")
-    public ResponseEntity<?> createRubrique(@RequestBody Rubrique rubrique) {
-        Rubrique createdRubrique = rubriqueService.creerRubrique(rubrique);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.ok(createdRubrique));
+    public ResponseEntity<?> createRubrique(@Validated @RequestBody Rubrique rubrique, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ApiResponse.error("Une erreur s'est produite lors de la création du rubrique",
+                    bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
+        }
+        return ApiResponse.ok(rubriqueService.creerRubrique(rubrique));
     }
 
-    /**
-     * Récupère toutes les rubriques.
-     *
-     * @return La liste de toutes les rubriques.
-     */
     @GetMapping("/all")
     public ResponseEntity<?> getAllRubrique() {
         return ApiResponse.ok(rubriqueService.getAllRubrique().stream().map((element) -> modelMapper.map(element, RubriqueDTO.class)).collect(Collectors.toList()));
@@ -59,9 +58,9 @@ public class RubriqueController {
      * @return La liste des rubriques du type spécifié.
      */
     @GetMapping("/type/{type}")
-    public ResponseEntity<?> getRubriqueByType(@PathVariable("type") String type)  {
+    public ResponseEntity<?> getRubriqueByType(@PathVariable("type") String type) {
         List<Rubrique> rubriques = rubriqueService.getRubriqueByType(type);
-        return ResponseEntity.ok(ApiResponse.ok(rubriques));
+        return ResponseEntity.ok(ApiResponse.ok(rubriques.stream().map((element) -> modelMapper.map(element, RubriqueDTO.class)).collect(Collectors.toList())));
     }
 
     /**
@@ -74,31 +73,32 @@ public class RubriqueController {
     public ResponseEntity<?> getRubriqueById(@PathVariable Long id) {
         try {
             Rubrique rubrique = rubriqueService.getRubriqueById(id);
-            return ResponseEntity.ok(ApiResponse.ok(modelMapper.map(rubrique, RubriqueDTO.class)));
+            return ApiResponse.ok(modelMapper.map(rubrique, RubriqueDTO.class));
         } catch (ResourceNotFoundException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ApiResponse.error("La rubrique n'a pas été trouvée", null));
+            return ApiResponse.error("La rubrique n'a pas été trouvée");
         }
     }
 
     /**
      * Met à jour une rubrique.
      *
-     * @param id L'ID de la rubrique à mettre à jour.
+     * @param id       L'ID de la rubrique à mettre à jour.
      * @param rubrique Les nouvelles informations de la rubrique.
      * @return La rubrique mise à jour.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateRubrique(@PathVariable Long id, @RequestBody Rubrique rubrique) {
+    public ResponseEntity<?> updateRubrique(@PathVariable Long id, @Validated @RequestBody Rubrique rubrique, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ApiResponse.error("Une erreur s'est produite lors de la création du rubrique",
+                    bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
+        }
         try {
             Rubrique updatedRubrique = rubriqueService.updateRubrique(id, rubrique);
-            return ResponseEntity.ok(ApiResponse.ok(updatedRubrique));
+            return ApiResponse.ok(modelMapper.map(updatedRubrique, RubriqueDTO.class));
         } catch (ResourceNotFoundException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ApiResponse.error("La rubrique n'a pas été trouvée", null));
-        }catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(ApiResponse.error("La rubrique n'a pas été trouvée ou lien avec une rubrique", null));
+            return ApiResponse.error("La rubrique n'a pas été trouvée ou lien avec une rubrique");
+        } catch (Exception ex) {
+            return ApiResponse.error("Une erreur s'est produite lors de la mise à jour de la rubrique");
         }
     }
 
@@ -112,13 +112,11 @@ public class RubriqueController {
     public ResponseEntity<?> deleteRubrique(@PathVariable Long id) {
         try {
             rubriqueService.deleteRubrique(id);
-            return ResponseEntity.ok(ApiResponse.ok(null));
+            return ApiResponse.ok("La rubrique a été supprimée avec succès");
         } catch (ResourceNotFoundException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ApiResponse.error(" La rubrique n'a pas été trouvée ou lien avec une rubrique", null));
-        }catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(ApiResponse.error(" La rubrique n'a pas été trouvée ou lien avec une rubrique", null));
+            return ApiResponse.error("La rubrique n'a pas été trouvée ou lien avec une rubrique");
+        } catch (Exception ex) {
+            return ApiResponse.error("Une erreur s'est produite lors de la suppression de la rubrique");
         }
     }
 }

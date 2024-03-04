@@ -64,7 +64,7 @@ public class QualificatifController {
         try {
             Optional<Qualificatif> qualificatif = qualificatifService.getQualificatifById(id);
             if (qualificatif.isPresent()) {
-                return ApiResponse.ok(qualificatif.get());
+                return ApiResponse.ok(modelMapper.map(qualificatif.get(), QualificatifDTO.class));
             } else {
                 return ApiResponse.error("Qualificatif non trouvé");
             }

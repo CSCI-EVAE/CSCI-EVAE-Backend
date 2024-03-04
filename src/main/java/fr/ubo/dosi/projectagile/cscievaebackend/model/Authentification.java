@@ -15,6 +15,7 @@ import org.hibernate.annotations.OnDeleteAction;
 public class Authentification {
     @Id
     @Column(name = "ID_CONNECTION", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Size(max = 5)
