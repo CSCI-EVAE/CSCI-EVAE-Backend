@@ -61,12 +61,6 @@ public class Promotion {
     private String commentaire;
 
     @OneToMany(mappedBy = "promotion")
-    private Set<Candidat> candidats = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "promotion")
-    private Set<Etudiant> etudiants = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "promotion")
     private Set<Evaluation> evaluations = new LinkedHashSet<>();
 
 }

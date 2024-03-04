@@ -18,9 +18,9 @@ public interface QualificatifService {
 
     Optional<Qualificatif> getQualificatifById(Long id) throws ResourceNotFoundException;
 
-    Qualificatif updateQualificatif(Long id, Qualificatif qualificatif) throws ResourceNotFoundException;
+    Qualificatif updateQualificatif(Long id, Qualificatif qualificatif);
 
-    void deleteQualificatif(Long id) throws ResourceNotFoundException, LinkedToAnotherResourceException, SQLException;
+    void deleteQualificatif(Long id) ;
 
 
 }

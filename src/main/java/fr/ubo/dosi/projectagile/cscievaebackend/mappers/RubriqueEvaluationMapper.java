@@ -13,5 +13,5 @@ import java.util.stream.Collectors;
 @Mapper(uses = {RubriqueMapper.class})
 public interface RubriqueEvaluationMapper {
 
-    RubriqueEvaluationDTO rubriqueEvaluationToRubriqueEvaluationDTO(RubriqueEvaluation rubriqueEvaluation);
+
 }

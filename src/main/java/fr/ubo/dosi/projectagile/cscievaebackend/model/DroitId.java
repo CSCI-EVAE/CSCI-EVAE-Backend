@@ -14,7 +14,7 @@ import java.util.Objects;
 @Setter
 @Embeddable
 public class DroitId implements Serializable {
-    private static final long serialVersionUID = 6202781662823004219L;
+    private static final long serialVersionUID = -1513558432566902975L;
     @NotNull
     @Column(name = "ID_EVALUATION", nullable = false)
     private Integer idEvaluation;

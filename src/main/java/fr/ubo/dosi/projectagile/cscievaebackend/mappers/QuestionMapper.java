@@ -11,7 +11,4 @@ public interface QuestionMapper {
 
     QuestionDTO questionToQuestionDTO(Question question);
 
-    Question questionDTOToQuestion(QuestionDTO questionDTO);
-
-
 }

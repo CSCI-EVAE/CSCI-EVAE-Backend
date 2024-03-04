@@ -1,10 +1,14 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.EmbeddableInstantiator;
+
 
 @Getter
 @Setter
@@ -12,25 +16,21 @@ import lombok.Setter;
 @Table(name = "QUALIFICATIF")
 public class Qualificatif {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "QUA_SEQ"
-    )
-    @SequenceGenerator(
-            name = "QUA_SEQ",
-            sequenceName = "QUA_SEQ",
-            allocationSize = 1
-    )
     @Column(name = "ID_QUALIFICATIF", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Size(max = 16)
-    @NotNull
+    @NotNull(message = "Le champ maximal ne doit pas être null")
+    @NotEmpty(message = "Le champ maximal ne doit pas être vide")
+    @NotBlank(message = "Le champ maximal ne doit pas être vide")
     @Column(name = "MAXIMAL", nullable = false, length = 16)
     private String maximal;
 
     @Size(max = 16)
-    @NotNull
+    @NotNull(message = "Le champ minimal ne doit pas être  null")
+    @NotEmpty(message = "Le champ minimal ne doit pas être vide")
+    @NotBlank(message = "Le champ minimal ne doit pas être vide")
     @Column(name = "MINIMAL", nullable = false, length = 16)
     private String minimal;
 

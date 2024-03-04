@@ -1,6 +1,5 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -18,18 +17,9 @@ import java.util.Set;
 @Table(name = "RUBRIQUE_EVALUATION")
 public class RubriqueEvaluation {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "REV_SEQ"
-    )
-    @SequenceGenerator(
-            name = "REV_SEQ",
-            sequenceName = "REV_SEQ",
-            allocationSize = 1
-    )
     @Column(name = "ID_RUBRIQUE_EVALUATION", nullable = false)
     private Integer id;
-    @JsonIgnore
+
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
@@ -49,7 +39,7 @@ public class RubriqueEvaluation {
     @Column(name = "DESIGNATION", length = 64)
     private String designation;
 
-    @OneToMany(mappedBy = "idRubriqueEvaluation",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idRubriqueEvaluation")
     private Set<QuestionEvaluation> questionEvaluations = new LinkedHashSet<>();
 
 }

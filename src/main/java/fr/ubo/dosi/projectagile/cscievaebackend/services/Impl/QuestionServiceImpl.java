@@ -3,6 +3,7 @@ package fr.ubo.dosi.projectagile.cscievaebackend.services.Impl;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Qualificatif;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Question;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
+import fr.ubo.dosi.projectagile.cscievaebackend.repository.QualificatifRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.QuestionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,38 +12,49 @@ import fr.ubo.dosi.projectagile.cscievaebackend.services.QuestionService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {
 
     @Autowired
     private QuestionRepository questionRepository;
+    @Autowired
+    private QualificatifRepository qualificatifRepository;
+    Logger logger = Logger.getLogger(QuestionServiceImpl.class.getName());
 
     @Transactional
     @Override
     public Question createQuestion(Question question) {
-        List<Question> questions = questionRepository.findAll();
-        for (Question q : questions) {
-            if (q.getIntitule().equals(question.getIntitule())) {
-                return null;
-            }
+        if (questionRepository.existsByIntitule(question.getIntitule())) {
+            throw new IllegalArgumentException("La question existe déjà");
+        }
+        if (!qualificatifRepository.existsByQualificatifId(question.getIdQualificatif().getId())) {
+            throw new IllegalArgumentException("Le qualificatif n'existe pas !!");
         }
         return questionRepository.save(question);
     }
 
     @Override
     public List<Question> getAllQuestions() {
-        return questionRepository.findAll();
+        if (questionRepository.findAll().isEmpty()) {
+            throw new IllegalArgumentException("la liste des questions est vide");
+        }else {
+            return questionRepository.findAll();
+        }
     }
 
     @Override
-    public Question getQuestionById(Long id) throws ResourceNotFoundException {
-        return questionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Question not found for this id :: " + id));
+    public Question getQuestionById(Long id)  {
+        if (questionRepository.findById(id).isPresent()) {
+            return questionRepository.findById(id).get();
+        } else {
+            throw new IllegalArgumentException("La question n'a pas été trouvée pour cet id : " + id);
+        }
     }
 
     @Override
-    public Question updateQuestion(Long id, Question question) throws ResourceNotFoundException {
+    public Question updateQuestion(Long id, Question question)  {
         Optional<Question> optionalQuestion = questionRepository.findById(id);
         if (optionalQuestion.isPresent()) {
             Question questionUpdate = optionalQuestion.get();
@@ -52,7 +64,7 @@ public class QuestionServiceImpl implements QuestionService {
             questionUpdate.setNoEnseignant(question.getNoEnseignant());
             return questionRepository.save(questionUpdate);
         } else {
-            throw new ResourceNotFoundException("Question not found for this id :: " + id);
+            throw new IllegalArgumentException("La question n'a pas été trouvée pour cet id : " + id);
         }
     }
 
@@ -60,15 +72,14 @@ public class QuestionServiceImpl implements QuestionService {
     public void deleteQuestion(Long id) throws ResourceNotFoundException {
         Optional<Question> optionalQuestion = questionRepository.findById(id);
         if (optionalQuestion.isPresent()) {
-            questionRepository.deleteById(id);
+            try {
+                questionRepository.deleteById(id);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("La question est liée à un autre objet");
+            }
         } else {
-            throw new ResourceNotFoundException("Question not found for this id :: " + id);
+            throw new ResourceNotFoundException("La question n'a pas été trouvée pour cet id :: " + id);
         }
     }
 
-
-    @Override
-    public List<Question> findQuestionsByQualificatifId(Qualificatif idQualificatif) {
-        return questionRepository.findByIdQualificatif(idQualificatif);
-    }
 }

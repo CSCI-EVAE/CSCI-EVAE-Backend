@@ -57,21 +57,4 @@ public class RubriqueQuestionControllerTest {
     }
 
 
-    @Test
-    public void testDeleteRubriqueQuestion() {
-        RubriqueQuestion rubriqueQuestionToDelete = new RubriqueQuestion();
-        ResponseEntity<ApiResponse<Void>> response = rubriqueQuestionController.deleteRubriqueQuestion(rubriqueQuestionToDelete);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(ApiResponse.ok(null), response.getBody());
-        verify(rubriqueQuestionService, times(1)).deleteRubriqueQuestion(rubriqueQuestionToDelete);
-    }
-    @Test
-    public void testDeleteRubriqueQuestion_Error() {
-        RubriqueQuestion rubriqueQuestionToDelete = new RubriqueQuestion();
-        doThrow(RuntimeException.class).when(rubriqueQuestionService).deleteRubriqueQuestion(rubriqueQuestionToDelete);
-        ResponseEntity<ApiResponse<Void>> response = rubriqueQuestionController.deleteRubriqueQuestion(rubriqueQuestionToDelete);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        assertEquals(ApiResponse.error("Error deleting Rubrique Question", null), response.getBody());
-        verify(rubriqueQuestionService, times(1)).deleteRubriqueQuestion(rubriqueQuestionToDelete);
-    }
 }

@@ -5,18 +5,17 @@ import fr.ubo.dosi.projectagile.cscievaebackend.DTO.QualificatifDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Qualificatif;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Question;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.QualificatifService;
-import fr.ubo.dosi.projectagile.cscievaebackend.services.QuestionService;
+
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -25,13 +24,11 @@ import java.util.stream.Collectors;
 public class QualificatifController {
 
     private final QualificatifService qualificatifService;
-    private final QuestionService questionService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public QualificatifController(QualificatifService qualificatifService, QuestionService questionService, ModelMapper modelMapper) {
+    public QualificatifController(QualificatifService qualificatifService, ModelMapper modelMapper) {
         this.qualificatifService = qualificatifService;
-        this.questionService = questionService;
         this.modelMapper = modelMapper;
     }
 
@@ -44,9 +41,9 @@ public class QualificatifController {
      *
      * @return ApiResponse containing a list of QualificatifDTOs
      */
-    @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
+
     @GetMapping
-    public ApiResponse<List<QualificatifDTO>> getQualificatifs() {
+    public ResponseEntity<?> getQualificatifs() {
         return ApiResponse.ok(qualificatifService.getAllQualificatifs().stream().map((element) -> modelMapper.map(element, QualificatifDTO.class)).collect(Collectors.toList()));
     }
 
@@ -61,17 +58,18 @@ public class QualificatifController {
      * @param id The ID of the Qualificatif to retrieve.
      * @return ApiResponse containing the Qualificatif if found, otherwise an error message.
      */
-    @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
+
     @GetMapping("/{id}")
-    public ApiResponse<Qualificatif> getQualificatifById(@Valid @PathVariable Long id) {
+    public ResponseEntity<?> getQualificatifById(@Valid @PathVariable Long id) {
         try {
             Optional<Qualificatif> qualificatif = qualificatifService.getQualificatifById(id);
-            return qualificatif.map(ApiResponse::ok)
-                    .orElse(ApiResponse.error("Aucun qualificatif trouvé avec cet ID",
-                            null));
+            if (qualificatif.isPresent()) {
+                return ApiResponse.ok(qualificatif.get());
+            } else {
+                return ApiResponse.error("Qualificatif non trouvé");
+            }
         } catch (ResourceNotFoundException e) {
-            return ApiResponse.error("Une erreur s'est produite lors de la récupération du qualificatif",
-                    null);
+            return ApiResponse.error("Une erreur s'est produite lors de la récupération du qualificatif");
         }
     }
 
@@ -84,17 +82,13 @@ public class QualificatifController {
      * @param qualificatif Le Qualificatif à ajouter.
      * @return ApiResponse contenant le Qualificatif ajouté.
      */
-    @PreAuthorize("hasAuthority('ADM')")
     @PostMapping
-    public ResponseEntity <ApiResponse<Qualificatif>> addQualificatif(@RequestBody Qualificatif qualificatif) {
-        Qualificatif qualificatifAjouter = qualificatifService.createQualificatif(qualificatif);
-        if (qualificatifAjouter == null) {
-            return ResponseEntity.status(409)
-                    .body(ApiResponse.error("Le qualificatif existe déjà", null));
+    public ResponseEntity<?> addQualificatif(@Validated @RequestBody Qualificatif qualificatif, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ApiResponse.error("Une erreur s'est produite lors de la création du qualificatif", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
         }
-        return ResponseEntity.ok(ApiResponse.ok(qualificatifAjouter));
+        return ApiResponse.ok(qualificatifService.createQualificatif(qualificatif));
     }
-
 
 
     /**
@@ -107,15 +101,13 @@ public class QualificatifController {
      * @param qualificatifModifie Le Qualificatif modifié.
      * @return ApiResponse contenant le Qualificatif mis à jour.
      */
-    @PreAuthorize("hasAuthority('ADM')")
     @PutMapping("/{id}")
-    public ApiResponse<Qualificatif> updateQualificatif(@PathVariable Long id, @RequestBody Qualificatif qualificatifModifie) {
-        try {
-            Qualificatif updated = qualificatifService.updateQualificatif(id, qualificatifModifie);
-            return ApiResponse.ok(updated);
-        } catch (ResourceNotFoundException e) {
-            return ApiResponse.error("Qualificatif n'existe pas", null);
+    public ResponseEntity<?> updateQualificatif(@Validated @PathVariable Long id, @Validated @RequestBody Qualificatif qualificatifModifie, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ApiResponse.error("Une erreur s'est produite lors de la création du qualificatif", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
         }
+        Qualificatif updated = qualificatifService.updateQualificatif(id, qualificatifModifie);
+        return ApiResponse.ok("Qualificatif mis à jour avec succès", updated);
     }
 
     /**
@@ -129,28 +121,10 @@ public class QualificatifController {
      * @param id L'ID du Qualificatif à supprimer.
      * @return ApiResponse avec un message de succès ou d'erreur.
      */
-    @PreAuthorize("hasAuthority('ADM')")
     @DeleteMapping("/{id}")
-    public ApiResponse<?> deleteQualificatif(@PathVariable Long id) {
-        try {
-            Optional<Qualificatif> qualificatif = qualificatifService.getQualificatifById(id);
-            if (qualificatif.isPresent()) {
-                List<Question> relatedQuestions = questionService.findQuestionsByQualificatifId(qualificatif.get());
-                if (!relatedQuestions.isEmpty()) {
-                    return ApiResponse.error("Ce qualificatif ne peut pas etre supprimer car il est lié a " + relatedQuestions.size() + " Questions", null);
-                } else {
-                    qualificatifService.deleteQualificatif(id);
-                    return ApiResponse.ok(true);
-                }
-            } else {
-                return ApiResponse.error("Ce qualificatif n'existe pas", null);
-
-            }
-        } catch (SQLException e) {
-            return ApiResponse.error("Error deleting qualificatif", null);
-        } catch (ResourceNotFoundException e) {
-            return ApiResponse.error("Qualificatif not found", null);
-        }
+    public ResponseEntity<?> deleteQualificatif(@Validated @PathVariable Long id) {
+        qualificatifService.deleteQualificatif(id);
+        return ApiResponse.ok("Qualificatif supprimé avec succès");
     }
 
 }

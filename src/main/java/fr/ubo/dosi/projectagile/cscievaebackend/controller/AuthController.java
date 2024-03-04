@@ -12,9 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -35,25 +35,35 @@ public class AuthController {
     }
 
     /**
-     * Authentifie l'utilisateur et génère un token JWT.
+     * This method is responsible for authenticating a user and generating a JWT token.
+     * It is mapped to the "/api/v1/login" endpoint and responds to HTTP POST requests.
      *
-     * @param authRequestDTO L'objet contenant les informations d'authentification de l'utilisateur (nom d'utilisateur et mot de passe).
-     * @return ApiResponse contenant un objet JwtResponseDTO si l'authentification est réussie,
-     * sinon une exception UsernameNotFoundException est lancée.
+     * @param authRequestDTO This is a request body object that contains the username and password for authentication.
+     * @return ResponseEntity<ApiResponse < JwtResponseDTO>> This returns a response entity that contains an API response.
+     * The API response includes a status, message, and a JWT response DTO that contains the generated JWT token and user details.
+     * If the authentication is successful, it returns a 200 OK response with the JWT token and user details.
+     * If the authentication fails due to incorrect credentials, it returns a 500 Internal Server Error response with an appropriate message.
+     * If the user does not exist, it throws a UsernameNotFoundException.
      */
     @PostMapping("/api/v1/login")
-    public ResponseEntity<ApiResponse<JwtResponseDTO>> AuthenticateAndGetToken(@RequestBody AuthRequestDTO authRequestDTO) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDTO.getUsername(), authRequestDTO.getPassword()));
-        logger.info("authentication : " + authentication);
-        if (authentication.isAuthenticated()) {
-            return ResponseEntity.ok(new ApiResponse<>(true, "La connexion a réussi"
-                    , new JwtResponseDTO(jwtService.GenerateToken(authRequestDTO.getUsername()), new UserDTO(userService.getUserByUsername(authRequestDTO.getUsername())))));
-        } else {
-            throw new UsernameNotFoundException("L'Utilisateur de nom d'utilisateur " + authRequestDTO.getUsername() + " n'a pas été trouvé");
+    public ResponseEntity<?> AuthenticateAndGetToken(@RequestBody AuthRequestDTO authRequestDTO) {
+        try {
+            if (userService.getUserByUsername(authRequestDTO.getUsername()) == null) {
+               return ApiResponse.error("L'utilisateur n'existe pas");
+            }
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDTO.getUsername(), authRequestDTO.getPassword()));
+            if (authentication.isAuthenticated()) {
+                return ResponseEntity.ok(new ApiResponse<>(true, "La connexion a réussi", new JwtResponseDTO(jwtService.GenerateToken(authRequestDTO.getUsername()), new UserDTO(userService.getUserByUsername(authRequestDTO.getUsername())))));
+            } else {
+                return ApiResponse.error("Nom d'utilisateur ou mot de passe incorrect");
+            }
+        } catch (BadCredentialsException e) {
+            return ApiResponse.error("Nom d'utilisateur ou mot de passe incorrect");
         }
     }
+
     @PostMapping("/api/v1/register")
-    public ApiResponse<UserDTO> registerUser(@RequestBody Authentification userDTO) {
+    public ResponseEntity<?> registerUser(@RequestBody Authentification userDTO) {
         return ApiResponse.ok(userService.registerUser(userDTO));
     }
 

@@ -15,7 +15,7 @@ import java.util.Objects;
 @Setter
 @Embeddable
 public class PromotionId implements Serializable {
-    private static final long serialVersionUID = 774391439368711117L;
+    private static final long serialVersionUID = 4017147641493415907L;
     @Size(max = 8)
     @NotNull
     @Column(name = "CODE_FORMATION", nullable = false, length = 8)

@@ -16,7 +16,6 @@ import org.hibernate.annotations.OnDeleteAction;
 @NoArgsConstructor
 @Table(name = "RUBRIQUE_QUESTION")
 public class RubriqueQuestion {
-
     @EmbeddedId
     private RubriqueQuestionId id;
 
@@ -35,10 +34,4 @@ public class RubriqueQuestion {
     @NotNull
     @Column(name = "ORDRE", nullable = false)
     private Long ordre;
-
-    public RubriqueQuestion(RubriqueQuestionId rubriqueQuestionId, Question question, Long ordre) {
-        this.id = rubriqueQuestionId;
-        this.idQuestion = question;
-        this.ordre = ordre;
-    }
 }

@@ -21,9 +21,8 @@ public class userService {
 
         if (userRepository.findByLoginConnection(registrationRequest.getLoginConnection())!=null) {
 
-            throw new RuntimeException("Username already exists");
+            throw new RuntimeException("L'utilisateur existe déjà");
         }
-
         String encodedPassword = passwordEncoder.encode(registrationRequest.getMotPasse());
         registrationRequest.setMotPasse(encodedPassword);
         userRepository.save(registrationRequest);

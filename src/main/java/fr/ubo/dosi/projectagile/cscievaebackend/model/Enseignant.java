@@ -15,19 +15,11 @@ import java.util.Set;
 @Table(name = "ENSEIGNANT")
 public class Enseignant {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "ENS_SEQ"
-    )
-    @SequenceGenerator(
-            name = "ENS_SEQ",
-            sequenceName = "ENS_SEQ",
-            allocationSize = 1
-    )
     @Column(name = "NO_ENSEIGNANT", nullable = false)
     private Short id;
 
     @Size(max = 5)
+    @NotNull
     @Column(name = "TYPE", nullable = false, length = 5)
     private String type;
 
@@ -85,27 +77,6 @@ public class Enseignant {
     private String emailPerso;
 
     @OneToMany(mappedBy = "noEnseignant")
-    private Set<ElementConstitutif> elementConstitutifs = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "noEnseignant")
-    private Set<UniteEnseignement> uniteEnseignements = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "noEnseignant")
-    private Set<Authentification> authentifications = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "noEnseignant")
-    private Set<Droit> droits = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "noEnseignant")
     private Set<Evaluation> evaluations = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "noEnseignant")
-    private Set<Promotion> promotions = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "noEnseignant")
-    private Set<Question> questions = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "noEnseignant")
-    private Set<Rubrique> rubriques = new LinkedHashSet<>();
 
 }

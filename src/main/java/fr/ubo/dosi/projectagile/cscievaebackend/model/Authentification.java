@@ -14,15 +14,6 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name = "AUTHENTIFICATION")
 public class Authentification {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "AUT_SEQ"
-    )
-    @SequenceGenerator(
-            name = "AUT_SEQ",
-            sequenceName = "AUT_SEQ",
-            allocationSize = 1
-    )
     @Column(name = "ID_CONNECTION", nullable = false)
     private Long id;
 
@@ -41,7 +32,7 @@ public class Authentification {
     private String pseudoConnection;
 
     @Size(max = 255)
-    @Column(name = "MOT_PASSE", length = 32)
+    @Column(name = "MOT_PASSE")
     private String motPasse;
 
     @ManyToOne(fetch = FetchType.LAZY)

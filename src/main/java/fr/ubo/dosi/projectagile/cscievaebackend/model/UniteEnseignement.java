@@ -8,9 +8,6 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 @Getter
 @Setter
 @Entity
@@ -53,9 +50,5 @@ public class UniteEnseignement {
 
     @Column(name = "NBH_TP")
     private Short nbhTp;
-
-    @OneToMany(mappedBy = "uniteEnseignement")
-    private Set<ElementConstitutif> elementConstitutifs = new LinkedHashSet<>();
-
 
 }

@@ -1,12 +1,13 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Setter
@@ -15,21 +16,6 @@ import org.hibernate.annotations.OnDeleteAction;
 public class ElementConstitutif {
     @EmbeddedId
     private ElementConstitutifId id;
-
-    @MapsId("id")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumns({
-            @JoinColumn(name = "CODE_FORMATION", referencedColumnName = "CODE_FORMATION", nullable = false),
-            @JoinColumn(name = "CODE_UE", referencedColumnName = "CODE_UE", nullable = false)
-    })
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    private UniteEnseignement uniteEnseignement;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "NO_ENSEIGNANT", nullable = false)
-    private Enseignant noEnseignant;
 
     @Size(max = 64)
     @NotNull

@@ -9,8 +9,6 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -18,15 +16,6 @@ import java.util.Set;
 @Table(name = "EVALUATION")
 public class Evaluation {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "EVE_SEQ"
-    )
-    @SequenceGenerator(
-            name = "EVE_SEQ",
-            sequenceName = "EVE_SEQ",
-            allocationSize = 1
-    )
     @Column(name = "ID_EVALUATION", nullable = false)
     private Integer id;
 
@@ -36,23 +25,15 @@ public class Evaluation {
     @JoinColumn(name = "NO_ENSEIGNANT", nullable = false)
     private Enseignant noEnseignant;
 
-    //@NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumns({
-            @JoinColumn(name = "CODE_FORMATION", referencedColumnName = "CODE_FORMATION", nullable = false,insertable = false, updatable = false),
-            @JoinColumn(name = "CODE_UE", referencedColumnName = "CODE_UE", nullable = false ,insertable = false, updatable = false),
-            @JoinColumn(name = "CODE_EC", referencedColumnName = "CODE_EC", nullable = false ,insertable = false, updatable = false)
-    })
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    private ElementConstitutif elementConstitutif;
-
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumns({
-            @JoinColumn(name = "CODE_FORMATION", referencedColumnName = "ANNEE_UNIVERSITAIRE", nullable = false, insertable = false, updatable = false),
-            @JoinColumn(name = "ANNEE_UNIVERSITAIRE", referencedColumnName = "CODE_FORMATION", nullable = false, insertable = false, updatable = false)
+            @JoinColumn(name = "CODE_FORMATION", referencedColumnName = "CODE_FORMATION", nullable = false,insertable=false, updatable=false),
+            @JoinColumn(name = "CODE_UE", referencedColumnName = "CODE_UE", nullable = false,insertable=false, updatable=false),
+            @JoinColumn(name = "CODE_EC", referencedColumnName = "CODE_EC", nullable = false,insertable=false, updatable=false)
     })
-    private Promotion promotion;
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    private ElementConstitutif elementConstitutif;
 
     @NotNull
     @Column(name = "NO_EVALUATION", nullable = false)
@@ -80,13 +61,13 @@ public class Evaluation {
     @Column(name = "FIN_REPONSE", nullable = false)
     private LocalDate finReponse;
 
-    @OneToMany(mappedBy = "idEvaluation")
-    private Set<Droit> droits = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "idEvaluation")
-    private Set<ReponseEvaluation> reponseEvaluations = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "idEvaluation")
-    private Set<RubriqueEvaluation> rubriqueEvaluations = new LinkedHashSet<>();
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumns({
+            @JoinColumn(name = "CODE_FORMATION", referencedColumnName = "ANNEE_UNIVERSITAIRE", nullable = false,insertable=false, updatable=false),
+            @JoinColumn(name = "ANNEE_UNIVERSITAIRE", referencedColumnName = "CODE_FORMATION", nullable = false,insertable=false, updatable=false)
+    })
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    private Promotion promotion;
 
 }

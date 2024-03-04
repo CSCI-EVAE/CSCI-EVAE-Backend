@@ -3,6 +3,9 @@ import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -11,6 +14,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.nio.file.AccessDeniedException;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
@@ -22,53 +29,49 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiResponse handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
-        return ApiResponse.error("Le qualificatif est lié à une question et ne peut pas être supprimé.", null);
+    public ResponseEntity<?> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        return ApiResponse.error("cet objet est lié à un autre objet ou à une autre ressource");
     }
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<String> handleBadRequestException(BadRequestException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    public ResponseEntity<?> handleBadRequestException(BadRequestException ex) {
+        return ApiResponse.error("Requête incorrecte");
     }
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<String>> handleAllExceptions(Exception ex, WebRequest request) {
-        ApiResponse<String> apiResponse = ApiResponse.error(ex.getLocalizedMessage(), null);
-        return new ResponseEntity<>(apiResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<?> handleAllExceptions(Exception ex, WebRequest request) {
+        return ApiResponse.error("Une erreur s'est produite");
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiResponse<String>>handleIllegalArgumentException(IllegalArgumentException ex) {
-        ApiResponse apiError = new ApiResponse(false,HttpStatus.BAD_REQUEST.toString(), ex.getMessage());
-        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+        return  ApiResponse.error(ex.getMessage());
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ApiResponse<String>> handleAccessDeniedException(AccessDeniedException ex) {
-        ApiResponse<String> response = new ApiResponse<>(false, "Access Denied", ex.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+        return ApiResponse.error("Accès refusé");
     }
 
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<ApiResponse<String>> handleNullPointerException(NullPointerException ex) {
-        ApiResponse<String> response = new ApiResponse<>(false, "Null Pointer Exception", ex.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return  ApiResponse.error("La ressource demandée n'existe pas");
     }
 
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<ApiResponse<String>> handleIllegalStateException(IllegalStateException ex) {
-        ApiResponse<String> response = new ApiResponse<>(false, "Illegal State Exception", ex.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return ApiResponse.error(ex.getMessage());
     }
 
     @ExceptionHandler(IllegalAccessException.class)
     public ResponseEntity<ApiResponse<String>> handleIllegalAccessException(IllegalAccessException ex) {
-        ApiResponse<String> response = new ApiResponse<>(false, "Illegal Access Exception", ex.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return ApiResponse.error("Accès illégal");
     }
 
-    // LinkedToAnotherResourceException
+    public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException ex) {
+        return ApiResponse.error("Identifiant ou mot de passe incorrect");
+    }
+    // manage LinkedtoAnotherResourceException
     @ExceptionHandler(LinkedToAnotherResourceException.class)
-    public ResponseEntity<ApiResponse<String>> handleLinkedToAnotherResourceException(LinkedToAnotherResourceException ex) {
-        ApiResponse<String> response = new ApiResponse<>(false, "Linked To Another Resource Exception", ex.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<?> handleLinkedToAnotherResourceException(LinkedToAnotherResourceException ex) {
+        return ApiResponse.error(ex.getMessage());
     }
 }

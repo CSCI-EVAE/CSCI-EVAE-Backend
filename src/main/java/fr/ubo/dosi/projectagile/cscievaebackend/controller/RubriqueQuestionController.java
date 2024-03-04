@@ -3,9 +3,9 @@ package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.IncomingRubriqueQuestionDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.RubriqueQuestionDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.RubriqueQuestionsDTO;
+import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueQuestion;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueQuestionId;
-import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.RubriqueQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,39 +27,39 @@ public class RubriqueQuestionController {
 
     @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @GetMapping("/all")
-    public ApiResponse<List<RubriqueQuestionsDTO>> getQuestionsForAllRubriques() {
+    public ResponseEntity<?> getQuestionsForAllRubriques() {
         return ApiResponse.ok(rubriqueQuestionService.findAllQuestionsForRubriques());
     }
 
 
     @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @GetMapping("/{idQuestion}/{idRubrique}")
-    public ResponseEntity<ApiResponse<RubriqueQuestionDTO>> getRubriqueQuestionById(@PathVariable Long idQuestion, @PathVariable Long idRubrique) {
+    public ResponseEntity<?> getRubriqueQuestionById(@PathVariable Long idQuestion, @PathVariable Long idRubrique) {
         RubriqueQuestionId rubriqueQuestionId = new RubriqueQuestionId(idQuestion.intValue(), idRubrique.intValue());
         RubriqueQuestionDTO rubriqueQuestionDTO = rubriqueQuestionService.getRubriqueQuestionById(rubriqueQuestionId);
         if (rubriqueQuestionDTO != null) {
             return ResponseEntity.ok(ApiResponse.ok(rubriqueQuestionDTO));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ApiResponse.error("la rubrique question n'a pas été trouvée", null));
+                    .body(ApiResponse.error("la rubrique question n'a pas été trouvée"));
         }
     }
 
     @PreAuthorize("hasAuthority('ADM')")
     @DeleteMapping("/delete")
-    public ResponseEntity<ApiResponse<Void>> deleteRubriqueQuestion(@RequestBody RubriqueQuestion rubriqueQuestion) {
+    public ResponseEntity<?> deleteRubriqueQuestion(@RequestBody RubriqueQuestion rubriqueQuestion) {
         try {
             rubriqueQuestionService.deleteRubriqueQuestion(rubriqueQuestion);
-            return ResponseEntity.ok(ApiResponse.ok(null));
+            return ResponseEntity.ok(ApiResponse.ok("la rubrique question a été supprimée"));
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(ApiResponse.error("on peut pas supprimer cette rubrique question", null));
+                    .body(ApiResponse.error("on peut pas supprimer cette rubrique question"));
         }
     }
 
     @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @PostMapping("/process")
-    public ApiResponse<String> processRubriqueQuestions(@RequestBody List<IncomingRubriqueQuestionDTO> incomingData) {
+    public ResponseEntity<?> processRubriqueQuestions(@RequestBody List<IncomingRubriqueQuestionDTO> incomingData) {
         String result = rubriqueQuestionService.processAndStore(incomingData);
 
         if (result.equals("tout les données sont bien enregistrées")) {
@@ -71,7 +71,7 @@ public class RubriqueQuestionController {
 
     @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @PostMapping("/AjouterRubriqueQuestion")
-    public ApiResponse<String> processRubriqueQuestions(@RequestBody IncomingRubriqueQuestionDTO incomingData) {
+    public ResponseEntity<?> processRubriqueQuestions(@RequestBody IncomingRubriqueQuestionDTO incomingData) {
         String result = rubriqueQuestionService.AjouterRubriqueQuestion(incomingData);
 
         if (result.equals("tout les données sont bien enregistrées")) {
@@ -83,14 +83,14 @@ public class RubriqueQuestionController {
 
     @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @PostMapping("/update")
-    public ApiResponse<RubriqueQuestion> addRubriqueQuestion(@RequestBody RubriqueQuestion rubriqueQuestion) {
+    public ResponseEntity<?> addRubriqueQuestion(@RequestBody RubriqueQuestion rubriqueQuestion) {
         RubriqueQuestion rubriqueQuestionAjouter = rubriqueQuestionService.saveRubriqueQuestion(rubriqueQuestion);
         return ApiResponse.ok(rubriqueQuestionAjouter);
     }
 
     @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @PostMapping("/UpdateRubriqueQuestions")
-    public ApiResponse<String> updateRubriqueQuestions(@RequestBody IncomingRubriqueQuestionDTO incomingData) {
+    public ResponseEntity<?> updateRubriqueQuestions(@RequestBody IncomingRubriqueQuestionDTO incomingData) {
         try {
             String result = rubriqueQuestionService.updateRubriqueQuestions(incomingData);
             return ApiResponse.ok(result);
@@ -100,7 +100,7 @@ public class RubriqueQuestionController {
     }
     @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @DeleteMapping("/deleteAll/{id}")
-    public ApiResponse<String> deleteAllRubriqueQuestion(@PathVariable Long id) {
+    public ResponseEntity<?> deleteAllRubriqueQuestion(@PathVariable Long id) {
         try {
             String result = rubriqueQuestionService.deleteAllRubriqueQuestion(id);
             return ApiResponse.ok(result);

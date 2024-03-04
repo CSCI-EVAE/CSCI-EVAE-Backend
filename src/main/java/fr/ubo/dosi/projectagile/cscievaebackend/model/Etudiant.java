@@ -1,6 +1,5 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.model;
 
-import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -10,8 +9,6 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -22,15 +19,6 @@ public class Etudiant {
     @Size(max = 50)
     @Column(name = "NO_ETUDIANT", nullable = false, length = 50)
     private String noEtudiant;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumns({
-            @JoinColumn(name = "CODE_FORMATION", referencedColumnName = "CODE_FORMATION", nullable = false),
-            @JoinColumn(name = "ANNEE_UNIVERSITAIRE", referencedColumnName = "ANNEE_UNIVERSITAIRE", nullable = false)
-    })
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    private Promotion promotion;
 
     @Size(max = 50)
     @NotNull
@@ -108,9 +96,13 @@ public class Etudiant {
     @Column(name = "GROUPE_ANGLAIS")
     private Long groupeAnglais;
 
-    @OneToMany(mappedBy = "noEtudiant")
-    private Set<Authentification> authentifications = new LinkedHashSet<>();
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumns({
+            @JoinColumn(name = "CODE_FORMATION", referencedColumnName = "CODE_FORMATION", nullable = false),
+            @JoinColumn(name = "ANNEE_UNIVERSITAIRE", referencedColumnName = "ANNEE_UNIVERSITAIRE", nullable = false)
+    })
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    private Promotion promotion;
 
-    @OneToMany(mappedBy = "noEtudiant")
-    private Set<ReponseEvaluation> reponseEvaluations = new LinkedHashSet<>();
 }

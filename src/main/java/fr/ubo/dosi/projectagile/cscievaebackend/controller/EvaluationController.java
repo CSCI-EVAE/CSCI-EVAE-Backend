@@ -55,7 +55,7 @@ public class EvaluationController {
      */
     @PreAuthorize("hasAuthority('ENS')")
     @GetMapping("getAll")
-    public ApiResponse<?> getAll(@AuthenticationPrincipal UserDetails currentUser) {
+    public ResponseEntity<?> getAll(@AuthenticationPrincipal UserDetails currentUser) {
         Authentification auth = as.getAuhtentification(currentUser.getUsername());
         Set<Evaluation> evaluations = auth.getNoEnseignant().getEvaluations();
         if (evaluations == null) {
@@ -67,7 +67,7 @@ public class EvaluationController {
 
     @PreAuthorize("hasAuthority('ENS')")
     @PutMapping("soumettre/{id}")
-    public ApiResponse<EvaluationDTO> soumettreEvaluation(@PathVariable Long id) throws ResourceNotFoundException {
+    public ResponseEntity<?> soumettreEvaluation(@PathVariable Long id) throws ResourceNotFoundException {
         try {
 
             EvaluationDTO updated = evaluationService.updateEvaluation(id);
@@ -79,7 +79,7 @@ public class EvaluationController {
 
     @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @GetMapping("details/{Id}")
-    public ApiResponse<EvaluationDTO> getDetails(@PathVariable Long Id) {
+    public ResponseEntity<?> getDetails(@PathVariable Long Id) {
         try {
             EvaluationDTO evaluationDetails = es.getEvaluationById(Id);
             return ApiResponse.ok(evaluationDetails);
@@ -98,7 +98,7 @@ public class EvaluationController {
      */
     @PreAuthorize("hasAuthority('ETU')")
     @GetMapping("getEvaluationsByUser")
-    public ResponseEntity <ApiResponse<?>> getEvaluationsByUser(@AuthenticationPrincipal UserDetails currentUser) {
+    public ResponseEntity<?> getEvaluationsByUser(@AuthenticationPrincipal UserDetails currentUser) {
         Etudiant etudiant = as.getAuhtentification(currentUser.getUsername()).getNoEtudiant();
        logger.info("Etudiant found: " + etudiant);
         Set<Evaluation> evaluations = evaluationService.getEvaluationsByUser(etudiant);
@@ -112,7 +112,7 @@ public class EvaluationController {
 
     @PreAuthorize("hasAuthority('ETU')")
     @GetMapping("evaluations/last-year")
-    public ApiResponse<List<EvaluationDTO>> getEvaluationsForEnseignantLastYear(@AuthenticationPrincipal UserDetails currentUser) {
+    public ResponseEntity<?> getEvaluationsForEnseignantLastYear(@AuthenticationPrincipal UserDetails currentUser) {
         Short enseignantId = as.getAuhtentification(currentUser.getUsername()).getNoEnseignant().getId();
         List<Evaluation> evaluations = es.getEvaluationsForEnseignantLastYear(Long.valueOf(enseignantId));
         List<EvaluationDTO> evaluationDTOs = evaluations.stream().map((element) -> modelMapper.map(element, EvaluationDTO.class)).collect(Collectors.toList());
@@ -121,7 +121,7 @@ public class EvaluationController {
 
     @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @PostMapping("create")
-    public ApiResponse<EvaluationDTO> createEvaluation(@RequestBody Evaluation evaluationDTO, @AuthenticationPrincipal UserDetails currentUser) {
+    public ResponseEntity<?> createEvaluation(@RequestBody Evaluation evaluationDTO, @AuthenticationPrincipal UserDetails currentUser) {
         Enseignant enseignant = as.getAuhtentification(currentUser.getUsername()).getNoEnseignant();
         Evaluation saved = es.createEvaluation(evaluationDTO, enseignant);
         return ApiResponse.ok(modelMapper.map(saved, EvaluationDTO.class));

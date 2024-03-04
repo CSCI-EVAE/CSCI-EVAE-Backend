@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
  * Contrôleur pour les opérations CRUD sur les rubriques.
  */
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/v1/rubrique")
 public class RubriqueController {
 
@@ -36,9 +35,8 @@ public class RubriqueController {
      * @param rubrique La rubrique à créer.
      * @return La rubrique créée.
      */
-    @PreAuthorize("hasAuthority('ADM')")
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<Rubrique>> createRubrique(@RequestBody Rubrique rubrique) {
+    public ResponseEntity<?> createRubrique(@RequestBody Rubrique rubrique) {
         Rubrique createdRubrique = rubriqueService.creerRubrique(rubrique);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.ok(createdRubrique));
@@ -49,11 +47,9 @@ public class RubriqueController {
      *
      * @return La liste de toutes les rubriques.
      */
-    @PreAuthorize("hasAnyAuthority('ADM', 'ENS')")
     @GetMapping("/all")
-    public ResponseEntity<ApiResponse<List<RubriqueDTO>>> getAllRubrique() {
-        List<Rubrique> rubriques = rubriqueService.getAllRubrique();
-        return ResponseEntity.ok(ApiResponse.ok(rubriques.stream().map((element) -> modelMapper.map(element, RubriqueDTO.class)).collect(Collectors.toList())));
+    public ResponseEntity<?> getAllRubrique() {
+        return ApiResponse.ok(rubriqueService.getAllRubrique().stream().map((element) -> modelMapper.map(element, RubriqueDTO.class)).collect(Collectors.toList()));
     }
 
     /**
@@ -62,9 +58,8 @@ public class RubriqueController {
      * @param type Le type de rubrique à récupérer.
      * @return La liste des rubriques du type spécifié.
      */
-    @PreAuthorize("hasAnyAuthority('ADM', 'ENS')")
     @GetMapping("/type/{type}")
-    public ResponseEntity<ApiResponse<List<Rubrique>>> getRubriqueByType(@PathVariable("type") String type)  {
+    public ResponseEntity<?> getRubriqueByType(@PathVariable("type") String type)  {
         List<Rubrique> rubriques = rubriqueService.getRubriqueByType(type);
         return ResponseEntity.ok(ApiResponse.ok(rubriques));
     }
@@ -75,9 +70,8 @@ public class RubriqueController {
      * @param id L'ID de la rubrique à récupérer.
      * @return La rubrique avec l'ID spécifié.
      */
-    @PreAuthorize("hasAnyAuthority('ADM', 'ENS')")
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<RubriqueDTO>> getRubriqueById(@PathVariable Long id) {
+    public ResponseEntity<?> getRubriqueById(@PathVariable Long id) {
         try {
             Rubrique rubrique = rubriqueService.getRubriqueById(id);
             return ResponseEntity.ok(ApiResponse.ok(modelMapper.map(rubrique, RubriqueDTO.class)));
@@ -94,9 +88,8 @@ public class RubriqueController {
      * @param rubrique Les nouvelles informations de la rubrique.
      * @return La rubrique mise à jour.
      */
-    @PreAuthorize("hasAuthority('ADM')")
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Rubrique>> updateRubrique(@PathVariable Long id, @RequestBody Rubrique rubrique) {
+    public ResponseEntity<?> updateRubrique(@PathVariable Long id, @RequestBody Rubrique rubrique) {
         try {
             Rubrique updatedRubrique = rubriqueService.updateRubrique(id, rubrique);
             return ResponseEntity.ok(ApiResponse.ok(updatedRubrique));
@@ -115,9 +108,8 @@ public class RubriqueController {
      * @param id L'ID de la rubrique à supprimer.
      * @return Une réponse vide.
      */
-    @PreAuthorize("hasAuthority('ADM')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteRubrique(@PathVariable Long id) {
+    public ResponseEntity<?> deleteRubrique(@PathVariable Long id) {
         try {
             rubriqueService.deleteRubrique(id);
             return ResponseEntity.ok(ApiResponse.ok(null));

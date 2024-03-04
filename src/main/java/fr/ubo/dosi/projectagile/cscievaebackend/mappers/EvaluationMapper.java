@@ -10,9 +10,5 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface EvaluationMapper {
-
-
     EvaluationDTO evaluationToEvaluationDTO(Evaluation evaluation);
-
-    Evaluation evaluationDTOToEvaluation(EvaluationDTO evaluationDTO);
 }

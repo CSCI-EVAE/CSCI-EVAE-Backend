@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,17 +26,16 @@ public class QualificatifServiceImpl implements QualificatifService {
     @Autowired
     private QualificatifRepository qualificatifRepository;
     @Autowired
-    private QuestionRepository questionRepository;
-    @Autowired
     private ModelMapper modelMapper;
+    Logger logger = Logger.getLogger(QualificatifServiceImpl.class.getName());
 
     @Override
     public Qualificatif createQualificatif(Qualificatif qualificatif) {
-        List<Qualificatif> qualificatifs = qualificatifRepository.findAll();
-        for (Qualificatif q : qualificatifs) {
-            if (Objects.equals(q.getMinimal(), qualificatif.getMinimal()) && Objects.equals(q.getMaximal(), qualificatif.getMaximal())) {
-                return null;
-            }
+        if (Objects.isNull(qualificatif.getMinimal()) || Objects.isNull(qualificatif.getMaximal())) {
+            throw new IllegalArgumentException("Les valeurs minimal et maximal sont obligatoires");
+        }
+        if (qualificatifRepository.existsByMinimalAndMaximal(qualificatif.getMinimal(), qualificatif.getMaximal())) {
+            throw new IllegalArgumentException("Le qualificatif existe déjà avec ces valeurs minimal et maximal");
         }
         return qualificatifRepository.save(qualificatif);
     }
@@ -53,37 +53,29 @@ public class QualificatifServiceImpl implements QualificatifService {
     }
 
     @Override
-    public Qualificatif updateQualificatif(Long id, Qualificatif qualificatifModifie) throws ResourceNotFoundException {
+    public Qualificatif updateQualificatif(Long id, Qualificatif qualificatifModifie) {
+        if (Objects.isNull(qualificatifModifie.getMinimal()) || Objects.isNull(qualificatifModifie.getMaximal())) {
+            throw new IllegalArgumentException("Les valeurs minimal et maximal sont obligatoires");
+        }
         Qualificatif qualificatif = qualificatifRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Le qualificatif n'existe pas avec cet id : " + id));
+                .orElseThrow(() -> new IllegalArgumentException("Le qualificatif n'existe pas avec cet id : " + id));
         qualificatif.setMinimal(qualificatifModifie.getMinimal());
         qualificatif.setMaximal(qualificatifModifie.getMaximal());
         return qualificatifRepository.save(qualificatif);
     }
 
     @Override
-    public void deleteQualificatif(Long id) throws ResourceNotFoundException, LinkedToAnotherResourceException {
-        Optional<Qualificatif> qualificatifExistant = qualificatifRepository.findById(id);
-
-        if (qualificatifExistant.isPresent()) {
+    public void deleteQualificatif(Long id) {
+        if (qualificatifRepository.existsByQualificatifId(id.intValue())) {
             try {
-                checkAndDeleteLinkedRecords(qualificatifExistant.get());
-
                 qualificatifRepository.deleteById(id);
-            } catch (DataAccessException e) {
-                throw new ResourceNotFoundException("Le qualificatif ne peut pas être supprimé pour des raisons techniques.");
+            } catch (Exception e){
+                logger.info(e.getMessage() + " " + e.getClass());
+                throw new LinkedToAnotherResourceException("Le qualificatif est lié à une question et ne peut pas être supprimé.");
             }
         } else {
-            throw new ResourceNotFoundException("Le qualificatif n'existe pas avec cet id : " + id);
+            throw new IllegalArgumentException("Le qualificatif n'existe pas avec cet id : " + id);
         }
     }
 
-
-    private void checkAndDeleteLinkedRecords(Qualificatif qualificatif) throws LinkedToAnotherResourceException {
-
-        List<Question> linkedQuestions = questionRepository.findByIdQualificatif(qualificatif);
-        if (!linkedQuestions.isEmpty()) {
-            throw new LinkedToAnotherResourceException("Le qualificatif est lié à une ou plusieurs questions.");
-        }
-    }
 }

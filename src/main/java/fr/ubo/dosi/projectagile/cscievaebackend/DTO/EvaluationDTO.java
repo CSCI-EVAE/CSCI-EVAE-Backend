@@ -1,9 +1,6 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.DTO;
 
 import fr.ubo.dosi.projectagile.cscievaebackend.model.ElementConstitutif;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.ElementConstitutifIdDto;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Enseignant;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Promotion;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -26,7 +23,5 @@ public class EvaluationDTO  {
     private String periode;
     private Set<RubriqueEvaluationDTO> rubriqueEvaluations;
     private ElementConstitutif elementConstitutif;
-
-
 }
 

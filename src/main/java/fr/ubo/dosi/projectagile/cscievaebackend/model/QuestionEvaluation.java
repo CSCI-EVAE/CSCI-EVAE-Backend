@@ -14,23 +14,8 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name = "QUESTION_EVALUATION")
 public class QuestionEvaluation {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "QEV_SEQ"
-    )
-    @SequenceGenerator(
-            name = "QEV_SEQ",
-            sequenceName = "QEV_SEQ",
-            allocationSize = 1
-    )
     @Column(name = "ID_QUESTION_EVALUATION", nullable = false)
     private Integer id;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "ID_RUBRIQUE_EVALUATION", nullable = false)
-    private RubriqueEvaluation idRubriqueEvaluation;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.RESTRICT)
@@ -49,5 +34,11 @@ public class QuestionEvaluation {
     @Size(max = 64)
     @Column(name = "INTITULE", length = 64)
     private String intitule;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "ID_RUBRIQUE_EVALUATION", nullable = false)
+    private RubriqueEvaluation idRubriqueEvaluation;
 
 }

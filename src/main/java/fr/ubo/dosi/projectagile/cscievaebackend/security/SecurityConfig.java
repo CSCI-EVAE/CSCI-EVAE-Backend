@@ -3,6 +3,7 @@ package fr.ubo.dosi.projectagile.cscievaebackend.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -35,11 +36,15 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/login","/api/v1/register").permitAll()
-                        .requestMatchers("/api/v1/admin/**").hasAuthority("ADM")
-                        .requestMatchers("/api/v1/enseignant/**").hasAuthority("ENS")
-
-                        .anyRequest().authenticated()
+                                .requestMatchers("/api/v1/login", "/api/v1/register").permitAll()
+                                .requestMatchers("/api-docs", "/api-docs/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                                .requestMatchers("/api/v1/admin/**").hasAuthority("ADM")
+                                .requestMatchers(HttpMethod.GET, "/api/v1/qualificatif/**","/api/v1/questions/**"
+                                ).hasAnyAuthority("ADM", "ENS") // Allow both ADM and ENS for GET
+                                .requestMatchers("/api/v1/qualificatif/**","/api/v1/questions/**").hasAuthority("ADM") // ADM for all other methods
+                                .requestMatchers("/api/v1/enseignant/**").hasAuthority("ENS")
+                                .requestMatchers("/api/v1/etudiant/**").hasAuthority("ETU")
+                                .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

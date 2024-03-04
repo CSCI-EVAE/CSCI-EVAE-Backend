@@ -9,6 +9,7 @@ import fr.ubo.dosi.projectagile.cscievaebackend.repository.*;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.UniteEnseignementServiceImpl;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.userService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,7 +49,7 @@ public class UniteEnseignementController {
     }
 
     @GetMapping("all")
-    public ApiResponse<List<UniteEnseignementDTO>> getAll() {
+    public ResponseEntity<?> getAll() {
         Authentification authentication = userService.getCurrentUser();
         Enseignant e = er.findByEmailUbo(authentication.getLoginConnection()).get();
         List<UniteEnseignement> lue= uer.findAllByNoEnseignant(e);
@@ -65,7 +66,7 @@ public class UniteEnseignementController {
                 tmp.setDesignation(eva.getDesignation());
                 tmp.setDebutReponse(eva.getDebutReponse());
                 tmp.setFinReponse(eva.getFinReponse());
-                tmp.setEtat(evr.findByCodeUE(u.getId().getCodeUe()).get(0).getEtat());
+                tmp.setEtat(String.valueOf(evr.findByCodeUE(u.getId().getCodeUe()).get(0).getEtat()));
                 tmp.setEvaExiste(true);
             }
 
