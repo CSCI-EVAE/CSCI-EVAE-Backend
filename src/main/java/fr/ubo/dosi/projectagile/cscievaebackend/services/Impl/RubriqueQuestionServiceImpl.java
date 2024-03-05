@@ -86,7 +86,7 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
         StringBuilder resultMessage = new StringBuilder();
 
         for (IncomingRubriqueQuestionDTO dto : incomingData) {
-            AddRubriqueQuestions(dto, resultMessage);
+            resultMessage.append(updateRubriqueQuestions(dto));
         }
 
         if (resultMessage.isEmpty()) {
@@ -99,7 +99,7 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
     @Override
     public String AjouterRubriqueQuestion(IncomingRubriqueQuestionDTO dto) {
         StringBuilder resultMessage = new StringBuilder();
-        AddRubriqueQuestions(dto, resultMessage);
+        resultMessage.append(updateRubriqueQuestions(dto));
 
         if (resultMessage.isEmpty()) {
             return "All data processed successfully.";
@@ -109,42 +109,27 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
     }
 
     @Override
-    @Transactional
     public String updateRubriqueQuestions(IncomingRubriqueQuestionDTO dto) {
         StringBuilder resultMessage = new StringBuilder();
-
-        List<RubriqueQuestion> existingQuestions = rubriqueQuestionRepository.findByRubriqueId(dto.getIdRubrique());
-        logger.info("Existing RubriqueQuestions: " + existingQuestions);
-        Set<Long> existingQuestionIds = existingQuestions.stream()
-                .map(rubriqueQuestion -> rubriqueQuestion.getIdQuestion().getId().longValue())
-                .collect(Collectors.toSet());
-        logger.info("Existing QuestionIds: " + existingQuestionIds);
-        Set<Long> incomingQuestionIds = new HashSet<>(dto.getQuestionIds());
-
-        // Determine questions to add
-        Set<Long> toAdd = new HashSet<>(incomingQuestionIds);
-        toAdd.removeAll(existingQuestionIds);
-        logger.info("Questions to add: " + toAdd);
-        // Determine questions to remove
-        Set<Long> toRemove = new HashSet<>(existingQuestionIds);
-        toRemove.removeAll(incomingQuestionIds);
-        logger.info("Questions to remove: " + toRemove);
-        // Remove questions
-        toRemove.forEach(questionId -> {
-            rubriqueQuestionRepository.deleteByIdRubriqueAndIdQuestion(dto.getIdRubrique(), questionId);
-            resultMessage.append("On a supprimé la question: Rubrique: ").append(dto.getIdRubrique()).append(", Question: ").append(questionId).append("\n");
-        });
-        logger.info("Removed RubriqueQuestions: " + toRemove);
-
-        toAdd.forEach(questionId -> {
-            try {
-                Question question = questionRepository.findById(questionId)
-                        .orElseThrow(() -> new EntityNotFoundException("Question not found: " + questionId));
-                RubriqueQuestion rubriqueQuestion = new RubriqueQuestion(new RubriqueQuestionId(dto.getIdRubrique().intValue(), questionId.intValue()), rubriqueRepository.findById(dto.getIdRubrique()).get(), question, dto.getOrdre());
+        Rubrique rubrique = rubriqueRepository.findById(dto.getIdRubrique()).get();
+        Set<RubriqueQuestion> rubriqueQuestions = rubrique.getRubriqueQuestions().stream().peek(q -> {
+            if (dto.getQuestionIds().containsKey(q.getIdQuestion().getId().longValue())) {
+                q.setOrdre(dto.getQuestionIds().get(q.getIdQuestion().getId().longValue()));
+                resultMessage.append("On a mis à jour l'ordre de la question: Rubrique: ").append(dto.getIdRubrique()).append(", Question: ").append(q.getIdQuestion().getId()).append("\n");
+                rubriqueQuestionRepository.save(q);
+            } else {
+                Question question = questionRepository.findById(q.getIdQuestion().getId().longValue()).get();
+                RubriqueQuestion rubriqueQuestion = new RubriqueQuestion(new RubriqueQuestionId(rubrique.getId(), question.getId()), rubrique, question, dto.getOrdre());
+                resultMessage.append("On a supprimé la question: Rubrique: ").append(dto.getIdRubrique()).append(", Question: ").append(question.getId()).append("\n");
                 rubriqueQuestionRepository.save(rubriqueQuestion);
-                resultMessage.append("Added RubriqueQuestion: Rubrique: ").append(dto.getIdRubrique()).append(", Question: ").append(questionId).append("\n");
-            } catch (EntityNotFoundException e) {
-                resultMessage.append(e.getMessage()).append("\n");
+            }
+        }).collect(Collectors.toSet());
+        dto.getQuestionIds().forEach((k, v) -> {
+            if (rubriqueQuestions.stream().noneMatch(q -> q.getIdQuestion().getId().equals(k.intValue()))) {
+                Question question = questionRepository.findById(k).get();
+                RubriqueQuestion rubriqueQuestion = new RubriqueQuestion(new RubriqueQuestionId(rubrique.getId(), question.getId()), rubrique, question, v);
+                resultMessage.append("On a ajouté la question: Rubrique: ").append(dto.getIdRubrique()).append(", Question: ").append(question.getId()).append("\n");
+                rubriqueQuestionRepository.save(rubriqueQuestion);
             }
         });
 
@@ -157,43 +142,5 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
         int result = rubriqueQuestionRepository.deleteAllByRubriqueId(id.intValue());
         return "On a supprimé " + result + " RubriqueQuestions";
     }
-
-
-    private void AddRubriqueQuestions(IncomingRubriqueQuestionDTO dto, StringBuilder resultMessage) {
-        try {
-            Rubrique rubrique = rubriqueRepository.findById(dto.getIdRubrique())
-                    .orElseThrow(() -> new EntityNotFoundException("Rubrique not found: " + dto.getIdRubrique()));
-
-            for (Long questionId : dto.getQuestionIds()) {
-                Question question = questionRepository.findById(questionId)
-                        .orElseThrow(() -> new EntityNotFoundException("Question not found: " + questionId));
-                logger.info("RubriqueQuestion added: Rubrique: " + rubrique + ", Question: " + question);
-                if (!rubriqueQuestionRepository.existsByIdRubriqueAndIdQuestion(rubrique.getId(), question.getId())) {
-                    logger.info("RubriqueQuestion added: Rubrique: " + rubrique + ", Question: " + question);
-                    RubriqueQuestion rubriqueQuestion = new RubriqueQuestion();
-                    rubriqueQuestion.setId(new RubriqueQuestionId(rubrique.getId(), question.getId()));
-                    rubriqueQuestion.setIdRubrique(rubrique);
-                    logger.info("RubriqueQuestion added: Rubrique: " + rubriqueQuestion.getIdRubrique());
-                    rubriqueQuestion.setIdQuestion(question);
-                    logger.info("RubriqueQuestion added: Question: " + rubriqueQuestion.getIdQuestion());
-                    rubriqueQuestion.setOrdre(dto.getOrdre());
-                    logger.info("RubriqueQuestion added: Ordre: " + rubriqueQuestion.getOrdre());
-                    rubriqueQuestionRepository.save(rubriqueQuestion);
-                    resultMessage.append("RubriqueQuestion added: ")
-                            .append("Rubrique: ").append(rubrique.getId())
-                            .append(", Question: ").append(question.getId())
-                            .append("\n");
-                } else {
-                    resultMessage.append("RubriqueQuestion already exists: ")
-                            .append("Rubrique: ").append(rubrique.getId())
-                            .append(", Question: ").append(question.getId())
-                            .append("\n");
-                }
-            }
-        } catch (EntityNotFoundException e) {
-            resultMessage.append(e.getMessage()).append("\n");
-        }
-    }
-
 
 }
