@@ -15,6 +15,7 @@ public class UserDTO {
     private long id;
     private String username;
     private String role;
+    private String prenom ;
 
 
 
@@ -22,5 +23,11 @@ public class UserDTO {
         this.id = actualUser.getId();
         this.username = actualUser.getLoginConnection();
         this.role = actualUser.getRole();
+        if(actualUser.getNoEtudiant()!= null){
+            this.prenom = actualUser.getNoEtudiant().getPrenom();
+        }else if(actualUser.getNoEnseignant()!= null){
+            this.prenom = actualUser.getNoEnseignant().getPrenom();
+        }
+
     }
 }

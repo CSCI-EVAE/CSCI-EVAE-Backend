@@ -8,7 +8,6 @@ import java.util.List;
 public class IncomingRubriqueQuestionDTO {
     private Long idRubrique;
     // here i want a question id and there ordre
-
     private List<Long> questionIds;
     private Long ordre;
 }
