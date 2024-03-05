@@ -55,7 +55,6 @@ public class Rubrique {
 
     @OneToMany(mappedBy = "idRubrique")
     @OrderColumn(name = "ORDRE")
-    @JsonManagedReference
     private Set<RubriqueQuestion> rubriqueQuestions = new LinkedHashSet<>();
 
 }
