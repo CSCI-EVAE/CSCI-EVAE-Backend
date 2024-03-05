@@ -33,5 +33,6 @@ public class RubriqueQuestion {
 
     @NotNull
     @Column(name = "ORDRE", nullable = false)
+    @OrderColumn(name = "ORDRE")
     private Long ordre;
 }

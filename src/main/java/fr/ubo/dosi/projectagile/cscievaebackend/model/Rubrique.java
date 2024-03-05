@@ -1,6 +1,8 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import fr.ubo.dosi.projectagile.cscievaebackend.DTO.RubriqueQuestionDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -11,10 +13,16 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.Comparator;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Getter
 @Setter
 @Entity
 @Table(name = "RUBRIQUE")
+
 public class Rubrique {
     @Id
     @Column(name = "ID_RUBRIQUE", nullable = false)
@@ -44,5 +52,10 @@ public class Rubrique {
 
     @Column(name = "ORDRE")
     private Long ordre;
+
+    @OneToMany(mappedBy = "idRubrique")
+    @OrderColumn(name = "ORDRE")
+    @JsonManagedReference
+    private Set<RubriqueQuestion> rubriqueQuestions = new LinkedHashSet<>();
 
 }

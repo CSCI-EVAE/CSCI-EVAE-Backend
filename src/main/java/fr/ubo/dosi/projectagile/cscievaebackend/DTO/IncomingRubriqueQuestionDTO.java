@@ -7,7 +7,8 @@ import java.util.List;
 @Data
 public class IncomingRubriqueQuestionDTO {
     private Long idRubrique;
-    private List<Long> questionIds;
+    // here i want a question id and there ordre
 
+    private List<Long> questionIds;
     private Long ordre;
 }

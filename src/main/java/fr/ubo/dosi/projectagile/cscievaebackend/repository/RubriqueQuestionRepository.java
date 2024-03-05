@@ -1,5 +1,6 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.repository;
 
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Rubrique;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueQuestion;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueQuestionId;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,4 +24,7 @@ public interface RubriqueQuestionRepository extends JpaRepository<RubriqueQuesti
     @Modifying
     @Query("DELETE FROM RubriqueQuestion r WHERE r.idRubrique.id = ?1")
     int deleteAllByRubriqueId(Integer id);
+
+    @Query("SELECT distinct r.idRubrique FROM RubriqueQuestion r order by r.idRubrique.ordre")
+    List<Rubrique> findAllRubriques();
 }
