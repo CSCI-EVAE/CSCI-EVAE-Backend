@@ -5,8 +5,10 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @Getter
@@ -22,4 +24,9 @@ public class RubriqueEvaluationDTO {
     @NotNull
     private Short ordre;
     private Set<QuestionEvaluationDTO> questionEvaluations;
+    public List<QuestionEvaluationDTO> getQuestionEvaluations() {
+        return questionEvaluations.stream()
+                .sorted(Comparator.comparing(QuestionEvaluationDTO::getOrdre))
+                .collect(Collectors.toList());
+    }
 }

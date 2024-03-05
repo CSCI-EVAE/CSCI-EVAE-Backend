@@ -53,7 +53,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<ApiResponse<String>> handleNullPointerException(NullPointerException ex) {
-        return  ApiResponse.error("La ressource demandée n'existe pas");
+        return  ApiResponse.error("Une NullPointerException s'est produite");
     }
 
     @ExceptionHandler(IllegalStateException.class)

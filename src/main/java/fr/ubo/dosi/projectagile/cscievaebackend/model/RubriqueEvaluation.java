@@ -40,6 +40,7 @@ public class RubriqueEvaluation {
     private String designation;
 
     @OneToMany(mappedBy = "idRubriqueEvaluation")
+    @OrderColumn(name = "ORDRE")
     private Set<QuestionEvaluation> questionEvaluations = new LinkedHashSet<>();
 
 }
