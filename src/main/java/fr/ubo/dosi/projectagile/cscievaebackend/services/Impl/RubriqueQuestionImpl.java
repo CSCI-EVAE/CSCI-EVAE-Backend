@@ -41,6 +41,9 @@ public class RubriqueQuestionImpl implements RubriqueService {
 
         if(rubriqueExistant.isPresent()){
             Rubrique rubriqueUpdate = rubriqueExistant.get();
+            if (rubriqueRepository.existsByDesignation(rubriqueUpdate.getDesignation())) {
+                throw new IllegalArgumentException("La designation de la rubrique existe deja");
+            }
             rubriqueUpdate.setDesignation(rubrique.getDesignation());
             rubriqueUpdate.setOrdre(rubrique.getOrdre());
             rubriqueUpdate.setType(rubrique.getType());
