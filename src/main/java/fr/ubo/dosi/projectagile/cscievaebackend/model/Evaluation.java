@@ -66,13 +66,14 @@ public class Evaluation {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumns({
-            @JoinColumn(name = "CODE_FORMATION", referencedColumnName = "ANNEE_UNIVERSITAIRE", nullable = false,insertable=false, updatable=false),
-            @JoinColumn(name = "ANNEE_UNIVERSITAIRE", referencedColumnName = "CODE_FORMATION", nullable = false,insertable=false, updatable=false)
+            @JoinColumn(name = "CODE_FORMATION", referencedColumnName = "CODE_FORMATION", nullable = false,insertable=false, updatable=false),
+            @JoinColumn(name = "ANNEE_UNIVERSITAIRE", referencedColumnName = "ANNEE_UNIVERSITAIRE", nullable = false,insertable=false, updatable=false)
     })
     @OnDelete(action = OnDeleteAction.RESTRICT)
     private Promotion promotion;
 
     @OneToMany(mappedBy = "idEvaluation")
+    @OrderColumn(name = "ORDRE")
     private Set<RubriqueEvaluation> rubriqueEvaluations = new LinkedHashSet<>();
 
 }

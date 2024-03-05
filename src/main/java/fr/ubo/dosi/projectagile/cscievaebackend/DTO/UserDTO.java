@@ -27,6 +27,8 @@ public class UserDTO {
             this.prenom = actualUser.getNoEtudiant().getPrenom();
         }else if(actualUser.getNoEnseignant()!= null){
             this.prenom = actualUser.getNoEnseignant().getPrenom();
+        }else{
+            this.prenom = "Administateur";
         }
 
     }

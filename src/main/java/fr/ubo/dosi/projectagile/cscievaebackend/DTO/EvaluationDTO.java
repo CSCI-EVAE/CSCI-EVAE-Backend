@@ -1,6 +1,7 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.DTO;
 
 import fr.ubo.dosi.projectagile.cscievaebackend.model.ElementConstitutif;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Promotion;
 import lombok.*;
 
 import java.time.LocalDate;
