@@ -13,10 +13,8 @@ import lombok.*;
 @Builder
 public class QuestionEvaluationDTO {
     private Integer id;
-    @NotNull
-    @Size(max = 64)
     private String intitule;
-    @NotNull
     private QuestionDTO idQuestion;
     private Short ordre;
+    private QualificatifDTO idQualificatif;
 }

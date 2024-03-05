@@ -27,6 +27,8 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
     private final RubriqueRepository rubriqueRepository;
     private final QuestionRepository questionRepository;
     private final ModelMapper modelMapper;
+    Logger logger = Logger.getLogger(RubriqueQuestionServiceImpl.class.getName());
+
     private final RubriqueMapper rubriqueMapper;
     private final QuestionMapper questionMapper;
 
@@ -40,16 +42,6 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
         this.questionMapper = questionMapper;
     }
 
-    Logger logger = Logger.getLogger(RubriqueQuestionServiceImpl.class.getName());
-
-
-   /* @Override
-    public RubriqueQuestionDTO addRubriqueQuestion(RubriqueQuestionDTO rubriqueQuestionAddDTO) {
-        RubriqueQuestion rubriqueQuestion = convertToEntity(rubriqueQuestionAddDTO);
-        rubriqueQuestion = rubriqueQuestionRepository.save(rubriqueQuestion);
-        return convertToDto(rubriqueQuestion);
-    }*/
-
     private RubriqueQuestion convertToEntity(RubriqueQuestionDTO rubriqueQuestionAddDTO) {
         return modelMapper.map(rubriqueQuestionAddDTO, RubriqueQuestion.class);
     }
@@ -60,28 +52,8 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
     }
 
     @Override
-    public List<RubriqueQuestionsDTO> findAllQuestionsForRubriques() {
-        List<RubriqueQuestion> rubriqueQuestions = rubriqueQuestionRepository.findAll();
-        Map<Rubrique, List<RubriqueQuestion>> rubriqueToQuestionsMap = new HashMap<>();
-
-        for (RubriqueQuestion rq : rubriqueQuestions) {
-            rubriqueToQuestionsMap.computeIfAbsent(rq.getIdRubrique(), k -> new ArrayList<>()).add(rq);
-        }
-        List<RubriqueQuestionsDTO> rubriqueQuestionsDTOList = new ArrayList<>();
-        for (Map.Entry<Rubrique, List<RubriqueQuestion>> entry : rubriqueToQuestionsMap.entrySet()) {
-            RubriqueQuestionsDTO rubriqueQuestionsDTO = new RubriqueQuestionsDTO();
-            rubriqueQuestionsDTO.setIdRubrique(rubriqueMapper.rubriqueToRubriqueDTO(entry.getKey()));
-            rubriqueQuestionsDTO.setQuestionsOrdre(entry.getValue().stream().map(rubriqueQuestion -> {
-                QuestionOrdreDTO questionOrdreDTO = new QuestionOrdreDTO();
-                QuestionDTO questionDTO = questionMapper.questionToQuestionDTO(rubriqueQuestion.getIdQuestion());
-                questionOrdreDTO.setIdQuestion(questionDTO);
-                questionOrdreDTO.setOrdre(rubriqueQuestion.getOrdre());
-                return questionOrdreDTO;
-            }).collect(Collectors.toList()));
-
-            rubriqueQuestionsDTOList.add(rubriqueQuestionsDTO);
-        }
-        return rubriqueQuestionsDTOList;
+    public List<Rubrique> findAllQuestionsForRubriques() {
+        return rubriqueQuestionRepository.findAllRubriques();
     }
 
     @Override

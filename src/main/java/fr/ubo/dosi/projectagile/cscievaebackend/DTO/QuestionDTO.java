@@ -11,13 +11,8 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class QuestionDTO {
-    @NotNull
-    private QualificatifDTO idQualificatif;
-    @NotNull
-    @Size(max = 10)
-    private String type;
     private Integer id;
-    @NotNull
-    @Size(max = 64)
+    private QualificatifDTO idQualificatif;
+    private String type;
     private String intitule;
 }

@@ -39,7 +39,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/v1/login", "/api/v1/register").permitAll()
                                 .requestMatchers("/api-docs", "/api-docs/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                                 .requestMatchers("/api/v1/admin/**").hasAuthority("ADM")
-                                .requestMatchers(HttpMethod.GET, "/api/v1/qualificatif/**","/api/v1/questions/**","/api/v1/rubrique/**"
+                                .requestMatchers(HttpMethod.GET, "/api/v1/qualificatif/**","/api/v1/questions/**","/api/v1/rubrique/**","/api/v1/rubriqueQuestion/**"
                                 ).hasAnyAuthority("ADM", "ENS")
                                 .requestMatchers("/api/v1/qualificatif/**","/api/v1/questions/**","/api/v1/rubrique/**").hasAuthority("ADM")
                                 .requestMatchers("/api/v1/enseignant/**").hasAuthority("ENS")
