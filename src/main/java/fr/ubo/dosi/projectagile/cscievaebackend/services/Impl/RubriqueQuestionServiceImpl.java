@@ -27,10 +27,6 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
     private final RubriqueRepository rubriqueRepository;
     private final QuestionRepository questionRepository;
     private final ModelMapper modelMapper;
-    Logger logger = Logger.getLogger(RubriqueQuestionServiceImpl.class.getName());
-
-    private final RubriqueMapper rubriqueMapper;
-    private final QuestionMapper questionMapper;
 
     @Autowired
     public RubriqueQuestionServiceImpl(RubriqueQuestionRepository rubriqueQuestionRepository, RubriqueRepository rubriqueRepository, QuestionRepository questionRepository, ModelMapper modelMapper, RubriqueMapper rubriqueMapper, QuestionMapper questionMapper) {
@@ -38,28 +34,18 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
         this.rubriqueRepository = rubriqueRepository;
         this.questionRepository = questionRepository;
         this.modelMapper = modelMapper;
-        this.rubriqueMapper = rubriqueMapper;
-        this.questionMapper = questionMapper;
     }
 
     private RubriqueQuestion convertToEntity(RubriqueQuestionDTO rubriqueQuestionAddDTO) {
         return modelMapper.map(rubriqueQuestionAddDTO, RubriqueQuestion.class);
     }
 
-    @Override
-    public RubriqueQuestion saveRubriqueQuestion(RubriqueQuestion rubriqueQuestion) {
-        return rubriqueQuestionRepository.save(rubriqueQuestion);
-    }
 
     @Override
     public List<Rubrique> findAllQuestionsForRubriques() {
         return rubriqueQuestionRepository.findAllRubriques();
     }
 
-    @Override
-    public void deleteRubriqueQuestion(RubriqueQuestion rubriqueQuestion) {
-        rubriqueQuestionRepository.delete(rubriqueQuestion);
-    }
 
     public List<RubriqueQuestionDTO> getAllRubriqueQuestions() {
         List<RubriqueQuestion> rubriqueQuestions = rubriqueQuestionRepository.findAll();
@@ -73,29 +59,6 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
         return modelMapper.map(rubriqueQuestion, RubriqueQuestionDTO.class);
     }
 
-
-    @Override
-    public RubriqueQuestionDTO getRubriqueQuestionById(RubriqueQuestionId rubriqueQuestionId) {
-        Optional<RubriqueQuestion> rubriqueQuestionOptional = rubriqueQuestionRepository.findById(rubriqueQuestionId);
-        return rubriqueQuestionOptional.map(this::convertToDto).orElse(null);
-    }
-
-    @Override
-    @Transactional
-    public String processAndStore(List<IncomingRubriqueQuestionDTO> incomingData) {
-        StringBuilder resultMessage = new StringBuilder();
-
-        for (IncomingRubriqueQuestionDTO dto : incomingData) {
-            resultMessage.append(updateRubriqueQuestions(dto));
-        }
-
-        if (resultMessage.isEmpty()) {
-            return "All data processed successfully.";
-        } else {
-            return resultMessage.toString();
-        }
-    }
-
     @Override
     public String AjouterRubriqueQuestion(IncomingRubriqueQuestionDTO dto) {
         StringBuilder resultMessage = new StringBuilder();
@@ -107,7 +70,6 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
             return resultMessage.toString();
         }
     }
-
 
     public String updateRubriqueQuestions(IncomingRubriqueQuestionDTO dto) {
         StringBuilder resultMessage = new StringBuilder();
