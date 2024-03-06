@@ -13,4 +13,8 @@ import java.util.Optional;
 public interface PromotionRepository extends JpaRepository<Promotion, String> {
     @Query(value = "SELECT * FROM Promotion p WHERE p.CODE_FORMATION = :codef", nativeQuery = true)
     List<Promotion> findByCodeFormation(@Param("codef") String codef);
+    @Query(value = "SELECT * FROM Promotion p WHERE p.CODE_FORMATION = :codeFormationId LIMIT 1", nativeQuery = true)
+    Promotion findByCodeFormationId(@Param("codeFormationId") String codeFormationId);
+    @Query(value = "SELECT * FROM Promotion p WHERE p.CODE_FORMATION = :codeFormation AND p.ANNEE_UNIVERSITAIRE = :anneeUniversitaire", nativeQuery = true)
+    Promotion findByCodeFormationAndAnneeUniversitaire(@Param("codeFormation") String codeFormation, @Param("anneeUniversitaire") String anneeUniversitaire);
 }

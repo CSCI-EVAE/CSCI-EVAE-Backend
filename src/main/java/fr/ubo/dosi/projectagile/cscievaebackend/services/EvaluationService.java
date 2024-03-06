@@ -1,6 +1,7 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.services;
 
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationDTO;
+import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationSaveDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Etudiant;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
@@ -20,4 +21,5 @@ public interface EvaluationService {
     EvaluationDTO updateEvaluation(Long id) throws ResourceNotFoundException;
 
     Set<Evaluation> getEvaluationsByUser(Etudiant etudiant);
+    Evaluation createEvaluation(EvaluationSaveDTO evaluationDto);
 }

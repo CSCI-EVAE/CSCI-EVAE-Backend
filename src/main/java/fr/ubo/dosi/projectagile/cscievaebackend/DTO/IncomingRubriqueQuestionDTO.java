@@ -8,6 +8,5 @@ import java.util.List;
 public class IncomingRubriqueQuestionDTO {
     private Long idRubrique;
     private List<Long> questionIds;
-
     private Long ordre;
 }

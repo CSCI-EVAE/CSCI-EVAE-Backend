@@ -11,4 +11,5 @@ public interface RubriqueRepository extends JpaRepository<Rubrique, Long> {
     List<Rubrique> findAllByType(String type);
 
     boolean existsByDesignation(String designation);
+    Rubrique findByDesignation(String designation);
 }
