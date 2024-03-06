@@ -100,6 +100,8 @@ public class UniteEnseignementController {
             uniteEnseignementDTO.setNbhTd(ue.getNbhTd());
             uniteEnseignementDTO.setNbhTp(ue.getNbhTp());
             uniteEnseignementDTO.setCodeFormation(ue.getCodeFormation().getCodeFormation()) ;
+            uniteEnseignementDTO.setNomFormation(ue.getCodeFormation().getNomFormation());
+            uniteEnseignementDTO.setAnneUniv(ue.getEvaluation().getPromotion().getId().getAnneeUniversitaire());
             uniteEnseignementDTO.setTotalHeures();
             return uniteEnseignementDTO;
         }).toList();

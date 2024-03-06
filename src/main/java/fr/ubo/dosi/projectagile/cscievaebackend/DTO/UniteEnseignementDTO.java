@@ -20,6 +20,8 @@ public class UniteEnseignementDTO {
     private LocalDate finReponse;
     private boolean EvaExiste;
     private String codeFormation;
+    private String anneUniv;
+    private String nomFormation;
     private String codeUe;
     private String codeEc;
     private String designation;

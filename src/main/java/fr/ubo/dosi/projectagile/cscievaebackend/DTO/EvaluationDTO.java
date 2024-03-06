@@ -17,6 +17,9 @@ import java.util.Set;
 public class EvaluationDTO  {
     private Integer id;
     private String etat;
+    private String codeFormation;
+    private String anneUniv;
+    private String nomEnseignant;
     private String designation;
     private Short noEvaluation;
     private LocalDate debutReponse;

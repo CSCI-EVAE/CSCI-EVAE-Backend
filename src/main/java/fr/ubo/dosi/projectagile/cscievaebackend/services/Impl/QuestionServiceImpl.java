@@ -58,6 +58,9 @@ public class QuestionServiceImpl implements QuestionService {
         Optional<Question> optionalQuestion = questionRepository.findById(id);
         if (optionalQuestion.isPresent()) {
             Question questionUpdate = optionalQuestion.get();
+            if (!questionUpdate.getIntitule().equals(question.getIntitule()) && questionRepository.existsByIntitule(question.getIntitule())) {
+                throw new IllegalArgumentException("La question existe déjà");
+            }
             questionUpdate.setType(question.getType());
             questionUpdate.setIntitule(question.getIntitule());
             questionUpdate.setIdQualificatif(question.getIdQualificatif());
