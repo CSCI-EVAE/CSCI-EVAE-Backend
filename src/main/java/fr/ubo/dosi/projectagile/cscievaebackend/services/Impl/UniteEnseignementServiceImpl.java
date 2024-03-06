@@ -21,4 +21,8 @@ public class UniteEnseignementServiceImpl implements UniteEnseignementService {
         return er.findAllByNoEnseignant(enseignant);
     }
 
+    @Override
+    public List<UniteEnseignement> getAllUE() {
+        return er.findAllOrderByCodeUe();
+    }
 }

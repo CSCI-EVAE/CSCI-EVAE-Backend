@@ -108,7 +108,7 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
         }
     }
 
-    @Override
+
     public String updateRubriqueQuestions(IncomingRubriqueQuestionDTO dto) {
         StringBuilder resultMessage = new StringBuilder();
         Rubrique rubrique = rubriqueRepository.findById(dto.getIdRubrique()).get();
@@ -118,10 +118,7 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
                 resultMessage.append("On a mis à jour l'ordre de la question: Rubrique: ").append(dto.getIdRubrique()).append(", Question: ").append(q.getIdQuestion().getId()).append("\n");
                 rubriqueQuestionRepository.save(q);
             } else {
-                Question question = questionRepository.findById(q.getIdQuestion().getId().longValue()).get();
-                RubriqueQuestion rubriqueQuestion = new RubriqueQuestion(new RubriqueQuestionId(rubrique.getId(), question.getId()), rubrique, question, dto.getOrdre());
-                resultMessage.append("On a supprimé la question: Rubrique: ").append(dto.getIdRubrique()).append(", Question: ").append(question.getId()).append("\n");
-                rubriqueQuestionRepository.save(rubriqueQuestion);
+                rubriqueQuestionRepository.delete(q);
             }
         }).collect(Collectors.toSet());
         dto.getQuestionIds().forEach((k, v) -> {
@@ -132,7 +129,6 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
                 rubriqueQuestionRepository.save(rubriqueQuestion);
             }
         });
-
         return resultMessage.toString();
     }
 
