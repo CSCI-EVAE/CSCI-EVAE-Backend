@@ -27,10 +27,6 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
     private final RubriqueRepository rubriqueRepository;
     private final QuestionRepository questionRepository;
     private final ModelMapper modelMapper;
-    Logger logger = Logger.getLogger(RubriqueQuestionServiceImpl.class.getName());
-
-    private final RubriqueMapper rubriqueMapper;
-    private final QuestionMapper questionMapper;
 
     @Autowired
     public RubriqueQuestionServiceImpl(RubriqueQuestionRepository rubriqueQuestionRepository, RubriqueRepository rubriqueRepository, QuestionRepository questionRepository, ModelMapper modelMapper, RubriqueMapper rubriqueMapper, QuestionMapper questionMapper) {
@@ -38,28 +34,18 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
         this.rubriqueRepository = rubriqueRepository;
         this.questionRepository = questionRepository;
         this.modelMapper = modelMapper;
-        this.rubriqueMapper = rubriqueMapper;
-        this.questionMapper = questionMapper;
     }
 
     private RubriqueQuestion convertToEntity(RubriqueQuestionDTO rubriqueQuestionAddDTO) {
         return modelMapper.map(rubriqueQuestionAddDTO, RubriqueQuestion.class);
     }
 
-    @Override
-    public RubriqueQuestion saveRubriqueQuestion(RubriqueQuestion rubriqueQuestion) {
-        return rubriqueQuestionRepository.save(rubriqueQuestion);
-    }
 
     @Override
     public List<Rubrique> findAllQuestionsForRubriques() {
         return rubriqueQuestionRepository.findAllRubriques();
     }
 
-    @Override
-    public void deleteRubriqueQuestion(RubriqueQuestion rubriqueQuestion) {
-        rubriqueQuestionRepository.delete(rubriqueQuestion);
-    }
 
     public List<RubriqueQuestionDTO> getAllRubriqueQuestions() {
         List<RubriqueQuestion> rubriqueQuestions = rubriqueQuestionRepository.findAll();
@@ -71,29 +57,6 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
 
     private RubriqueQuestionDTO convertToDto(RubriqueQuestion rubriqueQuestion) {
         return modelMapper.map(rubriqueQuestion, RubriqueQuestionDTO.class);
-    }
-
-
-    @Override
-    public RubriqueQuestionDTO getRubriqueQuestionById(RubriqueQuestionId rubriqueQuestionId) {
-        Optional<RubriqueQuestion> rubriqueQuestionOptional = rubriqueQuestionRepository.findById(rubriqueQuestionId);
-        return rubriqueQuestionOptional.map(this::convertToDto).orElse(null);
-    }
-
-    @Override
-    @Transactional
-    public String processAndStore(List<IncomingRubriqueQuestionDTO> incomingData) {
-        StringBuilder resultMessage = new StringBuilder();
-
-        for (IncomingRubriqueQuestionDTO dto : incomingData) {
-            resultMessage.append(updateRubriqueQuestions(dto));
-        }
-
-        if (resultMessage.isEmpty()) {
-            return "All data processed successfully.";
-        } else {
-            return resultMessage.toString();
-        }
     }
 
     @Override
@@ -108,7 +71,6 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
         }
     }
 
-    @Override
     public String updateRubriqueQuestions(IncomingRubriqueQuestionDTO dto) {
         StringBuilder resultMessage = new StringBuilder();
         Rubrique rubrique = rubriqueRepository.findById(dto.getIdRubrique()).get();
@@ -118,10 +80,7 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
                 resultMessage.append("On a mis à jour l'ordre de la question: Rubrique: ").append(dto.getIdRubrique()).append(", Question: ").append(q.getIdQuestion().getId()).append("\n");
                 rubriqueQuestionRepository.save(q);
             } else {
-                Question question = questionRepository.findById(q.getIdQuestion().getId().longValue()).get();
-                RubriqueQuestion rubriqueQuestion = new RubriqueQuestion(new RubriqueQuestionId(rubrique.getId(), question.getId()), rubrique, question, dto.getOrdre());
-                resultMessage.append("On a supprimé la question: Rubrique: ").append(dto.getIdRubrique()).append(", Question: ").append(question.getId()).append("\n");
-                rubriqueQuestionRepository.save(rubriqueQuestion);
+                rubriqueQuestionRepository.delete(q);
             }
         }).collect(Collectors.toSet());
         dto.getQuestionIds().forEach((k, v) -> {
@@ -132,7 +91,6 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
                 rubriqueQuestionRepository.save(rubriqueQuestion);
             }
         });
-
         return resultMessage.toString();
     }
 

@@ -82,4 +82,7 @@ public class Enseignant {
     @OneToMany(mappedBy = "noEnseignant")
     private Set<Promotion> promotions = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "noEnseignant")
+    private Set<UniteEnseignement> uniteEnseignements = new LinkedHashSet<>();
+
 }
