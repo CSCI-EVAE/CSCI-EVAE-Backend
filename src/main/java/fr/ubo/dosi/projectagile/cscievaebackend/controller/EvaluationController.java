@@ -2,6 +2,7 @@ package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 
 
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationDTO;
+import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationSaveDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.mappers.EvaluationMapper;
@@ -10,13 +11,17 @@ import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.AuthentificationServiceImpl;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.EvaluationServiceImpl;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.PromotionService;
+import fr.ubo.dosi.projectagile.cscievaebackend.services.RubriqueQuestionService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,10 +38,10 @@ public class EvaluationController {
     private final EvaluationMapper evaluationMapper;
     private final ModelMapper modelMapper;
     private final EvaluationService evaluationService;
-    Logger logger = Logger.getLogger(EvaluationController.class.getName());
+
 
     @Autowired
-    public EvaluationController(EvaluationServiceImpl es, AuthentificationServiceImpl as, PromotionService ps, EvaluationMapper evaluationMapper, ModelMapper modelMapper, EvaluationService evaluationService) {
+    public EvaluationController(EvaluationServiceImpl es, AuthentificationServiceImpl as, PromotionService ps, EvaluationMapper evaluationMapper, ModelMapper modelMapper, EvaluationService evaluationService, RubriqueQuestionService rubriqueQuestionService) {
         this.es = es;
         this.as = as;
         this.ps = ps;
@@ -125,10 +130,11 @@ public class EvaluationController {
 
     @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @PostMapping("create")
-    public ResponseEntity<?> createEvaluation(@RequestBody Evaluation evaluationDTO, @AuthenticationPrincipal UserDetails currentUser) {
-        Enseignant enseignant = as.getAuhtentification(currentUser.getUsername()).getNoEnseignant();
-        Evaluation saved = es.createEvaluation(evaluationDTO, enseignant);
-        return ApiResponse.ok(modelMapper.map(saved, EvaluationDTO.class));
+    public ResponseEntity<?> createEvaluation(@Validated @RequestBody EvaluationSaveDTO evaluationDTO, @AuthenticationPrincipal UserDetails currentUser, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ApiResponse.error("Une erreur s'est produite lors de la création du Evaluation ", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
+        }
+        return ApiResponse.ok(es.saveEvaluation(evaluationDTO, as.getAuhtentification(currentUser.getUsername()).getNoEnseignant()));
     }
 
 }
