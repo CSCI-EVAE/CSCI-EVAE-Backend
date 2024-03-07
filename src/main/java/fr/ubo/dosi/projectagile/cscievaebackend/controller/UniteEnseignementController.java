@@ -10,6 +10,7 @@ import fr.ubo.dosi.projectagile.cscievaebackend.services.AuthentificationService
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.AuthentificationServiceImpl;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.UniteEnseignementServiceImpl;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.userService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @RestController
@@ -30,66 +32,20 @@ import java.util.stream.Collectors;
 public class UniteEnseignementController {
 
     private final userService userService;
-
-    @Autowired
-    private EnseignantRepository er;
-
-    @Autowired
-    private FormationRepository fr;
-
-    @Autowired
-    private EvaluationRepository evr;
-
-    @Autowired
-    private PromotionRepository pr;
-
-    @Autowired
-    private UniteEnseignementRepository uer;
-
-    @Autowired
-    private UniteEnseignementServiceImpl usi;
+    private final Logger logger = Logger.getLogger(UniteEnseignementController.class.getName());
 
     @Autowired
     public UniteEnseignementController(userService userService) {
         this.userService = userService;
     }
 
-    @Autowired
-    private AuthentificationService as;
-  /*  @GetMapping("all")
-    public ResponseEntity<?> getAll() {
-        Authentification authentication = userService.getCurrentUser();
-        Enseignant e = er.findByEmailUbo(authentication.getLoginConnection()).get();
-        List<UniteEnseignement> lue= uer.findAllByNoEnseignant(e);
-        List<UniteEnseignementDTO> ret = new ArrayList<>();
-        for (UniteEnseignement u:lue){
-            UniteEnseignementDTO tmp = new UniteEnseignementDTO();
-            tmp.setCodeUe(u.getId().getCodeUe());
-            Formation f = fr.findById(u.getCodeFormation().getCodeFormation()).get();
-            tmp.setNomFormation(f.getNomFormation());
-            tmp.setAnneeUniversitaire(pr.findByCodeFormation(f.getCodeFormation()).get(0).getId().getAnneeUniversitaire());
-            if (!evr.findByCodeUE(u.getId().getCodeUe()).isEmpty()){
-                Evaluation eva = evr.findByCodeUE(u.getId().getCodeUe()).get(0);
-                tmp.setEvaluationId(eva.getId());
-                tmp.setDesignation(eva.getDesignation());
-                tmp.setDebutReponse(eva.getDebutReponse());
-                tmp.setFinReponse(eva.getFinReponse());
-                tmp.setEtat(String.valueOf(evr.findByCodeUE(u.getId().getCodeUe()).get(0).getEtat()));
-                tmp.setEvaExiste(true);
-            }
-
-            ret.add(tmp);
-
-        }
-        return ApiResponse.ok(ret);
-    }*/
-
     @GetMapping
+    @Transactional
     public ResponseEntity<?> getAllUE(@AuthenticationPrincipal UserDetails currentUser) {
         Authentification auth = userService.getUserByUsername(currentUser.getUsername());
         Set<UniteEnseignement> uniteEnseignements = auth.getNoEnseignant().getUniteEnseignements();
         if (uniteEnseignements.isEmpty()) {
-            return ApiResponse.error("Aucune UE trouvée", null);
+            return ApiResponse.error("Aucune UE trouvée");
         }
         List<UniteEnseignementDTO> ues = uniteEnseignements.stream().map(ue -> {
             UniteEnseignementDTO uniteEnseignementDTO = new UniteEnseignementDTO();
@@ -99,9 +55,12 @@ public class UniteEnseignementController {
             uniteEnseignementDTO.setNbhCm(ue.getNbhCm());
             uniteEnseignementDTO.setNbhTd(ue.getNbhTd());
             uniteEnseignementDTO.setNbhTp(ue.getNbhTp());
-            uniteEnseignementDTO.setCodeFormation(ue.getCodeFormation().getCodeFormation()) ;
-            uniteEnseignementDTO.setNomFormation(ue.getCodeFormation().getNomFormation());
-            uniteEnseignementDTO.setAnneUniv(ue.getEvaluation().getPromotion().getId().getAnneeUniversitaire());
+            logger.info("ue.getCodeFormation() : " + ue.getFormation().getNomFormation());
+            if (ue.getFormation() != null) {
+                uniteEnseignementDTO.setCodeFormation(ue.getFormation().getCodeFormation());
+                uniteEnseignementDTO.setNomFormation(ue.getFormation().getNomFormation());
+            }
+            uniteEnseignementDTO.setAnneUniv(null);
             uniteEnseignementDTO.setTotalHeures();
             return uniteEnseignementDTO;
         }).toList();

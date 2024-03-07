@@ -38,6 +38,7 @@ public class EvaluationController {
     private final EvaluationMapper evaluationMapper;
     private final ModelMapper modelMapper;
     private final EvaluationService evaluationService;
+    Logger logger = Logger.getLogger(EvaluationServiceImpl.class.getName());
 
 
     @Autowired
@@ -134,7 +135,8 @@ public class EvaluationController {
         if (bindingResult.hasErrors()) {
             return ApiResponse.error("Une erreur s'est produite lors de la création du Evaluation ", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
         }
-        return ApiResponse.ok(es.saveEvaluation(evaluationDTO, as.getAuhtentification(currentUser.getUsername()).getNoEnseignant()));
+        Enseignant ens = as.getAuhtentification(currentUser.getUsername()).getNoEnseignant();
+        return ApiResponse.ok(es.saveEvaluation(evaluationDTO, ens));
     }
 
 }

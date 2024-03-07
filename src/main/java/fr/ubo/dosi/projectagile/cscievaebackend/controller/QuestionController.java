@@ -37,7 +37,7 @@ public class QuestionController {
     @PostMapping
     public ResponseEntity<?> createQuestion(@Valid @RequestBody Question question, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ApiResponse.error("Une erreur s'est produite lors de la création du Question ", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
+            return ApiResponse.error("Une erreur s'est produite lors de la création du Question : "+ bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList());
         }
         return ApiResponse.ok(questionService.createQuestion(question));
     }
@@ -57,7 +57,7 @@ public class QuestionController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateQuestion(@PathVariable Long id, @RequestBody @Validated Question question, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ApiResponse.error("Une erreur s'est produite lors de la création du Question ", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
+            return ApiResponse.error("Une erreur s'est produite lors de la création du Question :"+ bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList());
         }
         return ApiResponse.ok(questionService.updateQuestion(id, question));
     }

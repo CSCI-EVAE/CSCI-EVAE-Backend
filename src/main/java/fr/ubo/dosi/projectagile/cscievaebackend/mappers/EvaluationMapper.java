@@ -11,6 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface EvaluationMapper {
     @Mapping(source = "noEnseignant.nom", target = "nomEnseignant")
+    @Mapping(source = "noEnseignant.prenom", target = "prenomEnseignant")
     @Mapping(source = "promotion.id.anneeUniversitaire", target = "anneUniv")
     @Mapping(source = "promotion.id.codeFormation",target = "codeFormation")
     EvaluationDTO evaluationToEvaluationDTO(Evaluation evaluation);

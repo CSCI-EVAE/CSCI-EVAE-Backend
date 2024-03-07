@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -19,16 +20,16 @@ public class UniteEnseignement {
     @EmbeddedId
     private UniteEnseignementId id;
 
-    @MapsId("codeFormation")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "CODE_FORMATION", nullable = false)
-    private Formation codeFormation;
+    @JoinColumn(name = "CODE_FORMATION", nullable = false,insertable=false, updatable=false)
+    private Formation formation;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "NO_ENSEIGNANT", nullable = false)
+    @ToString.Exclude
     private Enseignant noEnseignant;
 
     @Size(max = 64)
@@ -38,7 +39,7 @@ public class UniteEnseignement {
 
     @Size(max = 3)
     @NotNull
-    @Column(name = "SEMESTRE", nullable = false, length = 3)
+    @Column(name = "SEMESTRE", nullable = false, length = 3,columnDefinition = "CHAR(3)")
     private String semestre;
 
     @Size(max = 256)
