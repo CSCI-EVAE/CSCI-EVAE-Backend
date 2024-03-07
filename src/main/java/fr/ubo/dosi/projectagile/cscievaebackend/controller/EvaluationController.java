@@ -2,9 +2,11 @@ package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 
 
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationDTO;
+import fr.ubo.dosi.projectagile.cscievaebackend.DTO.PromotionDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.mappers.EvaluationMapper;
+import fr.ubo.dosi.projectagile.cscievaebackend.mappers.PromotionMapper;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.*;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.AuthentificationServiceImpl;
@@ -31,16 +33,18 @@ public class EvaluationController {
     private final AuthentificationServiceImpl as;
     private final PromotionService ps;
     private final EvaluationMapper evaluationMapper;
+    private final PromotionMapper promotionMapper;
     private final ModelMapper modelMapper;
     private final EvaluationService evaluationService;
     Logger logger = Logger.getLogger(EvaluationController.class.getName());
 
     @Autowired
-    public EvaluationController(EvaluationServiceImpl es, AuthentificationServiceImpl as, PromotionService ps, EvaluationMapper evaluationMapper, ModelMapper modelMapper, EvaluationService evaluationService) {
+    public EvaluationController(EvaluationServiceImpl es, AuthentificationServiceImpl as, PromotionService ps, EvaluationMapper evaluationMapper, PromotionMapper promotionMapper, ModelMapper modelMapper, EvaluationService evaluationService) {
         this.es = es;
         this.as = as;
         this.ps = ps;
         this.evaluationMapper = evaluationMapper;
+        this.promotionMapper = promotionMapper;
         this.modelMapper = modelMapper;
         this.evaluationService = evaluationService;
     }
@@ -71,6 +75,8 @@ public class EvaluationController {
         Authentification auth = as.getAuhtentification(currentUser.getUsername());
         Set<Evaluation> evaluations = auth.getNoEnseignant().getEvaluations().stream().filter(evaluation -> evaluation.getPromotion().getId().getCodeFormation().equals(codeFormation) && evaluation.getPromotion().getId().getAnneeUniversitaire().equals(anneeUniversitaire)).collect(Collectors.toSet());
         Set<EvaluationDTO> evaluationDTOs = evaluations.stream().map(evaluationMapper::evaluationToEvaluationDTO).collect(Collectors.toSet());
+        System.out.println(evaluations);
+        System.out.println(evaluationDTOs);
         return ApiResponse.ok(evaluationDTOs);
     }
 
@@ -130,5 +136,20 @@ public class EvaluationController {
         Evaluation saved = es.createEvaluation(evaluationDTO, enseignant);
         return ApiResponse.ok(modelMapper.map(saved, EvaluationDTO.class));
     }
+    @PreAuthorize("hasAuthority('ENS')")
+    @GetMapping("getPromotionsForFormationAndYear")
+    public ResponseEntity<?> getPromotionsForFormationAndYear(
+            @AuthenticationPrincipal UserDetails currentUser,
+            @RequestParam("codeFormation") String codeFormation,
+            @RequestParam("anneeUniversitaire") String anneeUniversitaire) {
+        Authentification auth = as.getAuhtentification(currentUser.getUsername());
+        Set<Promotion> promotions = auth.getNoEnseignant().getPromotions().stream()
+                .filter(promotion -> promotion.getId().getCodeFormation().equals(codeFormation)
+                        && promotion.getId().getAnneeUniversitaire().equals(anneeUniversitaire))
+                .collect(Collectors.toSet());
+        Set<PromotionDTO> PromotionDTOs=promotions.stream().map(promotionMapper::promotionToPromotionDTO).collect(Collectors.toSet());
+        return ApiResponse.ok(PromotionDTOs);
+    }
+
 
 }
