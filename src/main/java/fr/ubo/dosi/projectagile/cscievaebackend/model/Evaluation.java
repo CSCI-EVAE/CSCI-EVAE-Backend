@@ -30,9 +30,9 @@ public class Evaluation {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumns({
-            @JoinColumn(name = "CODE_FORMATION", referencedColumnName = "CODE_FORMATION", nullable = false,insertable=false, updatable=false),
-            @JoinColumn(name = "CODE_UE", referencedColumnName = "CODE_UE", nullable = false,insertable=false, updatable=false),
-            @JoinColumn(name = "CODE_EC", referencedColumnName = "CODE_EC", nullable = false,insertable=false, updatable=false)
+            @JoinColumn(name = "CODE_FORMATION", referencedColumnName = "CODE_FORMATION", nullable = false, insertable = false, updatable = false),
+            @JoinColumn(name = "CODE_UE", referencedColumnName = "CODE_UE", nullable = false, insertable = false, updatable = false),
+            @JoinColumn(name = "CODE_EC", referencedColumnName = "CODE_EC", nullable = false, insertable = false, updatable = false)
     })
     @OnDelete(action = OnDeleteAction.RESTRICT)
     private ElementConstitutif elementConstitutif;
@@ -66,8 +66,8 @@ public class Evaluation {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumns({
-            @JoinColumn(name = "CODE_FORMATION", referencedColumnName = "CODE_FORMATION", nullable = false,insertable=false, updatable=false),
-            @JoinColumn(name = "ANNEE_UNIVERSITAIRE", referencedColumnName = "ANNEE_UNIVERSITAIRE", nullable = false,insertable=false, updatable=false)
+            @JoinColumn(name = "CODE_FORMATION", referencedColumnName = "CODE_FORMATION", nullable = false, insertable = false, updatable = false),
+            @JoinColumn(name = "ANNEE_UNIVERSITAIRE", referencedColumnName = "ANNEE_UNIVERSITAIRE", nullable = false, insertable = false, updatable = false)
     })
     @OnDelete(action = OnDeleteAction.RESTRICT)
     private Promotion promotion;
@@ -75,5 +75,14 @@ public class Evaluation {
     @OneToMany(mappedBy = "idEvaluation")
     @OrderColumn(name = "ORDRE")
     private Set<RubriqueEvaluation> rubriqueEvaluations = new LinkedHashSet<>();
+
+    @NotNull
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumns({
+            @JoinColumn(name = "CODE_FORMATION", referencedColumnName = "CODE_FORMATION", nullable = false, insertable = false, updatable = false),
+            @JoinColumn(name = "CODE_UE", referencedColumnName = "CODE_UE", nullable = false, insertable = false, updatable = false),
+    })
+    private UniteEnseignement uniteEnseignement;
 
 }

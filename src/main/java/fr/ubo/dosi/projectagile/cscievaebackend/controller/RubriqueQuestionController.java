@@ -33,37 +33,18 @@ public class RubriqueQuestionController {
         return ApiResponse.ok(rubriqueQuestionService.findAllQuestionsForRubriques().stream().map(rubriqueMapper::rubriqueToRubriqueDTO).collect(Collectors.toList()));
     }
 
-    @PostMapping("/process")
-    public ResponseEntity<?> processRubriqueQuestions(@RequestBody List<IncomingRubriqueQuestionDTO> incomingData) {
-        String result = rubriqueQuestionService.processAndStore(incomingData);
-
-        if (result.equals("tout les données sont bien enregistrées")) {
-            return ApiResponse.ok(result);
-        } else {
-            return ApiResponse.error(result, null);
-        }
-    }
-
     @PostMapping("/AjouterRubriqueQuestion")
     public ResponseEntity<?> processRubriqueQuestions(@RequestBody IncomingRubriqueQuestionDTO incomingData) {
         String result = rubriqueQuestionService.AjouterRubriqueQuestion(incomingData);
-
-        if (result.equals("tout les données sont bien enregistrées")) {
-            return ApiResponse.ok(result);
-        } else {
-            return ApiResponse.error(result, null);
-        }
+        return ApiResponse.ok(result);
     }
 
     @PostMapping("/UpdateRubriqueQuestions")
     public ResponseEntity<?> updateRubriqueQuestions(@RequestBody IncomingRubriqueQuestionDTO incomingData) {
-        try {
-            String result = rubriqueQuestionService.updateRubriqueQuestions(incomingData);
-            return ApiResponse.ok(result);
-        } catch (Exception e) {
-            return ApiResponse.error(e.getMessage(), null);
-        }
+        String result = rubriqueQuestionService.AjouterRubriqueQuestion(incomingData);
+        return ApiResponse.ok(result);
     }
+
     @DeleteMapping("/deleteAll/{id}")
     public ResponseEntity<?> deleteAllRubriqueQuestion(@PathVariable Long id) {
         try {

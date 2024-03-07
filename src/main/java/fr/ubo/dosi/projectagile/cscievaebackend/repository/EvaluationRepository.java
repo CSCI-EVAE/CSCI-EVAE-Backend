@@ -2,6 +2,7 @@ package fr.ubo.dosi.projectagile.cscievaebackend.repository;
 
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Enseignant;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.UniteEnseignement;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,4 +19,7 @@ public interface EvaluationRepository extends JpaRepository<Evaluation, Long> {
         List<Evaluation> findAllByEnseignantAndLastYear(@Param("enseignantId") Long enseignantId, @Param("lastYear") String lastYear);
 
     boolean existsByNoEvaluation(Short noEvaluation);
+
+    @Query("SELECT e FROM Evaluation e WHERE e.noEnseignant.id = :enseignantId AND e.promotion.id.anneeUniversitaire LIKE :lastYear%")
+    List<UniteEnseignement> findAllOrderByCodeUe();
 }

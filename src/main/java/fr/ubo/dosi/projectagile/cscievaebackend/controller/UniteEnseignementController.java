@@ -6,10 +6,14 @@ import fr.ubo.dosi.projectagile.cscievaebackend.DTO.UniteEnseignementDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.*;
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.*;
+import fr.ubo.dosi.projectagile.cscievaebackend.services.AuthentificationService;
+import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.AuthentificationServiceImpl;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.UniteEnseignementServiceImpl;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.userService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -48,7 +54,9 @@ public class UniteEnseignementController {
         this.userService = userService;
     }
 
-    @GetMapping("all")
+    @Autowired
+    private AuthentificationService as;
+  /*  @GetMapping("all")
     public ResponseEntity<?> getAll() {
         Authentification authentication = userService.getCurrentUser();
         Enseignant e = er.findByEmailUbo(authentication.getLoginConnection()).get();
@@ -74,5 +82,27 @@ public class UniteEnseignementController {
 
         }
         return ApiResponse.ok(ret);
+    }*/
+
+    @GetMapping
+    public ResponseEntity<?> getAllUE(@AuthenticationPrincipal UserDetails currentUser) {
+        Authentification auth = userService.getUserByUsername(currentUser.getUsername());
+        Set<UniteEnseignement> uniteEnseignements = auth.getNoEnseignant().getUniteEnseignements();
+        if (uniteEnseignements.isEmpty()) {
+            return ApiResponse.error("Aucune UE trouvée", null);
+        }
+        List<UniteEnseignementDTO> ues = uniteEnseignements.stream().map(ue -> {
+            UniteEnseignementDTO uniteEnseignementDTO = new UniteEnseignementDTO();
+            uniteEnseignementDTO.setCodeUe(ue.getId().getCodeUe());
+            uniteEnseignementDTO.setDesignation(ue.getDesignation());
+            uniteEnseignementDTO.setEvaExiste(ue.getEvaluation());
+            uniteEnseignementDTO.setNbhCm(ue.getNbhCm());
+            uniteEnseignementDTO.setNbhTd(ue.getNbhTd());
+            uniteEnseignementDTO.setNbhTp(ue.getNbhTp());
+            uniteEnseignementDTO.setCodeFormation(ue.getCodeFormation().getCodeFormation()) ;
+            uniteEnseignementDTO.setTotalHeures();
+            return uniteEnseignementDTO;
+        }).toList();
+        return ApiResponse.ok(ues);
     }
 }

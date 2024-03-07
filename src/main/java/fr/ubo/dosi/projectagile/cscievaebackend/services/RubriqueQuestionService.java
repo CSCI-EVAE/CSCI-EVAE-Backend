@@ -12,18 +12,7 @@ import java.util.List;
 
 public interface RubriqueQuestionService {
     List<Rubrique> findAllQuestionsForRubriques();
-
-    RubriqueQuestion saveRubriqueQuestion(RubriqueQuestion rubriqueQuestion);
-
-    void deleteRubriqueQuestion(RubriqueQuestion rubriqueQuestion);
-
-    RubriqueQuestionDTO getRubriqueQuestionById(RubriqueQuestionId rubriqueQuestionId);
-
-    String processAndStore(List<IncomingRubriqueQuestionDTO> incomingData);
-
     String AjouterRubriqueQuestion(IncomingRubriqueQuestionDTO incomingData);
-
-    String updateRubriqueQuestions(IncomingRubriqueQuestionDTO incomingData);
 
     String deleteAllRubriqueQuestion(Long id);
 }
