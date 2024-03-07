@@ -34,6 +34,7 @@ public class UniteEnseignement {
 
     @Size(max = 64)
     @NotNull
+    @OrderColumn(name = "DESIGNATION")
     @Column(name = "DESIGNATION", nullable = false, length = 64)
     private String designation;
 
