@@ -1,5 +1,6 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -48,10 +49,12 @@ public class Formation {
 
     @OneToMany(mappedBy = "codeFormation")
     @ToString.Exclude
+    @JsonIgnore
     private Set<Promotion> promotions = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "formation")
     @ToString.Exclude
+    @JsonIgnore
     private Set<UniteEnseignement> uniteEnseignements = new LinkedHashSet<>();
 
 }

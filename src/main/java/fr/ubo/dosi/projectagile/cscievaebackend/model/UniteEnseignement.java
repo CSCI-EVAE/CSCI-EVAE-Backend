@@ -56,7 +56,7 @@ public class UniteEnseignement {
     @Column(name = "NBH_TP")
     private Short nbhTp;
 
-    @OneToOne(mappedBy = "uniteEnseignement")
-    private Evaluation evaluation;
+    @OneToMany(mappedBy = "uniteEnseignement")
+    private Set<Evaluation> evaluations = new LinkedHashSet<>();
 
 }

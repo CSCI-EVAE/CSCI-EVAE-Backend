@@ -1,13 +1,14 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -34,5 +35,9 @@ public class ElementConstitutif {
 
     @Column(name = "NBH_TP")
     private Short nbhTp;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "elementConstitutif")
+    private Set<Evaluation> evaluations = new LinkedHashSet<>();
 
 }

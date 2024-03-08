@@ -35,4 +35,8 @@ public class Droit {
     @Column(name = "DUPLICATION", nullable = false)
     private char duplication = '0';
 
+    @ManyToOne
+    @JoinColumn(name = "id_evaluation")
+    private Evaluation evaluation;
+
 }

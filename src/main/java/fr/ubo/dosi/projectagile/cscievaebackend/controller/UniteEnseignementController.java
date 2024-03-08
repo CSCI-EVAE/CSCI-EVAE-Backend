@@ -51,7 +51,7 @@ public class UniteEnseignementController {
             UniteEnseignementDTO uniteEnseignementDTO = new UniteEnseignementDTO();
             uniteEnseignementDTO.setCodeUe(ue.getId().getCodeUe());
             uniteEnseignementDTO.setDesignation(ue.getDesignation());
-            uniteEnseignementDTO.setEvaExiste(ue.getEvaluation());
+            uniteEnseignementDTO.setEvaExiste(ue.getEvaluations().stream().findFirst().get());
             uniteEnseignementDTO.setNbhCm(ue.getNbhCm());
             uniteEnseignementDTO.setNbhTd(ue.getNbhTd());
             uniteEnseignementDTO.setNbhTp(ue.getNbhTp());

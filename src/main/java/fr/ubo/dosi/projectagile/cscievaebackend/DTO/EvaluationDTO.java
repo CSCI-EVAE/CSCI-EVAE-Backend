@@ -27,6 +27,5 @@ public class EvaluationDTO {
     private LocalDate finReponse;
     private String periode;
     private Set<RubriqueEvaluationDTO> rubriqueEvaluations;
-    private ElementConstitutif elementConstitutif;
 }
 

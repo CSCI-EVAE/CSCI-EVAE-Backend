@@ -1,13 +1,12 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.DTO;
 
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
 
 @Getter
 @Setter
