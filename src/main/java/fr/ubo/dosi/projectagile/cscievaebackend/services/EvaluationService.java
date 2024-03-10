@@ -5,12 +5,14 @@ import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationSaveDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Enseignant;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Etudiant;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
+
 @Service
 public interface EvaluationService {
 
@@ -22,5 +24,5 @@ public interface EvaluationService {
 
     Set<Evaluation> getEvaluationsByUser(Etudiant etudiant);
 
-    void saveEvaluation(EvaluationSaveDTO evaluationDTO, Enseignant currentUser);
+    String saveEvaluation(EvaluationSaveDTO evaluationDTO, Enseignant currentUser);
 }
