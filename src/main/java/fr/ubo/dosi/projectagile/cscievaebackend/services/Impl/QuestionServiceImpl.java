@@ -29,7 +29,7 @@ public class QuestionServiceImpl implements QuestionService {
         if (questionRepository.existsByIntitule(question.getIntitule())) {
             throw new IllegalArgumentException("La question existe déjà");
         }
-        if (!qualificatifRepository.existsByQualificatifId(question.getIdQualificatif().getId())) {
+        if (qualificatifRepository.existsByQualificatifId(question.getIdQualificatif().getId())) {
             throw new IllegalArgumentException("Le qualificatif n'existe pas !!");
         }
         return questionRepository.save(question);

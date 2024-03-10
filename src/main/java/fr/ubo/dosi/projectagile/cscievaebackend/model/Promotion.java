@@ -1,6 +1,5 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -34,7 +33,6 @@ public class Promotion {
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "NO_ENSEIGNANT")
     @ToString.Exclude
-    @JsonIgnore
     private Enseignant noEnseignant;
 
     @Size(max = 16)
@@ -68,7 +66,6 @@ public class Promotion {
 
     @OneToMany(mappedBy = "promotion")
     @ToString.Exclude
-    @JsonIgnore
     private Set<Evaluation> evaluations = new LinkedHashSet<>();
 
 }

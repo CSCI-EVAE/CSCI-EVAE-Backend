@@ -38,16 +38,20 @@ public class EvaluationController {
     private final AuthentificationServiceImpl as;
     private final PromotionService ps;
     private final EvaluationMapper evaluationMapper;
-    private PromotionMapper promotionMapper ;
+    private final ModelMapper modelMapper;
     private final EvaluationService evaluationService;
+    Logger logger = Logger.getLogger(EvaluationServiceImpl.class.getName());
+    private final PromotionMapper promotionMapper;
 
 
     @Autowired
-    public EvaluationController(EvaluationServiceImpl es, AuthentificationServiceImpl as, PromotionService ps, EvaluationMapper evaluationMapper, ModelMapper modelMapper, EvaluationService evaluationService, RubriqueQuestionService rubriqueQuestionService) {
+    public EvaluationController(EvaluationServiceImpl es, AuthentificationServiceImpl as, PromotionService ps, EvaluationMapper evaluationMapper, ModelMapper modelMapper, EvaluationService evaluationService,
+                                PromotionMapper promotionMapper) {
         this.es = es;
         this.as = as;
         this.ps = ps;
         this.evaluationMapper = evaluationMapper;
+        this.modelMapper = modelMapper;
         this.evaluationService = evaluationService;
         this.promotionMapper = promotionMapper;
     }
@@ -126,7 +130,7 @@ public class EvaluationController {
     public ResponseEntity<?> getEvaluationsForEnseignantLastYear(@AuthenticationPrincipal UserDetails currentUser) {
         Short enseignantId = as.getAuhtentification(currentUser.getUsername()).getNoEnseignant().getId();
         List<Evaluation> evaluations = es.getEvaluationsForEnseignantLastYear(Long.valueOf(enseignantId));
-        List<EvaluationDTO> evaluationDTOs = evaluations.stream().map(evaluationMapper::evaluationToEvaluationDTO).collect(Collectors.toList());
+        List<EvaluationDTO> evaluationDTOs = evaluations.stream().map((element) -> modelMapper.map(element, EvaluationDTO.class)).collect(Collectors.toList());
         return ApiResponse.ok(evaluationDTOs);
     }
 
@@ -137,9 +141,9 @@ public class EvaluationController {
             return ApiResponse.error("Une erreur s'est produite lors de la création du Evaluation ", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
         }
         Enseignant ens = as.getAuhtentification(currentUser.getUsername()).getNoEnseignant();
-        es.saveEvaluation(evaluationDTO, ens);
-        return ApiResponse.ok("Evaluation créée avec succès");
+        return ApiResponse.ok(es.saveEvaluation(evaluationDTO, ens));
     }
+
     @PreAuthorize("hasAuthority('ENS')")
     @GetMapping("getPromotionsForFormationAndYear")
     public ResponseEntity<?> getPromotionsForFormationAndYear(
@@ -151,7 +155,7 @@ public class EvaluationController {
                 .filter(promotion -> promotion.getId().getCodeFormation().equals(codeFormation)
                         && promotion.getId().getAnneeUniversitaire().equals(anneeUniversitaire))
                 .collect(Collectors.toSet());
-        Set<PromotionDTO> PromotionDTOs= promotions.stream().map(promotionMapper::promotionToPromotionDTO).collect(Collectors.toSet());
+        Set<PromotionDTO> PromotionDTOs = promotions.stream().map(promotionMapper::promotionToPromotionDTO).collect(Collectors.toSet());
         return ApiResponse.ok(PromotionDTOs);
     }
 

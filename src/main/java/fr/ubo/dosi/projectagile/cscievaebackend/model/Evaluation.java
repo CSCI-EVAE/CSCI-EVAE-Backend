@@ -1,12 +1,12 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.model;
 
 import jakarta.persistence.*;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.*;
 
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
@@ -19,6 +19,7 @@ import java.util.Set;
 public class Evaluation {
     @Id
     @Column(name = "ID_EVALUATION", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotNull
@@ -27,7 +28,7 @@ public class Evaluation {
     @JoinColumn(name = "NO_ENSEIGNANT", nullable = false)
     private Enseignant noEnseignant;
 
-    @NotNull
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumns({
             @JoinColumn(name = "CODE_FORMATION", referencedColumnName = "CODE_FORMATION", nullable = false, insertable = false, updatable = false),
@@ -48,7 +49,7 @@ public class Evaluation {
 
     @Size(max = 3)
     @NotNull
-    @Column(name = "ETAT", nullable = false, length = 3)
+    @Column(name = "ETAT", nullable = false, length = 3, columnDefinition = "CHAR(3)")
     private String etat;
 
     @Size(max = 64)
