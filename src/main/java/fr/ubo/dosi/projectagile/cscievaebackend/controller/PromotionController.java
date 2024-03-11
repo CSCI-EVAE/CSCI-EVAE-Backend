@@ -40,11 +40,7 @@ public class PromotionController {
 
         Authentification auth = as.getAuhtentification(currentUser.getUsername());
         Set<Promotion> promotions = auth.getNoEnseignant().getPromotions();
-        PromotionId PromotiPromotionId=new PromotionId();
-
-        System.out.println(promotions);
         Set<PromotionDTO> PromotionDTOs = promotions.stream().map(promotionMapper::promotionToPromotionDTO).collect(Collectors.toSet());
-        System.out.println(PromotionDTOs);
         return ApiResponse.ok(PromotionDTOs);
     }
     @PreAuthorize("hasAuthority('ADM')")
