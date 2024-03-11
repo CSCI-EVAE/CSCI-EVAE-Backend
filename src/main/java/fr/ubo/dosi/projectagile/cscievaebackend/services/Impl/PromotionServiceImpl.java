@@ -7,6 +7,8 @@ import fr.ubo.dosi.projectagile.cscievaebackend.services.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PromotionServiceImpl implements PromotionService {
     @Autowired
@@ -14,5 +16,13 @@ public class PromotionServiceImpl implements PromotionService {
     @Override
     public Promotion getPromotionById(PromotionId id) {
         return promotionRepository.findByPromotionId(id.getCodeFormation(), id.getAnneeUniversitaire());
+    }
+    @Override
+    public List<Promotion> getAllPromotions() {
+        if (promotionRepository.findAll().isEmpty()) {
+            throw new IllegalArgumentException("la liste des promotions est vide");
+        } else {
+            return promotionRepository.findAll();
+        }
     }
 }

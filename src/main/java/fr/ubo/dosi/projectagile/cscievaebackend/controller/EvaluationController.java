@@ -3,17 +3,14 @@ package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationSaveDTO;
-import fr.ubo.dosi.projectagile.cscievaebackend.DTO.PromotionDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.mappers.EvaluationMapper;
-import fr.ubo.dosi.projectagile.cscievaebackend.mappers.PromotionMapper;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.*;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.AuthentificationServiceImpl;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.EvaluationServiceImpl;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.PromotionService;
-import fr.ubo.dosi.projectagile.cscievaebackend.services.RubriqueQuestionService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -28,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @RestController
@@ -40,20 +36,18 @@ public class EvaluationController {
     private final EvaluationMapper evaluationMapper;
     private final ModelMapper modelMapper;
     private final EvaluationService evaluationService;
-    Logger logger = Logger.getLogger(EvaluationServiceImpl.class.getName());
-    private final PromotionMapper promotionMapper;
+
 
 
     @Autowired
-    public EvaluationController(EvaluationServiceImpl es, AuthentificationServiceImpl as, PromotionService ps, EvaluationMapper evaluationMapper, ModelMapper modelMapper, EvaluationService evaluationService,
-                                PromotionMapper promotionMapper) {
+    public EvaluationController(EvaluationServiceImpl es, AuthentificationServiceImpl as, PromotionService ps, EvaluationMapper evaluationMapper, ModelMapper modelMapper, EvaluationService evaluationService
+                                ) {
         this.es = es;
         this.as = as;
         this.ps = ps;
         this.evaluationMapper = evaluationMapper;
         this.modelMapper = modelMapper;
         this.evaluationService = evaluationService;
-        this.promotionMapper = promotionMapper;
     }
 
     /**
@@ -142,24 +136,5 @@ public class EvaluationController {
         }
         Enseignant ens = as.getAuhtentification(currentUser.getUsername()).getNoEnseignant();
         return ApiResponse.ok(es.saveEvaluation(evaluationDTO, ens));
-    }
-
-    /**
-     *TODO: this method should be moved to the PromotionController
-     * because it is not related to evaluations and remove the unused imports related to the method you created
-     */
-    @PreAuthorize("hasAuthority('ENS')")
-    @GetMapping("getPromotionsForFormationAndYear")
-    public ResponseEntity<?> getPromotionsForFormationAndYear(
-            @AuthenticationPrincipal UserDetails currentUser,
-            @RequestParam("codeFormation") String codeFormation,
-            @RequestParam("anneeUniversitaire") String anneeUniversitaire) {
-        Authentification auth = as.getAuhtentification(currentUser.getUsername());
-        Set<Promotion> promotions = auth.getNoEnseignant().getPromotions().stream()
-                .filter(promotion -> promotion.getId().getCodeFormation().equals(codeFormation)
-                        && promotion.getId().getAnneeUniversitaire().equals(anneeUniversitaire))
-                .collect(Collectors.toSet());
-        Set<PromotionDTO> PromotionDTOs = promotions.stream().map(promotionMapper::promotionToPromotionDTO).collect(Collectors.toSet());
-        return ApiResponse.ok(PromotionDTOs);
     }
 }
