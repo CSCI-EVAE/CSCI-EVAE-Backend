@@ -144,6 +144,10 @@ public class EvaluationController {
         return ApiResponse.ok(es.saveEvaluation(evaluationDTO, ens));
     }
 
+    /**
+     *TODO: this method should be moved to the PromotionController
+     * because it is not related to evaluations and remove the unused imports related to the method you created
+     */
     @PreAuthorize("hasAuthority('ENS')")
     @GetMapping("getPromotionsForFormationAndYear")
     public ResponseEntity<?> getPromotionsForFormationAndYear(
