@@ -135,6 +135,8 @@ public class EvaluationController {
             return ApiResponse.error("Une erreur s'est produite lors de la création du Evaluation ", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
         }
         Enseignant ens = as.getAuhtentification(currentUser.getUsername()).getNoEnseignant();
-        return ApiResponse.ok(es.saveEvaluation(evaluationDTO, ens));
+
+        es.saveEvaluation(evaluationDTO, ens);
+        return ApiResponse.ok("Evaluation créée avec succès");
     }
 }
