@@ -47,7 +47,7 @@ public class Promotion {
     private LocalDate dateReponseLp;
 
     @Column(name = "DATE_REPONSE_LALP")
-    private LocalDate dateReponseLalp;
+    private LocalDate dateReponseLalp ;
 
     @Column(name = "DATE_RENTREE")
     private LocalDate dateRentree;

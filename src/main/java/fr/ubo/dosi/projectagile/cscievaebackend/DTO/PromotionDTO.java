@@ -11,11 +11,10 @@ import java.time.LocalDate;
 @Builder
 public class PromotionDTO {
     private String codeFormation;
-    private String anneeUniversitaire;
     private String siglePromotion;
     private Short nbMaxEtudiant;
-    private LocalDate dateReponseLP;
-    private LocalDate dateReponseLALP;
+    private LocalDate dateReponseLp;
+    private LocalDate dateReponseLalp;
     private LocalDate dateRentree;
     private String lieuRentree;
     private String processusStage;

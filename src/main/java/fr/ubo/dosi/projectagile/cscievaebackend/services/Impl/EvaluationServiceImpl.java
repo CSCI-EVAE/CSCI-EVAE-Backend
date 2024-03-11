@@ -19,10 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -84,30 +81,43 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     @Override
     public String saveEvaluation(EvaluationSaveDTO evaluationDTO, Enseignant enseignant) {
+        logger.info("Evaluation to be saved: " + evaluationDTO);
         StringBuilder resultMessage = new StringBuilder();
         Evaluation savedEvaluation = new Evaluation();
+        if (er.existsByDesignation(evaluationDTO.getDesignation())) {
+            throw new IllegalArgumentException("L'évaluation existe déjà");
+        }
         savedEvaluation.setDesignation(evaluationDTO.getDesignation());
         savedEvaluation.setDebutReponse(evaluationDTO.getDebutReponse());
         savedEvaluation.setFinReponse(evaluationDTO.getFinReponse());
         savedEvaluation.setEtat("ELA");
         savedEvaluation.setNoEnseignant(enseignant);
-        savedEvaluation.setPromotion(promotionRepository.findByPromotionId(evaluationDTO.getCodeFormation(), evaluationDTO.getAnneePro()));
-        savedEvaluation.setUniteEnseignement(uniteEnseignementRepository.findById(evaluationDTO.getCodeUE(), evaluationDTO.getCodeFormation()));
-        savedEvaluation.setElementConstitutif(elementConstitutifRepository.findById(evaluationDTO.getCodeEC(), evaluationDTO.getCodeUE(), evaluationDTO.getCodeFormation()));
-        savedEvaluation.setNoEvaluation((short) (Math.random() * 1000));
+        Promotion promotion = promotionRepository.findByPromotionId(evaluationDTO.getCodeFormation(), evaluationDTO.getAnneePro());
+        if (promotion == null) {
+            throw new NoSuchElementException("La promotion n'existe pas");
+        }
+        logger.info("Promotion found: " + promotion.getCodeFormation());
+        savedEvaluation.setPromotion(promotion);
+        UniteEnseignement uniteEnseignement = uniteEnseignementRepository.findById(evaluationDTO.getCodeUE(), evaluationDTO.getCodeFormation());
+        if (uniteEnseignement == null) {
+            throw new NoSuchElementException("L'unité d'enseignement n'existe pas");
+        }
+        savedEvaluation.setUniteEnseignement(uniteEnseignement);
+        ElementConstitutif elementConstitutif = null;
+        if (!Objects.equals(evaluationDTO.getCodeEC(), "")) {
+            elementConstitutif = elementConstitutifRepository.findById(evaluationDTO.getCodeEC(), evaluationDTO.getCodeUE(), evaluationDTO.getCodeFormation());
+            if (elementConstitutif == null) {
+                throw new NoSuchElementException("L'élément constitutif n'existe pas");
+            }
+        }
+        savedEvaluation.setElementConstitutif(elementConstitutif);
+        savedEvaluation.setNoEvaluation((short) (Math.random() * 100));
         savedEvaluation.setPeriode(evaluationDTO.getPeriode());
         for (IncomingRubriqueQuestionDTO inDto : evaluationDTO.getRubriqueQuestion()) {
             resultMessage.append(rubriqueQuestionService.AjouterRubriqueQuestion(inDto));
         }
+        logger.info("Evaluation to be saved: " + evaluationMapper.evaluationToEvaluationDTO(savedEvaluation));
         er.save(savedEvaluation);
         return resultMessage.toString();
-    }
-
-    public Evaluation createEvaluation(Evaluation evaluation, Enseignant enseignant) {
-        if (er.existsByNoEvaluation(evaluation.getNoEvaluation())) {
-            throw new IllegalArgumentException("L'évaluation existe déjà");
-        }
-        evaluation.setNoEnseignant(enseignant);
-        return er.save(evaluation);
     }
 }
