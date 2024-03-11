@@ -68,4 +68,7 @@ public class Promotion {
     @ToString.Exclude
     private Set<Evaluation> evaluations = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "promotion")
+    private Set<Etudiant> etudiants = new LinkedHashSet<>();
+
 }
