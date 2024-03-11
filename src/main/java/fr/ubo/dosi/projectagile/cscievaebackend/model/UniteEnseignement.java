@@ -57,6 +57,7 @@ public class UniteEnseignement {
     private Short nbhTp;
 
     @OneToMany(mappedBy = "uniteEnseignement")
+    @OrderColumn(name = "ID_EVALUATION")
     private Set<Evaluation> evaluations = new LinkedHashSet<>();
 
 }
