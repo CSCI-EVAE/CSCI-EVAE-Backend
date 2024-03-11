@@ -24,5 +24,5 @@ public interface EvaluationService {
 
     Set<Evaluation> getEvaluationsByUser(Etudiant etudiant);
 
-    String saveEvaluation(EvaluationSaveDTO evaluationDTO, Enseignant currentUser);
+    void saveEvaluation(EvaluationSaveDTO evaluationDTO, Enseignant currentUser);
 }

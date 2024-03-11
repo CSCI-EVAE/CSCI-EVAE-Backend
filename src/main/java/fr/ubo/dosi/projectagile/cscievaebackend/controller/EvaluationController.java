@@ -141,25 +141,7 @@ public class EvaluationController {
             return ApiResponse.error("Une erreur s'est produite lors de la création du Evaluation ", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
         }
         Enseignant ens = as.getAuhtentification(currentUser.getUsername()).getNoEnseignant();
-        return ApiResponse.ok(es.saveEvaluation(evaluationDTO, ens));
-    }
-
-    /**
-     *TODO: this method should be moved to the PromotionController
-     * because it is not related to evaluations and remove the unused imports related to the method you created
-     */
-    @PreAuthorize("hasAuthority('ENS')")
-    @GetMapping("getPromotionsForFormationAndYear")
-    public ResponseEntity<?> getPromotionsForFormationAndYear(
-            @AuthenticationPrincipal UserDetails currentUser,
-            @RequestParam("codeFormation") String codeFormation,
-            @RequestParam("anneeUniversitaire") String anneeUniversitaire) {
-        Authentification auth = as.getAuhtentification(currentUser.getUsername());
-        Set<Promotion> promotions = auth.getNoEnseignant().getPromotions().stream()
-                .filter(promotion -> promotion.getId().getCodeFormation().equals(codeFormation)
-                        && promotion.getId().getAnneeUniversitaire().equals(anneeUniversitaire))
-                .collect(Collectors.toSet());
-        Set<PromotionDTO> PromotionDTOs = promotions.stream().map(promotionMapper::promotionToPromotionDTO).collect(Collectors.toSet());
-        return ApiResponse.ok(PromotionDTOs);
+        es.saveEvaluation(evaluationDTO, ens);
+        return ApiResponse.ok("Evaluation créée avec succès");
     }
 }

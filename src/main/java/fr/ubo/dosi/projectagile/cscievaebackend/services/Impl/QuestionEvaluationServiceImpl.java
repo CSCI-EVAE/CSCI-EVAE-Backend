@@ -11,7 +11,7 @@ public class QuestionEvaluationServiceImpl implements QuestionEvaluationService 
     @Autowired
     public QuestionEvaluationRepository questionEvaluationRepository;
     @Override
-    public void saveQuestionEvaluation(QuestionEvaluation questionEvaluation) {
-        questionEvaluationRepository.save(questionEvaluation);
+    public QuestionEvaluation saveQuestionEvaluation(QuestionEvaluation questionEvaluation) {
+       return questionEvaluationRepository.save(questionEvaluation);
     }
 }
