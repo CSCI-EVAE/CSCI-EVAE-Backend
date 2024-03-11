@@ -59,6 +59,9 @@ public class QualificatifServiceImpl implements QualificatifService {
         }
         Qualificatif qualificatif = qualificatifRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Le qualificatif n'existe pas avec cet id : " + id));
+        if (qualificatifRepository.existsByMinimalAndMaximal(qualificatifModifie.getMinimal(), qualificatifModifie.getMaximal())) {
+            throw new IllegalArgumentException("Le qualificatif existe déjà avec ces valeurs minimal et maximal");
+        }
         qualificatif.setMinimal(qualificatifModifie.getMinimal());
         qualificatif.setMaximal(qualificatifModifie.getMaximal());
         return qualificatifRepository.save(qualificatif);

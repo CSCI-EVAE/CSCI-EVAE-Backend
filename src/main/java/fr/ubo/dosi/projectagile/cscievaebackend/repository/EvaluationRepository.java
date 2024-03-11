@@ -22,4 +22,6 @@ public interface EvaluationRepository extends JpaRepository<Evaluation, Long> {
 
     @Query("SELECT e FROM Evaluation e WHERE e.noEnseignant.id = :enseignantId AND e.promotion.id.anneeUniversitaire LIKE :lastYear%")
     List<UniteEnseignement> findAllOrderByCodeUe();
+
+    boolean existsByDesignation(String designation);
 }

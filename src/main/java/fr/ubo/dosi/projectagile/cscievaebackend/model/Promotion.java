@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -16,6 +17,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "PROMOTION")
+@ToString
 public class Promotion {
     @EmbeddedId
     private PromotionId id;
@@ -24,11 +26,13 @@ public class Promotion {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "CODE_FORMATION", nullable = false)
+    @ToString.Exclude
     private Formation codeFormation;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "NO_ENSEIGNANT")
+    @ToString.Exclude
     private Enseignant noEnseignant;
 
     @Size(max = 16)
@@ -43,7 +47,7 @@ public class Promotion {
     private LocalDate dateReponseLp;
 
     @Column(name = "DATE_REPONSE_LALP")
-    private LocalDate dateReponseLalp;
+    private LocalDate dateReponseLalp ;
 
     @Column(name = "DATE_RENTREE")
     private LocalDate dateRentree;
@@ -61,6 +65,7 @@ public class Promotion {
     private String commentaire;
 
     @OneToMany(mappedBy = "promotion")
+    @ToString.Exclude
     private Set<Evaluation> evaluations = new LinkedHashSet<>();
 
 }

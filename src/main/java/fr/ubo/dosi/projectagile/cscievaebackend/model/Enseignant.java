@@ -1,5 +1,6 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -76,6 +77,7 @@ public class Enseignant {
     @Column(name = "EMAIL_PERSO")
     private String emailPerso;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "noEnseignant")
     private Set<Evaluation> evaluations = new LinkedHashSet<>();
 

@@ -1,19 +1,20 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
 @Entity
+@ToString
 @Table(name = "FORMATION")
 public class Formation {
     @Id
@@ -37,12 +38,20 @@ public class Formation {
 
     @NotNull
     @Column(name = "DOUBLE_DIPLOME", nullable = false)
-    private Boolean doubleDiplome = false;
+    private char doubleDiplome;
 
     @Column(name = "DEBUT_ACCREDITATION")
     private LocalDate debutAccreditation;
 
     @Column(name = "FIN_ACCREDITATION")
     private LocalDate finAccreditation;
+
+    @OneToMany(mappedBy = "codeFormation")
+    @ToString.Exclude
+    private Set<Promotion> promotions = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "formation")
+    @ToString.Exclude
+    private Set<UniteEnseignement> uniteEnseignements = new LinkedHashSet<>();
 
 }

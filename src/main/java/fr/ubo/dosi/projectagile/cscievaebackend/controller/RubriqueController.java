@@ -41,8 +41,8 @@ public class RubriqueController {
     @PostMapping("/create")
     public ResponseEntity<?> createRubrique(@Validated @RequestBody Rubrique rubrique, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ApiResponse.error("Une erreur s'est produite lors de la création du rubrique",
-                    bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
+            return ApiResponse.error("Une erreur s'est produite lors de la création du rubrique : "+
+                    bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList());
         }
         return ApiResponse.ok(rubriqueService.creerRubrique(rubrique));
     }
@@ -90,8 +90,8 @@ public class RubriqueController {
     @PutMapping(value ="/{id}" , consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateRubrique(@PathVariable Long id, @Validated @RequestBody Rubrique rubrique, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ApiResponse.error("Une erreur s'est produite lors de la création du rubrique",
-                    bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
+            return ApiResponse.error("Une erreur s'est produite lors de la modification du rubrique : "+
+                    bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList());
         }
         try {
             Rubrique updatedRubrique = rubriqueService.updateRubrique(id, rubrique);

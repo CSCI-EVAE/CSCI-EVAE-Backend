@@ -85,7 +85,7 @@ public class QualificatifController {
     @PostMapping
     public ResponseEntity<?> addQualificatif(@Validated @RequestBody Qualificatif qualificatif, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ApiResponse.error("Une erreur s'est produite lors de la création du qualificatif", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
+            return ApiResponse.error("Une erreur s'est produite lors de la création du qualificatif : "+bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList());
         }
         return ApiResponse.ok(qualificatifService.createQualificatif(qualificatif));
     }
@@ -104,7 +104,7 @@ public class QualificatifController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateQualificatif(@Validated @PathVariable Long id, @Validated @RequestBody Qualificatif qualificatifModifie, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ApiResponse.error("Une erreur s'est produite lors de la création du qualificatif", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
+            return ApiResponse.error("Une erreur s'est produite lors de la création du qualificatif : "+ bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList());
         }
         Qualificatif updated = qualificatifService.updateQualificatif(id, qualificatifModifie);
         return ApiResponse.ok("Qualificatif mis à jour avec succès", updated);

@@ -30,9 +30,9 @@ public class Rubrique {
     private Integer id;
 
     @Size(max = 10)
-    @NotNull(message = "Type cannot be null")
-    @NotEmpty(message = "Type cannot be empty")
-    @NotBlank(message = "Type cannot be blank")
+    @NotNull(message = "Le type de question ne peut pas être null")
+    @NotEmpty(message = "Le type de question ne peut pas être vide")
+    @NotBlank(message = "Le type de question ne peut pas être vide")
     @Column(name = "TYPE", nullable = false, length = 10)
     private String type;
 
@@ -43,10 +43,10 @@ public class Rubrique {
     private Enseignant noEnseignant;
 
     @Size(max = 32)
-    @NotNull(message = "Designation cannot be null")
-    @NotEmpty(message = "Designation cannot be empty")
-    @Size(min = 1, max = 32, message = "Designation must be between 1 and 32 characters")
-    @NotBlank(message = "Designation cannot be blank")
+    @NotNull(message = "La désignation ne peut pas être null")
+    @NotEmpty(message = "La désignation ne peut pas être vide")
+    @Size(min = 1, max = 32, message = "La désignation doit être entre 1 et 32 caractères")
+    @NotBlank(message = "La désignation ne peut pas être vide")
     @Column(name = "DESIGNATION", nullable = false, length = 32)
     private String designation;
 

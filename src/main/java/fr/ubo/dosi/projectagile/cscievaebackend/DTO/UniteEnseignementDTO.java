@@ -1,13 +1,12 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.DTO;
 
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
 
 @Getter
 @Setter
@@ -20,6 +19,8 @@ public class UniteEnseignementDTO {
     private LocalDate finReponse;
     private boolean EvaExiste;
     private String codeFormation;
+    private String anneUniv;
+    private String nomFormation;
     private String codeUe;
     private String codeEc;
     private String designation;

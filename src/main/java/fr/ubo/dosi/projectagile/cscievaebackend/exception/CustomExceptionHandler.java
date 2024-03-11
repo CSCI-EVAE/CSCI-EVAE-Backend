@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
@@ -72,6 +73,11 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     // manage LinkedtoAnotherResourceException
     @ExceptionHandler(LinkedToAnotherResourceException.class)
     public ResponseEntity<?> handleLinkedToAnotherResourceException(LinkedToAnotherResourceException ex) {
+        return ApiResponse.error(ex.getMessage());
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<?> handleNoSuchElementException(NoSuchElementException ex) {
         return ApiResponse.error(ex.getMessage());
     }
 }
