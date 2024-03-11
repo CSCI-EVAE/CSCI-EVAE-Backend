@@ -37,7 +37,6 @@ public class PromotionController {
     @GetMapping("promotionsForENS")
     public ResponseEntity<?> getPromotions(
             @AuthenticationPrincipal UserDetails currentUser) {
-
         Authentification auth = as.getAuhtentification(currentUser.getUsername());
         Set<Promotion> promotions = auth.getNoEnseignant().getPromotions();
         Set<PromotionDTO> PromotionDTOs = promotions.stream().map(promotionMapper::promotionToPromotionDTO).collect(Collectors.toSet());
@@ -47,7 +46,8 @@ public class PromotionController {
     @GetMapping("/promotionsForADM")
     public ResponseEntity<?> getAllPromotions() {
         List<Promotion> promotions = promotionService.getAllPromotions();
-        return ApiResponse.ok(promotions);
+        Set<PromotionDTO> PromotionDTOs = promotions.stream().map(promotionMapper::promotionToPromotionDTO).collect(Collectors.toSet());
+        return ApiResponse.ok(PromotionDTOs);
     }
 
 }
