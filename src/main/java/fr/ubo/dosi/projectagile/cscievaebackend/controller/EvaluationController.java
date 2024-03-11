@@ -8,12 +8,12 @@ import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.mappers.EvaluationMapper;
 import fr.ubo.dosi.projectagile.cscievaebackend.mappers.PromotionMapper;
+import fr.ubo.dosi.projectagile.cscievaebackend.mappers.PromotionMapper;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.*;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.AuthentificationServiceImpl;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.EvaluationServiceImpl;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.PromotionService;
-import fr.ubo.dosi.projectagile.cscievaebackend.services.RubriqueQuestionService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -38,22 +38,18 @@ public class EvaluationController {
     private final AuthentificationServiceImpl as;
     private final PromotionService ps;
     private final EvaluationMapper evaluationMapper;
-    private final ModelMapper modelMapper;
     private final EvaluationService evaluationService;
-    Logger logger = Logger.getLogger(EvaluationServiceImpl.class.getName());
     private final PromotionMapper promotionMapper;
 
 
     @Autowired
-    public EvaluationController(EvaluationServiceImpl es, AuthentificationServiceImpl as, PromotionService ps, EvaluationMapper evaluationMapper, ModelMapper modelMapper, EvaluationService evaluationService,
-                                PromotionMapper promotionMapper) {
+    public EvaluationController(EvaluationServiceImpl es, AuthentificationServiceImpl as, PromotionService ps, EvaluationMapper evaluationMapper, PromotionMapper promotionMapper, ModelMapper modelMapper, EvaluationService evaluationService) {
         this.es = es;
         this.as = as;
         this.ps = ps;
         this.evaluationMapper = evaluationMapper;
-        this.modelMapper = modelMapper;
-        this.evaluationService = evaluationService;
         this.promotionMapper = promotionMapper;
+        this.evaluationService = evaluationService;
     }
 
     /**
@@ -130,7 +126,7 @@ public class EvaluationController {
     public ResponseEntity<?> getEvaluationsForEnseignantLastYear(@AuthenticationPrincipal UserDetails currentUser) {
         Short enseignantId = as.getAuhtentification(currentUser.getUsername()).getNoEnseignant().getId();
         List<Evaluation> evaluations = es.getEvaluationsForEnseignantLastYear(Long.valueOf(enseignantId));
-        List<EvaluationDTO> evaluationDTOs = evaluations.stream().map((element) -> modelMapper.map(element, EvaluationDTO.class)).collect(Collectors.toList());
+        List<EvaluationDTO> evaluationDTOs = evaluations.stream().map(evaluationMapper::evaluationToEvaluationDTO).collect(Collectors.toList());
         return ApiResponse.ok(evaluationDTOs);
     }
 
@@ -140,10 +136,8 @@ public class EvaluationController {
         if (bindingResult.hasErrors()) {
             return ApiResponse.error("Une erreur s'est produite lors de la création du Evaluation ", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
         }
-        Enseignant ens = as.getAuhtentification(currentUser.getUsername()).getNoEnseignant();
-        return ApiResponse.ok(es.saveEvaluation(evaluationDTO, ens));
+        return ApiResponse.ok(es.saveEvaluation(evaluationDTO, as.getAuhtentification(currentUser.getUsername()).getNoEnseignant()));
     }
-
     @PreAuthorize("hasAuthority('ENS')")
     @GetMapping("getPromotionsForFormationAndYear")
     public ResponseEntity<?> getPromotionsForFormationAndYear(
@@ -155,9 +149,7 @@ public class EvaluationController {
                 .filter(promotion -> promotion.getId().getCodeFormation().equals(codeFormation)
                         && promotion.getId().getAnneeUniversitaire().equals(anneeUniversitaire))
                 .collect(Collectors.toSet());
-        Set<PromotionDTO> PromotionDTOs = promotions.stream().map(promotionMapper::promotionToPromotionDTO).collect(Collectors.toSet());
+        Set<PromotionDTO> PromotionDTOs=promotions.stream().map(promotionMapper::promotionToPromotionDTO).collect(Collectors.toSet());
         return ApiResponse.ok(PromotionDTOs);
     }
-
-
 }
