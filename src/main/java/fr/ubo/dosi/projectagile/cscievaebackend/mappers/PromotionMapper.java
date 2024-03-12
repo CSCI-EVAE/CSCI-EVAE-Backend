@@ -6,6 +6,8 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface PromotionMapper {
+    @Mapping(source ="noEnseignant.nom" ,target ="nomResponsable")
+    @Mapping(source ="noEnseignant.prenom" ,target ="prenomResponsable")
     @Mapping(source ="id.anneeUniversitaire" ,target ="anneeUniversitaire")
     @Mapping(source = "codeFormation.codeFormation", target = "codeFormation")
     PromotionDTO promotionToPromotionDTO(Promotion promotion);
