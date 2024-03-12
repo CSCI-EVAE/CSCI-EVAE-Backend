@@ -10,16 +10,15 @@ import fr.ubo.dosi.projectagile.cscievaebackend.services.AuthentificationService
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.AuthentificationServiceImpl;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.UniteEnseignementServiceImpl;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.userService;
+import fr.ubo.dosi.projectagile.cscievaebackend.services.UniteEnseignementService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +32,13 @@ import java.util.stream.Collectors;
 public class UniteEnseignementController {
 
     private final userService userService;
+    private final UniteEnseignementService uniteEnseignementService;
     private final Logger logger = Logger.getLogger(UniteEnseignementController.class.getName());
 
     @Autowired
-    public UniteEnseignementController(userService userService) {
+    public UniteEnseignementController(userService userService , UniteEnseignementService uniteEnseignementService) {
         this.userService = userService;
+        this.uniteEnseignementService = uniteEnseignementService;
     }
 
     @GetMapping
@@ -70,5 +71,11 @@ public class UniteEnseignementController {
         }).toList();
         logger.info("ues : " + ues);
         return ApiResponse.ok(ues);
+    }
+
+    @PreAuthorize("hasAuthority('ENS')")
+    @GetMapping("/promotion/{codeFormation}")
+    ResponseEntity<?> getAllUEByPromotions(@PathVariable  String codeFormation) {
+      return ApiResponse.ok(uniteEnseignementService.getAllUEByPromotions(codeFormation));
     }
 }

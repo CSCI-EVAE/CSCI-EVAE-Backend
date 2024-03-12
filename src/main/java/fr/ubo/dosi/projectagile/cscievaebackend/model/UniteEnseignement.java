@@ -1,5 +1,6 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -58,6 +59,7 @@ public class UniteEnseignement {
 
     @OneToMany(mappedBy = "uniteEnseignement")
     @OrderColumn(name = "ID_EVALUATION")
+    @JsonIgnore
     private Set<Evaluation> evaluations = new LinkedHashSet<>();
 
 }
