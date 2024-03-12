@@ -107,7 +107,6 @@ public class EvaluationServiceImpl implements EvaluationService {
         savedEvaluation.setUniteEnseignement(uniteEnseignement);
         ElementConstitutif elementConstitutif = null;
         if (!evaluationDTO.getCodeEC().isEmpty()) {
-            logger.info("Code EC: " + evaluationDTO.getCodeEC());
             elementConstitutif = elementConstitutifRepository.findById(evaluationDTO.getCodeEC(), evaluationDTO.getCodeUE(), evaluationDTO.getCodeFormation());
             if (elementConstitutif == null) {
                 throw new IllegalArgumentException("L'élément constitutif n'existe pas");
@@ -118,11 +117,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         er.insertEvaluation(savedEvaluation.getDesignation(), savedEvaluation.getDebutReponse(), savedEvaluation.getFinReponse(), savedEvaluation.getEtat(), savedEvaluation.getPromotion().getId().getCodeFormation(), savedEvaluation.getPromotion().getId().getAnneeUniversitaire(), savedEvaluation.getNoEvaluation(), savedEvaluation.getPeriode(), null, savedEvaluation.getUniteEnseignement().getId().getCodeUe(), savedEvaluation.getNoEnseignant().getId().longValue());
         savedEvaluation = er.findByDesignation(savedEvaluation.getDesignation());
         logger.info("Saved evaluation: " + savedEvaluation);
-        if (evaluationDTO.getRubriqueQuestion() != null) {
-            for (IncomingRubriqueQuestionDTO rubriqueQuestionDTO : evaluationDTO.getRubriqueQuestion()) {
-                rubriqueEvaluationService.saveRubriqueEvaluation(rubriqueQuestionDTO, savedEvaluation);
-            }
-        }
+        rubriqueEvaluationService.saveRubriquesEvaluation(evaluationDTO.getRubriqueQuestion(), savedEvaluation);
 
     }
 }

@@ -38,10 +38,9 @@ public class EvaluationController {
     private final EvaluationService evaluationService;
 
 
-
     @Autowired
     public EvaluationController(EvaluationServiceImpl es, AuthentificationServiceImpl as, PromotionService ps, EvaluationMapper evaluationMapper, ModelMapper modelMapper, EvaluationService evaluationService
-                                ) {
+    ) {
         this.es = es;
         this.as = as;
         this.ps = ps;
@@ -132,11 +131,13 @@ public class EvaluationController {
     @PostMapping("create")
     public ResponseEntity<?> createEvaluation(@Validated @RequestBody EvaluationSaveDTO evaluationDTO, @AuthenticationPrincipal UserDetails currentUser, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ApiResponse.error("Une erreur s'est produite lors de la création du Evaluation ", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
+            String errorMessage = bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.joining("/n"));
+            return ApiResponse.error("Error creating Evaluation: " + errorMessage);
         }
         Enseignant ens = as.getAuhtentification(currentUser.getUsername()).getNoEnseignant();
-
         es.saveEvaluation(evaluationDTO, ens);
-        return ApiResponse.ok("Evaluation créée avec succès");
+        return ApiResponse.ok("Evaluation successfully created");
     }
 }
