@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -59,5 +60,15 @@ public class RubriqueEvaluationServiceImpl implements RubriqueEvaluationService 
         rubriqueEvaluationRepository.save(rubriqueEvaluation);
         logger.info("Rubrique evaluation saved: " + rubriqueEvaluation);
         savedEvaluation.getRubriqueEvaluations().add(rubriqueEvaluation);
+    }
+
+    @Transactional
+    @Override
+    public void saveRubriquesEvaluation(List<IncomingRubriqueQuestionDTO> rubriqueQuestion, Evaluation savedEvaluation) {
+        if (rubriqueQuestion!= null) {
+            for (IncomingRubriqueQuestionDTO rubriqueQuestionDTO : rubriqueQuestion) {
+                this.saveRubriqueEvaluation(rubriqueQuestionDTO, savedEvaluation);
+            }
+        }
     }
 }
