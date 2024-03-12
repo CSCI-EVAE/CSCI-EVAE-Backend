@@ -13,4 +13,5 @@ public interface PromotionRepository extends JpaRepository<Promotion, String> {
 
     @Query(value = "SELECT * FROM Promotion p WHERE p.CODE_FORMATION = :codef AND p.ANNEE_UNIVERSITAIRE = :annee", nativeQuery = true)
     Promotion findByPromotionId(String codef, String annee);
+    Promotion findById_CodeFormationAndId_AnneeUniversitaire(String codeFormation, String anneeUniversitaire);
 }

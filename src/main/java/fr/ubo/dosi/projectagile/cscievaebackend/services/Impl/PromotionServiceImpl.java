@@ -13,6 +13,7 @@ import java.util.List;
 public class PromotionServiceImpl implements PromotionService {
     @Autowired
     private PromotionRepository promotionRepository;
+
     @Override
     public Promotion getPromotionById(PromotionId id) {
         return promotionRepository.findByPromotionId(id.getCodeFormation(), id.getAnneeUniversitaire());
@@ -24,5 +25,9 @@ public class PromotionServiceImpl implements PromotionService {
         } else {
             return promotionRepository.findAll();
         }
+    }
+    @Override
+    public Promotion findPromotionByAnneeUniversitaireAndCodeFormation(String anneeUniversitaire, String codeFormation) {
+        return promotionRepository.findById_CodeFormationAndId_AnneeUniversitaire(codeFormation, anneeUniversitaire);
     }
 }
