@@ -1,6 +1,7 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.DTO;
 
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Formation;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.PromotionId;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -19,4 +20,5 @@ public class PromotionDTO {
     private String lieuRentree;
     private String processusStage;
     private String commentaire;
+    private String anneeUniversitaire;
 }

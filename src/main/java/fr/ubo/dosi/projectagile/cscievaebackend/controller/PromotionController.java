@@ -5,6 +5,7 @@ import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.mappers.PromotionMapper;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Authentification;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Promotion;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.PromotionId;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.AuthentificationServiceImpl;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.PromotionService;
 import org.springframework.http.ResponseEntity;
@@ -33,10 +34,9 @@ public class PromotionController {
     }
 
     @PreAuthorize("hasAuthority('ENS')")
-    @GetMapping("PromotionsForENS")
-    public ResponseEntity<?> getPromotionsForFormationAndYear(
+    @GetMapping("promotionsForENS")
+    public ResponseEntity<?> getPromotions(
             @AuthenticationPrincipal UserDetails currentUser) {
-
         Authentification auth = as.getAuhtentification(currentUser.getUsername());
         Set<Promotion> promotions = auth.getNoEnseignant().getPromotions();
         Set<PromotionDTO> PromotionDTOs = promotions.stream().map(promotionMapper::promotionToPromotionDTO).collect(Collectors.toSet());
@@ -46,7 +46,8 @@ public class PromotionController {
     @GetMapping("/promotionsForADM")
     public ResponseEntity<?> getAllPromotions() {
         List<Promotion> promotions = promotionService.getAllPromotions();
-        return ApiResponse.ok(promotions);
+        Set<PromotionDTO> PromotionDTOs = promotions.stream().map(promotionMapper::promotionToPromotionDTO).collect(Collectors.toSet());
+        return ApiResponse.ok(PromotionDTOs);
     }
 
 }
