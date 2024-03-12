@@ -24,7 +24,6 @@ public class Question {
     @Size(max = 10)
     @NotNull(message = "Le type de question ne peut pas être null")
     @NotEmpty(message = "Le type de question ne peut pas être vide")
-    @NotBlank(message = "Le type de question ne peut pas être vide")
     @Column(name = "TYPE", nullable = false, length = 10)
     private String type;
 
@@ -43,7 +42,6 @@ public class Question {
     @Size(max = 64)
     @NotNull(message = "L'intitulé ne peut pas être null")
     @NotEmpty(message = "L'intitulé ne peut pas être vide")
-    @NotBlank(message = "L'intitulé ne peut pas être vide")
     @Column(name = "INTITULE", nullable = false, length = 64)
     private String intitule;
 

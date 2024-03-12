@@ -14,6 +14,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,23 +48,27 @@ public class UniteEnseignementController {
         if (uniteEnseignements.isEmpty()) {
             return ApiResponse.error("Aucune UE trouvée");
         }
+        logger.info("uniteEnseignements : " + uniteEnseignements);
         List<UniteEnseignementDTO> ues = uniteEnseignements.stream().map(ue -> {
             UniteEnseignementDTO uniteEnseignementDTO = new UniteEnseignementDTO();
             uniteEnseignementDTO.setCodeUe(ue.getId().getCodeUe());
             uniteEnseignementDTO.setDesignation(ue.getDesignation());
-            uniteEnseignementDTO.setEvaExiste(ue.getEvaluations().stream().findFirst().get());
+            if (ue.getEvaluations().isEmpty()) {
+                uniteEnseignementDTO.setEvaExiste(null);
+            }else {
+                uniteEnseignementDTO.setEvaExiste(ue.getEvaluations().stream().findFirst().get());
+            }
             uniteEnseignementDTO.setNbhCm(ue.getNbhCm());
             uniteEnseignementDTO.setNbhTd(ue.getNbhTd());
             uniteEnseignementDTO.setNbhTp(ue.getNbhTp());
-            logger.info("ue.getCodeFormation() : " + ue.getFormation().getNomFormation());
+            uniteEnseignementDTO.setTotalHeures();
             if (ue.getFormation() != null) {
                 uniteEnseignementDTO.setCodeFormation(ue.getFormation().getCodeFormation());
                 uniteEnseignementDTO.setNomFormation(ue.getFormation().getNomFormation());
             }
-            uniteEnseignementDTO.setAnneUniv(null);
-            uniteEnseignementDTO.setTotalHeures();
             return uniteEnseignementDTO;
         }).toList();
+        logger.info("ues : " + ues);
         return ApiResponse.ok(ues);
     }
 }
