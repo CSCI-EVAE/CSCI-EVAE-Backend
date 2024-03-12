@@ -12,7 +12,9 @@ import fr.ubo.dosi.projectagile.cscievaebackend.repository.EvaluationRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.PromotionRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.UniteEnseignementRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
+import fr.ubo.dosi.projectagile.cscievaebackend.services.RubriqueEvaluationService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.RubriqueQuestionService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,17 +32,17 @@ public class EvaluationServiceImpl implements EvaluationService {
     private final UniteEnseignementRepository uniteEnseignementRepository;
     private final ElementConstitutifRepository elementConstitutifRepository;
     private final EvaluationMapper evaluationMapper;
-    private final RubriqueQuestionService rubriqueQuestionService;
+    private final RubriqueEvaluationService rubriqueEvaluationService;
     Logger logger = Logger.getLogger(EvaluationServiceImpl.class.getName());
 
     @Autowired
-    public EvaluationServiceImpl(EvaluationRepository er, PromotionRepository promotionRepository, UniteEnseignementRepository uniteEnseignementRepository, EvaluationMapper evaluationMapper, ElementConstitutifRepository elementConstitutifRepository, RubriqueQuestionService rubriqueQuestionService) {
+    public EvaluationServiceImpl(EvaluationRepository er, PromotionRepository promotionRepository, UniteEnseignementRepository uniteEnseignementRepository, EvaluationMapper evaluationMapper, ElementConstitutifRepository elementConstitutifRepository, RubriqueEvaluationService rubriqueQuestionService) {
         this.er = er;
         this.promotionRepository = promotionRepository;
         this.uniteEnseignementRepository = uniteEnseignementRepository;
         this.elementConstitutifRepository = elementConstitutifRepository;
         this.evaluationMapper = evaluationMapper;
-        this.rubriqueQuestionService = rubriqueQuestionService;
+        this.rubriqueEvaluationService = rubriqueQuestionService;
     }
 
 
@@ -79,24 +81,24 @@ public class EvaluationServiceImpl implements EvaluationService {
         return promotion.getEvaluations();
     }
 
+    @Transactional
     @Override
-    public String saveEvaluation(EvaluationSaveDTO evaluationDTO, Enseignant enseignant) {
-        logger.info("Evaluation to be saved: " + evaluationDTO);
-        StringBuilder resultMessage = new StringBuilder();
+    public void saveEvaluation(EvaluationSaveDTO evaluationDTO, Enseignant enseignant) {
         Evaluation savedEvaluation = new Evaluation();
         if (er.existsByDesignation(evaluationDTO.getDesignation())) {
-            throw new IllegalArgumentException("L'évaluation existe déjà");
+            throw new IllegalArgumentException("L'évaluation existe déjà avec cette désignation");
         }
         savedEvaluation.setDesignation(evaluationDTO.getDesignation());
         savedEvaluation.setDebutReponse(evaluationDTO.getDebutReponse());
         savedEvaluation.setFinReponse(evaluationDTO.getFinReponse());
         savedEvaluation.setEtat("ELA");
+        savedEvaluation.setNoEvaluation((short) (Math.random() * 100));
+        savedEvaluation.setPeriode(evaluationDTO.getPeriode());
         savedEvaluation.setNoEnseignant(enseignant);
         Promotion promotion = promotionRepository.findByPromotionId(evaluationDTO.getCodeFormation(), evaluationDTO.getAnneePro());
         if (promotion == null) {
             throw new NoSuchElementException("La promotion n'existe pas");
         }
-        logger.info("Promotion found: " + promotion.getCodeFormation());
         savedEvaluation.setPromotion(promotion);
         UniteEnseignement uniteEnseignement = uniteEnseignementRepository.findById(evaluationDTO.getCodeUE(), evaluationDTO.getCodeFormation());
         if (uniteEnseignement == null) {
@@ -104,20 +106,18 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
         savedEvaluation.setUniteEnseignement(uniteEnseignement);
         ElementConstitutif elementConstitutif = null;
-        if (!Objects.equals(evaluationDTO.getCodeEC(), "")) {
+        if (!evaluationDTO.getCodeEC().isEmpty()) {
             elementConstitutif = elementConstitutifRepository.findById(evaluationDTO.getCodeEC(), evaluationDTO.getCodeUE(), evaluationDTO.getCodeFormation());
             if (elementConstitutif == null) {
-                throw new NoSuchElementException("L'élément constitutif n'existe pas");
+                throw new IllegalArgumentException("L'élément constitutif n'existe pas");
             }
+            savedEvaluation.setElementConstitutif(elementConstitutif);
+            er.insertEvaluation(savedEvaluation.getDesignation(), savedEvaluation.getDebutReponse(), savedEvaluation.getFinReponse(), savedEvaluation.getEtat(), savedEvaluation.getPromotion().getId().getCodeFormation(), savedEvaluation.getPromotion().getId().getAnneeUniversitaire(), savedEvaluation.getNoEvaluation(), savedEvaluation.getPeriode(), savedEvaluation.getElementConstitutif().getId().getCodeEc(), savedEvaluation.getElementConstitutif().getId().getCodeUe(), savedEvaluation.getNoEnseignant().getId().longValue());
         }
-        savedEvaluation.setElementConstitutif(elementConstitutif);
-        savedEvaluation.setNoEvaluation((short) (Math.random() * 100));
-        savedEvaluation.setPeriode(evaluationDTO.getPeriode());
-        for (IncomingRubriqueQuestionDTO inDto : evaluationDTO.getRubriqueQuestion()) {
-            resultMessage.append(rubriqueQuestionService.AjouterRubriqueQuestion(inDto));
-        }
-        logger.info("Evaluation to be saved: " + evaluationMapper.evaluationToEvaluationDTO(savedEvaluation));
-        er.save(savedEvaluation);
-        return resultMessage.toString();
+        er.insertEvaluation(savedEvaluation.getDesignation(), savedEvaluation.getDebutReponse(), savedEvaluation.getFinReponse(), savedEvaluation.getEtat(), savedEvaluation.getPromotion().getId().getCodeFormation(), savedEvaluation.getPromotion().getId().getAnneeUniversitaire(), savedEvaluation.getNoEvaluation(), savedEvaluation.getPeriode(), null, savedEvaluation.getUniteEnseignement().getId().getCodeUe(), savedEvaluation.getNoEnseignant().getId().longValue());
+        savedEvaluation = er.findByDesignation(savedEvaluation.getDesignation());
+        logger.info("Saved evaluation: " + savedEvaluation);
+        rubriqueEvaluationService.saveRubriquesEvaluation(evaluationDTO.getRubriqueQuestion(), savedEvaluation);
+
     }
 }

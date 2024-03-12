@@ -80,10 +80,10 @@ public class Enseignant {
     @JsonIgnore
     @OneToMany(mappedBy = "noEnseignant")
     private Set<Evaluation> evaluations = new LinkedHashSet<>();
-
+    @JsonIgnore
     @OneToMany(mappedBy = "noEnseignant")
     private Set<Promotion> promotions = new LinkedHashSet<>();
-
+    @JsonIgnore
     @OneToMany(mappedBy = "noEnseignant")
     private Set<UniteEnseignement> uniteEnseignements = new LinkedHashSet<>();
 

@@ -25,4 +25,9 @@ public class PromotionServiceImpl implements PromotionService {
             return promotionRepository.findAll();
         }
     }
+    @Override
+    public Promotion findPromotionByAnneeUniversitaireAndCodeFormation(String anneeUniversitaire, String codeFormation) {
+        return promotionRepository.findById_CodeFormationAndId_AnneeUniversitaire(codeFormation, anneeUniversitaire);
+    }
+
 }

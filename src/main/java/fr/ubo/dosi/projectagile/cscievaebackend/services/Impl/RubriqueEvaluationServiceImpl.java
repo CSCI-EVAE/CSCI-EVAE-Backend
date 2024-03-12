@@ -7,10 +7,13 @@ import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueEvaluation;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueQuestion;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.RubriqueEvaluationRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 @Service
 public class RubriqueEvaluationServiceImpl implements RubriqueEvaluationService {
@@ -18,6 +21,7 @@ public class RubriqueEvaluationServiceImpl implements RubriqueEvaluationService 
     private final RubriqueService rubriqueService;
     private final QuestionService questionService;
     private final QuestionEvaluationService questionEvaluationService;
+    Logger logger = Logger.getLogger(RubriqueEvaluationServiceImpl.class.getName());
 
     @Autowired
     public RubriqueEvaluationServiceImpl(RubriqueEvaluationRepository rubriqueEvaluationRepository, RubriqueService rubriqueService, QuestionService questionService, QuestionEvaluationService questionEvaluationService) {
@@ -27,6 +31,8 @@ public class RubriqueEvaluationServiceImpl implements RubriqueEvaluationService 
         this.questionEvaluationService = questionEvaluationService;
     }
 
+
+    @Transactional
     @Override
     public void saveRubriqueEvaluation(IncomingRubriqueQuestionDTO rubriqueQuestionDTO, Evaluation savedEvaluation) {
         RubriqueEvaluation rubriqueEvaluation = new RubriqueEvaluation();
@@ -37,6 +43,7 @@ public class RubriqueEvaluationServiceImpl implements RubriqueEvaluationService 
         }
         rubriqueEvaluation.setIdEvaluation(savedEvaluation);
         rubriqueEvaluation.setOrdre(rubriqueQuestionDTO.getOrdre().shortValue());
+        rubriqueEvaluation = rubriqueEvaluationRepository.save(rubriqueEvaluation);
         for (Map.Entry<Long, Long> entry : rubriqueQuestionDTO.getQuestionIds().entrySet()) {
             QuestionEvaluation questionEvaluation = new QuestionEvaluation();
             try {
@@ -46,9 +53,22 @@ public class RubriqueEvaluationServiceImpl implements RubriqueEvaluationService 
             }
             questionEvaluation.setOrdre(entry.getValue().shortValue());
             questionEvaluation.setIdRubriqueEvaluation(rubriqueEvaluation);
-            questionEvaluationService.saveQuestionEvaluation(questionEvaluation);
+            questionEvaluation = questionEvaluationService.saveQuestionEvaluation(questionEvaluation);
+            logger.info("Question evaluation saved: " + questionEvaluation);
             rubriqueEvaluation.getQuestionEvaluations().add(questionEvaluation);
         }
         rubriqueEvaluationRepository.save(rubriqueEvaluation);
+        logger.info("Rubrique evaluation saved: " + rubriqueEvaluation);
+        savedEvaluation.getRubriqueEvaluations().add(rubriqueEvaluation);
+    }
+
+    @Transactional
+    @Override
+    public void saveRubriquesEvaluation(List<IncomingRubriqueQuestionDTO> rubriqueQuestion, Evaluation savedEvaluation) {
+        if (rubriqueQuestion!= null) {
+            for (IncomingRubriqueQuestionDTO rubriqueQuestionDTO : rubriqueQuestion) {
+                this.saveRubriqueEvaluation(rubriqueQuestionDTO, savedEvaluation);
+            }
+        }
     }
 }
