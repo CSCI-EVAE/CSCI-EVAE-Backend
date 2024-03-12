@@ -21,4 +21,6 @@ public class PromotionDTO {
     private String processusStage;
     private String commentaire;
     private String anneeUniversitaire;
+    private String nomResponsable;
+    private String prenomResponsable;
 }
