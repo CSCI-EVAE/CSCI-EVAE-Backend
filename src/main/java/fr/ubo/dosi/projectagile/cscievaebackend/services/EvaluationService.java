@@ -6,6 +6,7 @@ import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundExcept
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Enseignant;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Etudiant;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.ReponseEvaluation;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -27,4 +28,6 @@ public interface EvaluationService {
     void saveEvaluation(EvaluationSaveDTO evaluationDTO, Enseignant currentUser);
 
     void deleteEvaluation(Long id) throws ResourceNotFoundException;
+
+    List<ReponseEvaluation> getReponsesForEvaluationAndEtudiant(Long idEvaluation, Long noEtudiant) throws ResourceNotFoundException;
 }

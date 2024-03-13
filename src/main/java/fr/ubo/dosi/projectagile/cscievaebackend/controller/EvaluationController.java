@@ -154,4 +154,11 @@ public class EvaluationController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
+    @GetMapping("getReponses/{idEvaluation}/{noEtudiant}")
+    public ResponseEntity<?> getReponses(@PathVariable Long idEvaluation, @PathVariable Long noEtudiant) throws ResourceNotFoundException {
+        List<ReponseEvaluation> reponses = evaluationService.getReponsesForEvaluationAndEtudiant(idEvaluation, noEtudiant);
+        return ApiResponse.ok(reponses);
+    }
+
 }

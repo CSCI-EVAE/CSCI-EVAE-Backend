@@ -33,9 +33,11 @@ public class EvaluationServiceImpl implements EvaluationService {
     private final ReponseEvaluationRepository reponseEvaluationRepository;
     private final RubriqueEvaluationService rubriqueEvaluationService;
     Logger logger = Logger.getLogger(EvaluationServiceImpl.class.getName());
+    private final EtudiantRepository etudiantRepository;
 
     @Autowired
-    public EvaluationServiceImpl(EvaluationRepository er, PromotionRepository promotionRepository, UniteEnseignementRepository uniteEnseignementRepository, EvaluationMapper evaluationMapper, ElementConstitutifRepository elementConstitutifRepository, RubriqueEvaluationRepository rubriqueEvaluationRepository, DroitRepository droitRepository, ReponseQuestionRepository reponseQuestionRepository, QuestionEvaluationRepository questionEvaluationRepository, ReponseEvaluationRepository reponseEvaluationRepository, RubriqueEvaluationService rubriqueQuestionService) {
+    public EvaluationServiceImpl(EvaluationRepository er, PromotionRepository promotionRepository, UniteEnseignementRepository uniteEnseignementRepository, EvaluationMapper evaluationMapper, ElementConstitutifRepository elementConstitutifRepository, RubriqueEvaluationRepository rubriqueEvaluationRepository, DroitRepository droitRepository, ReponseQuestionRepository reponseQuestionRepository, QuestionEvaluationRepository questionEvaluationRepository, ReponseEvaluationRepository reponseEvaluationRepository, RubriqueEvaluationService rubriqueQuestionService,
+                                 EtudiantRepository etudiantRepository) {
         this.er = er;
         this.promotionRepository = promotionRepository;
         this.uniteEnseignementRepository = uniteEnseignementRepository;
@@ -47,6 +49,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         this.questionEvaluationRepository = questionEvaluationRepository;
         this.reponseEvaluationRepository = reponseEvaluationRepository;
         this.rubriqueEvaluationService = rubriqueQuestionService;
+        this.etudiantRepository = etudiantRepository;
     }
 
 
@@ -124,33 +127,38 @@ public class EvaluationServiceImpl implements EvaluationService {
         rubriqueEvaluationService.saveRubriquesEvaluation(evaluationDTO.getRubriqueQuestion(), savedEvaluation);
     }
 
+
+    public List<ReponseEvaluation> getReponsesForEvaluationAndEtudiant(Long idEvaluation, Long noEtudiant) throws ResourceNotFoundException {
+        Evaluation evaluation = er.findById(idEvaluation).orElseThrow(() ->
+                new ResourceNotFoundException("L'evaluation n'existe pas avec cet id : " + idEvaluation));
+
+        Etudiant etudiant = etudiantRepository.findById(String.valueOf(noEtudiant)).orElseThrow(() ->
+                new ResourceNotFoundException("L'etudiant n'existe pas avec cet id : " + noEtudiant));
+
+        List<ReponseEvaluation> reponses = reponseEvaluationRepository.findAllByIdEvaluationAndNoEtudiant(etudiant, evaluation);
+
+        return reponses;
+    }
     @Transactional
     @Override
     public void deleteEvaluation(Long id) throws ResourceNotFoundException {
         Optional<Evaluation> evaluationExistant = er.findById(id);
         if (evaluationExistant.isPresent()) {
             Evaluation evaluation = evaluationExistant.get();
-            //Delete Droit
             droitRepository.deleteAll(evaluation.getDroits());
-            //Delete ReponseQuestion lié à ReponseEvaluation
             for (ReponseEvaluation reponseEvaluation : evaluation.getReponseEvaluations()) {
                 reponseQuestionRepository.deleteAll(reponseEvaluation.getReponseQuestions());
             }
-            //Delete ReponseEvaluation
             reponseEvaluationRepository.deleteAll(evaluation.getReponseEvaluations());
-            //Delete ReponseQuestion lié à QuestionEvaluation
             for (RubriqueEvaluation rubriqueEvaluation : evaluation.getRubriqueEvaluations()) {
                 for (QuestionEvaluation questionEvaluation : rubriqueEvaluation.getQuestionEvaluations()) {
                     reponseQuestionRepository.deleteAll(questionEvaluation.getReponseQuestions());
                 }
             }
-            //Delete all QuestionEvaluation
             for (RubriqueEvaluation rubriqueEvaluation : evaluation.getRubriqueEvaluations()) {
                 questionEvaluationRepository.deleteAll(rubriqueEvaluation.getQuestionEvaluations());
             }
-            //Delete RubriqueEvaluation
             rubriqueEvaluationRepository.deleteAll(evaluation.getRubriqueEvaluations());
-            //Delete Evaluation
             er.delete(evaluation);
         } else {
             throw new ResourceNotFoundException("L'evaluation n'existe pas avec cet id : " + id);
