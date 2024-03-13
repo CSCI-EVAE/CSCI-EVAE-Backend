@@ -2,22 +2,15 @@ package fr.ubo.dosi.projectagile.cscievaebackend.services.Impl;
 
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationSaveDTO;
-import fr.ubo.dosi.projectagile.cscievaebackend.DTO.IncomingRubriqueQuestionDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.*;
-import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.mappers.EvaluationMapper;
-import fr.ubo.dosi.projectagile.cscievaebackend.repository.ElementConstitutifRepository;
-import fr.ubo.dosi.projectagile.cscievaebackend.repository.EvaluationRepository;
-import fr.ubo.dosi.projectagile.cscievaebackend.repository.PromotionRepository;
-import fr.ubo.dosi.projectagile.cscievaebackend.repository.UniteEnseignementRepository;
+import fr.ubo.dosi.projectagile.cscievaebackend.repository.*;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.RubriqueEvaluationService;
-import fr.ubo.dosi.projectagile.cscievaebackend.services.RubriqueQuestionService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -32,16 +25,27 @@ public class EvaluationServiceImpl implements EvaluationService {
     private final UniteEnseignementRepository uniteEnseignementRepository;
     private final ElementConstitutifRepository elementConstitutifRepository;
     private final EvaluationMapper evaluationMapper;
+    private final RubriqueEvaluationRepository rubriqueEvaluationRepository;
+    private final DroitRepository droitRepository;
+    private final ReponseQuestionRepository reponseQuestionRepository;
+
+    private final QuestionEvaluationRepository questionEvaluationRepository;
+    private final ReponseEvaluationRepository reponseEvaluationRepository;
     private final RubriqueEvaluationService rubriqueEvaluationService;
     Logger logger = Logger.getLogger(EvaluationServiceImpl.class.getName());
 
     @Autowired
-    public EvaluationServiceImpl(EvaluationRepository er, PromotionRepository promotionRepository, UniteEnseignementRepository uniteEnseignementRepository, EvaluationMapper evaluationMapper, ElementConstitutifRepository elementConstitutifRepository, RubriqueEvaluationService rubriqueQuestionService) {
+    public EvaluationServiceImpl(EvaluationRepository er, PromotionRepository promotionRepository, UniteEnseignementRepository uniteEnseignementRepository, EvaluationMapper evaluationMapper, ElementConstitutifRepository elementConstitutifRepository, RubriqueEvaluationRepository rubriqueEvaluationRepository, DroitRepository droitRepository, ReponseQuestionRepository reponseQuestionRepository, QuestionEvaluationRepository questionEvaluationRepository, ReponseEvaluationRepository reponseEvaluationRepository, RubriqueEvaluationService rubriqueQuestionService) {
         this.er = er;
         this.promotionRepository = promotionRepository;
         this.uniteEnseignementRepository = uniteEnseignementRepository;
         this.elementConstitutifRepository = elementConstitutifRepository;
         this.evaluationMapper = evaluationMapper;
+        this.rubriqueEvaluationRepository = rubriqueEvaluationRepository;
+        this.droitRepository = droitRepository;
+        this.reponseQuestionRepository = reponseQuestionRepository;
+        this.questionEvaluationRepository = questionEvaluationRepository;
+        this.reponseEvaluationRepository = reponseEvaluationRepository;
         this.rubriqueEvaluationService = rubriqueQuestionService;
     }
 
@@ -118,6 +122,41 @@ public class EvaluationServiceImpl implements EvaluationService {
         savedEvaluation = er.findByDesignation(savedEvaluation.getDesignation());
         logger.info("Saved evaluation: " + savedEvaluation);
         rubriqueEvaluationService.saveRubriquesEvaluation(evaluationDTO.getRubriqueQuestion(), savedEvaluation);
-
     }
+
+    @Transactional
+    @Override
+    public void deleteEvaluation(Long id) throws ResourceNotFoundException {
+        Optional<Evaluation> evaluationExistant = er.findById(id);
+        if (evaluationExistant.isPresent()) {
+            Evaluation evaluation = evaluationExistant.get();
+            //Delete Droit
+            droitRepository.deleteAll(evaluation.getDroits());
+            //Delete ReponseQuestion lié à ReponseEvaluation
+            for (ReponseEvaluation reponseEvaluation : evaluation.getReponseEvaluations()) {
+                reponseQuestionRepository.deleteAll(reponseEvaluation.getReponseQuestions());
+            }
+            //Delete ReponseEvaluation
+            reponseEvaluationRepository.deleteAll(evaluation.getReponseEvaluations());
+            //Delete ReponseQuestion lié à QuestionEvaluation
+            for (RubriqueEvaluation rubriqueEvaluation : evaluation.getRubriqueEvaluations()) {
+                for (QuestionEvaluation questionEvaluation : rubriqueEvaluation.getQuestionEvaluations()) {
+                    reponseQuestionRepository.deleteAll(questionEvaluation.getReponseQuestions());
+                }
+            }
+            //Delete all QuestionEvaluation
+            for (RubriqueEvaluation rubriqueEvaluation : evaluation.getRubriqueEvaluations()) {
+                questionEvaluationRepository.deleteAll(rubriqueEvaluation.getQuestionEvaluations());
+            }
+            //Delete RubriqueEvaluation
+            rubriqueEvaluationRepository.deleteAll(evaluation.getRubriqueEvaluations());
+            //Delete Evaluation
+            er.delete(evaluation);
+        } else {
+            throw new ResourceNotFoundException("L'evaluation n'existe pas avec cet id : " + id);
+        }
+    }
+
+
+
 }

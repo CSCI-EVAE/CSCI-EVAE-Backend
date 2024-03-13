@@ -10,6 +10,9 @@ import lombok.ToString;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -49,5 +52,8 @@ public class QuestionEvaluation {
     @JsonIgnore
     @ToString.Exclude
     private RubriqueEvaluation idRubriqueEvaluation;
+
+    @OneToMany(mappedBy = "idQuestionEvaluation")
+    private Set<ReponseQuestion> reponseQuestions = new LinkedHashSet<>();
 
 }

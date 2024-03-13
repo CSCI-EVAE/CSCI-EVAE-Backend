@@ -25,4 +25,6 @@ public interface EvaluationService {
     Set<Evaluation> getEvaluationsByUser(Etudiant etudiant);
 
     void saveEvaluation(EvaluationSaveDTO evaluationDTO, Enseignant currentUser);
+
+    void deleteEvaluation(Long id) throws ResourceNotFoundException;
 }

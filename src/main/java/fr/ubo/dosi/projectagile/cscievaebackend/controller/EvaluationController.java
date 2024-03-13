@@ -140,4 +140,18 @@ public class EvaluationController {
         es.saveEvaluation(evaluationDTO, ens);
         return ApiResponse.ok("Evaluation successfully created");
     }
+
+
+    // Supprimer une evaluation par id et Entrer dans Rubrique_evaluation pour supprimer Question_evaluation et Rubrique_evaluation
+    @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<?> deleteEvaluation(@PathVariable Long id) {
+        try {
+            evaluationService.deleteEvaluation(id);
+            return ApiResponse.ok("Evaluation supprimé avec succés ");
+        } catch (ResourceNotFoundException e) {
+            return ApiResponse.error("L'evaluation n'existe pas avec cet id : " + id);
+        }
+    }
+
 }

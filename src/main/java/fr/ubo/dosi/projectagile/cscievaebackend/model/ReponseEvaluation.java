@@ -8,6 +8,9 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -39,5 +42,8 @@ public class ReponseEvaluation {
     @Size(max = 32)
     @Column(name = "PRENOM", length = 32)
     private String prenom;
+
+    @OneToMany(mappedBy = "idReponseEvaluation")
+    private Set<ReponseQuestion> reponseQuestions = new LinkedHashSet<>();
 
 }
