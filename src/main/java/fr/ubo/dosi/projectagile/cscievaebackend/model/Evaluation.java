@@ -87,4 +87,10 @@ public class Evaluation {
     private UniteEnseignement uniteEnseignement;
 
 
+    @OneToMany(mappedBy = "idEvaluation")
+    private Set<Droit> droits = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idEvaluation")
+    private Set<ReponseEvaluation> reponseEvaluations = new LinkedHashSet<>();
+
 }

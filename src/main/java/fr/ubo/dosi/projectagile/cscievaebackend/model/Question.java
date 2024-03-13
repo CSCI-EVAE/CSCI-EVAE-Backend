@@ -11,6 +11,9 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -44,5 +47,11 @@ public class Question {
     @NotEmpty(message = "L'intitulé ne peut pas être vide")
     @Column(name = "INTITULE", nullable = false, length = 64)
     private String intitule;
+
+    @OneToMany(mappedBy = "idQuestion")
+    private Set<QuestionEvaluation> questionEvaluations = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idQuestion")
+    private Set<RubriqueQuestion> rubriqueQuestions = new LinkedHashSet<>();
 
 }

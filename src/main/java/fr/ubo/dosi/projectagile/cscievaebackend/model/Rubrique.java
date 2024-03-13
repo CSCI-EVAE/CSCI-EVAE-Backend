@@ -57,4 +57,7 @@ public class Rubrique {
     @OrderColumn(name = "ORDRE")
     private Set<RubriqueQuestion> rubriqueQuestions = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "idRubrique")
+    private Set<RubriqueEvaluation> rubriqueEvaluations = new LinkedHashSet<>();
+
 }
