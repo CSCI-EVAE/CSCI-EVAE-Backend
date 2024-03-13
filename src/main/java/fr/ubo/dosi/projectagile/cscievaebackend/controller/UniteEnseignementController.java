@@ -73,7 +73,6 @@ public class UniteEnseignementController {
         return ApiResponse.ok(ues);
     }
 
-    @PreAuthorize("hasAuthority('ENS')")
     @GetMapping("/promotion/{codeFormation}")
     ResponseEntity<?> getAllUEByPromotions(@PathVariable  String codeFormation) {
       return ApiResponse.ok(uniteEnseignementService.getAllUEByPromotions(codeFormation));
