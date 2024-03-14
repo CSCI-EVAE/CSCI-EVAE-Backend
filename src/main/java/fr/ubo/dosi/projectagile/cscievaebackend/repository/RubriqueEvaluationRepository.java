@@ -5,10 +5,10 @@ import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueEvaluation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface RubriqueEvaluationRepository extends JpaRepository<RubriqueEvaluation, Long> {
-    @Query("SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END FROM RubriqueEvaluation r WHERE r.idRubrique = ?1 AND r.idEvaluation = ?2")
-    boolean existsByIdRubriqueAndIdEvaluation(Long idRubrique, Evaluation savedEvaluation);
+import java.util.Optional;
 
-    @Query("SELECT r FROM RubriqueEvaluation r WHERE r.idRubrique = ?1 AND r.idEvaluation = ?2")
-    RubriqueEvaluation findByIdRubriqueAndIdEvaluation(Long idRubrique, Evaluation savedEvaluation);
+public interface RubriqueEvaluationRepository extends JpaRepository<RubriqueEvaluation, Long> {
+
+    @Query("select r from RubriqueEvaluation r where r.idRubrique.id = ?1 and r.idEvaluation.id = ?2")
+    Optional<RubriqueEvaluation> findByIdRubriqueAndIdEvaluation(Long idRubrique, Long idEvaluation);
 }

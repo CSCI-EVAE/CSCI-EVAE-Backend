@@ -28,7 +28,13 @@ public interface EvaluationService {
 
     void updateEvaluationEns(EvaluationSaveDTO evaluationDTO, Enseignant ens);
 
-    String saveReponseEtudiant(ReponseEvaluationDTO reponseEvaluationDTO);
+    String deleteReponse(Integer id);
+
+    String saveReponseEtudiant(ReponseEvaluationDTO reponseEvaluationDTO, Etudiant etu);
+
+    EvaluationDTO getStatistics(Long id);
+
+    ReponseEvaluationDTO getReponsesEtudiant(Integer id, Etudiant etu);
 
     void deleteEvaluation(Long id) throws ResourceNotFoundException;
 }

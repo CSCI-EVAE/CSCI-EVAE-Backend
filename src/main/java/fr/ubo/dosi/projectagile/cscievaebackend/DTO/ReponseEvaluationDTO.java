@@ -29,7 +29,6 @@ public class ReponseEvaluationDTO {
     private String prenom;
     @NotNull
     private Set<ReponseQuestionDto> reponseQuestions = new LinkedHashSet<>();
-    private Short ordre;
     /**
      * DTO for {@link fr.ubo.dosi.projectagile.cscievaebackend.model.ReponseQuestion}
      */
@@ -37,7 +36,6 @@ public class ReponseEvaluationDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ReponseQuestionDto implements Serializable {
-        private ReponseQuestionId id;
         private QuestionEvaluationDto idQuestionEvaluation;
         private Long positionnement;
     }

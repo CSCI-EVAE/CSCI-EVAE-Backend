@@ -90,7 +90,6 @@ public class EvaluationController {
         }
     }
 
-    @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @GetMapping("details/{Id}")
     public ResponseEntity<?> getDetails(@PathVariable Long Id) {
         try {
@@ -163,6 +162,13 @@ public class EvaluationController {
         }
         Enseignant ens = as.getAuhtentification(currentUser.getUsername()).getNoEnseignant();
         es.updateEvaluationEns(evaluationDTO, ens);
-        return ApiResponse.ok("Evaluation successfully created");
+        return ApiResponse.ok("Evaluation est mise à jour avec succès");
     }
+
+   @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
+    @GetMapping("statistics/{id}")
+    public ResponseEntity<?> getStatistics(@PathVariable Long id) {
+       return ApiResponse.ok(es.getStatistics(id));
+    }
+
 }

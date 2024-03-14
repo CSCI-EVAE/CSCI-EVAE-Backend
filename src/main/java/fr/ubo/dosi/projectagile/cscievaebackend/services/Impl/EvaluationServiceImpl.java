@@ -26,32 +26,30 @@ public class EvaluationServiceImpl implements EvaluationService {
     private final PromotionRepository promotionRepository;
     private final UniteEnseignementRepository uniteEnseignementRepository;
     private final ElementConstitutifRepository elementConstitutifRepository;
-    private final EtudiantRepository etudiantRepository;
+    private final RubriqueEvaluationService rubriqueEvaluationService;
+    private final QuestionEvaluationRepository questionEvaluationRepository;
     private final ReponseEvaluationRepository responseEvaluationRepository;
     private final EvaluationMapper evaluationMapper;
     private final ReponseEvaluationMapper reponseEvaluationMapper;
-    private final RubriqueEvaluationRepository rubriqueEvaluationRepository;
+    private final RubriqueEvaluationRepository rubriqueEvaluationRepository = null;
     private final DroitRepository droitRepository;
     private final ReponseQuestionRepository reponseQuestionRepository;
 
-    private final QuestionEvaluationRepository questionEvaluationRepository;
-    private final RubriqueEvaluationService rubriqueEvaluationService;
     private final ReponseEvaluationRepository reponseEvaluationRepository;
     Logger logger = Logger.getLogger(EvaluationServiceImpl.class.getName());
 
     @Autowired
-    public EvaluationServiceImpl(EvaluationRepository er, EvaluationRepository evaluationRepository, PromotionRepository promotionRepository, UniteEnseignementRepository uniteEnseignementRepository, EvaluationMapper evaluationMapper, ElementConstitutifRepository elementConstitutifRepository, RubriqueEvaluationService rubriqueQuestionService, EtudiantRepository etudiantRepository, ReponseEvaluationRepository responseEvaluationRepository, ReponseEvaluationMapper reponseEvaluationMapper, RubriqueEvaluationRepository rubriqueEvaluationRepository, DroitRepository droitRepository, ReponseQuestionRepository reponseQuestionRepository, QuestionEvaluationRepository questionEvaluationRepository, ReponseEvaluationRepository reponseEvaluationRepository) {
-        this.evaluationRepository = evaluationRepository;
+    public EvaluationServiceImpl(EvaluationRepository er, PromotionRepository promotionRepository, UniteEnseignementRepository uniteEnseignementRepository, EvaluationMapper evaluationMapper, ElementConstitutifRepository elementConstitutifRepository, RubriqueEvaluationService rubriqueQuestionService, QuestionEvaluationRepository questionEvaluationRepository, ReponseEvaluationRepository responseEvaluationRepository, ReponseEvaluationMapper reponseEvaluationMapper,
+                                 ReponseQuestionRepository reponseQuestionRepository, DroitRepository droitRepository, ReponseEvaluationRepository reponseEvaluationRepository) {
+        this.evaluationRepository = er;
         this.promotionRepository = promotionRepository;
         this.uniteEnseignementRepository = uniteEnseignementRepository;
         this.elementConstitutifRepository = elementConstitutifRepository;
         this.evaluationMapper = evaluationMapper;
-        this.rubriqueEvaluationRepository = rubriqueEvaluationRepository;
         this.droitRepository = droitRepository;
         this.reponseQuestionRepository = reponseQuestionRepository;
         this.questionEvaluationRepository = questionEvaluationRepository;
         this.rubriqueEvaluationService = rubriqueQuestionService;
-        this.etudiantRepository = etudiantRepository;
         this.responseEvaluationRepository = responseEvaluationRepository;
         this.reponseEvaluationMapper = reponseEvaluationMapper;
         this.reponseEvaluationRepository = reponseEvaluationRepository;
@@ -136,6 +134,10 @@ public class EvaluationServiceImpl implements EvaluationService {
     @Override
     public void updateEvaluationEns(EvaluationSaveDTO evaluationDTO, Enseignant ens) {
         Evaluation savedEvaluation = evaluationRepository.findById(evaluationDTO.getId()).orElseThrow(() -> new NoSuchElementException("L'évaluation n'existe pas"));
+
+        if (evaluationRepository.existsByDesignation(evaluationDTO.getDesignation())) {
+            throw new IllegalArgumentException("L'évaluation existe déjà avec cette désignation");
+        }
         savedEvaluation.setDesignation(evaluationDTO.getDesignation());
         savedEvaluation.setDebutReponse(evaluationDTO.getDebutReponse());
         savedEvaluation.setFinReponse(evaluationDTO.getFinReponse());
@@ -143,19 +145,68 @@ public class EvaluationServiceImpl implements EvaluationService {
         rubriqueEvaluationService.saveRubriquesEvaluation(evaluationDTO.getRubriqueQuestion(), savedEvaluation);
     }
 
+    @Transactional
     @Override
-    public String saveReponseEtudiant(ReponseEvaluationDTO reponseEvaluationDTO) {
-        if (responseEvaluationRepository.existsByNoEtudiantAndIdEvaluation(reponseEvaluationDTO.getNoEtudiant().getNoEtudiant(), reponseEvaluationDTO.getIdEvaluation().getId().longValue())) {
+    public String saveReponseEtudiant(ReponseEvaluationDTO reponseEvaluationDTO, Etudiant etudiant) {
+        if (reponseEvaluationDTO.getId() != null) {
+            deleteReponse(reponseEvaluationDTO.getId());
+        }
+        if (responseEvaluationRepository.existsByNoEtudiantAndIdEvaluation(etudiant.getNoEtudiant(), reponseEvaluationDTO.getIdEvaluation().getId())) {
+            logger.info("ID Evaluation: " + reponseEvaluationDTO.getIdEvaluation().getId() + " No Etudiant: " + etudiant.getNoEtudiant());
             throw new IllegalArgumentException("L'étudiant a déjà répondu à cette évaluation");
         }
         Evaluation evaluation = evaluationRepository.findById(reponseEvaluationDTO.getIdEvaluation().getId().longValue()).orElseThrow(() -> new NoSuchElementException("L'évaluation n'existe pas"));
-        Etudiant etudiant = etudiantRepository.findById(reponseEvaluationDTO.getNoEtudiant().getNoEtudiant()).orElseThrow(() -> new NoSuchElementException("L'étudiant n'existe pas"));
         ReponseEvaluation responseEvaluation = reponseEvaluationMapper.toEntity(reponseEvaluationDTO);
-        logger.info("ReponseEvaluationDTO: " + reponseEvaluationDTO);
         responseEvaluation.setNoEtudiant(etudiant);
         responseEvaluation.setIdEvaluation(evaluation);
-        responseEvaluationRepository.save(responseEvaluation);
+        ReponseEvaluation savedResponce = responseEvaluationRepository.save(responseEvaluation);
+        savedResponce.getReponseQuestions().clear();
+        for (ReponseEvaluationDTO.ReponseQuestionDto reponseQ : reponseEvaluationDTO.getReponseQuestions()) {
+            ReponseQuestion reponseQuestion = new ReponseQuestion();
+            reponseQuestion.setIdReponseEvaluation(savedResponce);
+            QuestionEvaluation questionEvaluation = questionEvaluationRepository.findById(reponseQ.getIdQuestionEvaluation().getId().longValue()).orElseThrow(() -> new NoSuchElementException("La question n'existe pas"));
+            reponseQuestion.setIdQuestionEvaluation(questionEvaluation);
+            reponseQuestion.setPositionnement(reponseQ.getPositionnement());
+            reponseQuestion.setId(new ReponseQuestionId(savedResponce.getId(), reponseQ.getIdQuestionEvaluation().getId()));
+            ReponseQuestion savedReponseQuestion = reponseQuestionRepository.save(reponseQuestion);
+            savedResponce.getReponseQuestions().add(savedReponseQuestion);
+        }
+        responseEvaluationRepository.save(savedResponce);
         return "Reponse enregistrée avec succès";
+    }
+
+    @Override
+    public EvaluationDTO getStatistics(Long id) {
+        Evaluation evaluation = evaluationRepository.findById(id).orElseThrow(() -> new NoSuchElementException("L'évaluation n'existe pas"));
+        EvaluationDTO evaluationDTO = evaluationMapper.evaluationToEvaluationDTO(evaluation);
+        evaluationDTO.getRubriqueEvaluations().forEach(rubriqueEvaluation -> {
+            rubriqueEvaluation.getQuestionEvaluations().forEach(questionEvaluation -> {
+                List<ReponseQuestion> reponseQuestions = reponseQuestionRepository.findByIdQuestionEvaluationId(questionEvaluation.getId());
+                if (!reponseQuestions.isEmpty()) {
+                    double average = reponseQuestions.stream().mapToDouble(ReponseQuestion::getPositionnement).average().orElse(0.0);
+                    questionEvaluation.setMoyen(average);
+                }
+            });
+        });
+        return evaluationDTO;
+    }
+
+    @Override
+    public ReponseEvaluationDTO getReponsesEtudiant(Integer id, Etudiant etu) {
+        List<ReponseEvaluation> reponseEvaluations = responseEvaluationRepository.findByIdEvaluationIdAndNoEtudiant(etu.getNoEtudiant(), id.longValue());
+        if (reponseEvaluations.isEmpty()) {
+            throw new NoSuchElementException("La réponse n'existe pas");
+        }
+        ReponseEvaluation reponseEvaluation = reponseEvaluations.get(0);
+        return reponseEvaluationMapper.toDto(reponseEvaluation);
+    }
+
+    @Override
+    public String deleteReponse(Integer id) {
+        ReponseEvaluation reponseEvaluation = responseEvaluationRepository.findById(id.longValue()).orElseThrow(() -> new NoSuchElementException("La réponse n'existe pas"));
+        reponseEvaluation.getReponseQuestions().forEach(reponseQuestion -> reponseQuestionRepository.deleteById(reponseQuestion.getId()));
+        responseEvaluationRepository.deleteById(id.longValue());
+        return "Reponse supprimée avec succès";
     }
 
     @Transactional

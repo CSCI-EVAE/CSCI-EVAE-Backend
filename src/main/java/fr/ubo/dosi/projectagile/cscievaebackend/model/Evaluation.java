@@ -1,5 +1,6 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
@@ -86,11 +87,11 @@ public class Evaluation {
     })
     private UniteEnseignement uniteEnseignement;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "idEvaluation")
+    private Set<ReponseEvaluation> reponseEvaluations = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idEvaluation")
     private Set<Droit> droits = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "idEvaluation")
-    private Set<ReponseEvaluation> reponseEvaluations = new LinkedHashSet<>();
 
 }
