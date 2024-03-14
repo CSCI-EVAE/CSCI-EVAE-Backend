@@ -5,6 +5,7 @@ import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.QuestionEvaluation;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueEvaluation;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueQuestion;
+import fr.ubo.dosi.projectagile.cscievaebackend.repository.EvaluationRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.RubriqueEvaluationRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.*;
 import jakarta.transaction.Transactional;
@@ -22,13 +23,16 @@ public class RubriqueEvaluationServiceImpl implements RubriqueEvaluationService 
     private final QuestionService questionService;
     private final QuestionEvaluationService questionEvaluationService;
     Logger logger = Logger.getLogger(RubriqueEvaluationServiceImpl.class.getName());
+    private final EvaluationRepository evaluationRepository;
 
     @Autowired
-    public RubriqueEvaluationServiceImpl(RubriqueEvaluationRepository rubriqueEvaluationRepository, RubriqueService rubriqueService, QuestionService questionService, QuestionEvaluationService questionEvaluationService) {
+    public RubriqueEvaluationServiceImpl(RubriqueEvaluationRepository rubriqueEvaluationRepository, RubriqueService rubriqueService, QuestionService questionService, QuestionEvaluationService questionEvaluationService,
+                                         EvaluationRepository evaluationRepository) {
         this.rubriqueEvaluationRepository = rubriqueEvaluationRepository;
         this.rubriqueService = rubriqueService;
         this.questionService = questionService;
         this.questionEvaluationService = questionEvaluationService;
+        this.evaluationRepository = evaluationRepository;
     }
 
 
@@ -51,6 +55,8 @@ public class RubriqueEvaluationServiceImpl implements RubriqueEvaluationService 
 
         // Clear existing QuestionEvaluations if RubriqueEvaluation already existed
         if (!rubriqueEvaluation.getQuestionEvaluations().isEmpty()) {
+            // remove all from the database
+            rubriqueEvaluation.getQuestionEvaluations().forEach(questionEvaluationService::deleteQuestionEvaluation);
             rubriqueEvaluation.getQuestionEvaluations().clear();
         }
 
@@ -71,10 +77,6 @@ public class RubriqueEvaluationServiceImpl implements RubriqueEvaluationService 
         });
 
         rubriqueEvaluationRepository.save(rubriqueEvaluation);
-
-        // Delete RubriqueEvaluations not present in DTO but existing in savedEvaluation
-        savedEvaluation.getRubriqueEvaluations().removeIf(rubriqueEval ->
-                !rubriqueQuestionDTO.getQuestionIds().containsKey(rubriqueEval.getIdRubrique().getId()));
         savedEvaluation.getRubriqueEvaluations().add(rubriqueEvaluation);
         logger.info("Rubrique evaluation saved: " + rubriqueEvaluation);
     }
@@ -126,5 +128,7 @@ public class RubriqueEvaluationServiceImpl implements RubriqueEvaluationService 
                 this.saveRubriqueEvaluation(rubriqueQuestionDTO, savedEvaluation);
             }
         }
+        evaluationRepository.save(savedEvaluation);
     }
+
 }

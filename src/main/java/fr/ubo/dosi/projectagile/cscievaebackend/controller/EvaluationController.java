@@ -141,8 +141,6 @@ public class EvaluationController {
         return ApiResponse.ok("Evaluation successfully created");
     }
 
-
-    // Supprimer une evaluation par id et Entrer dans Rubrique_evaluation pour supprimer Question_evaluation et Rubrique_evaluation
     @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @DeleteMapping("delete/{id}")
     public ResponseEntity<?> deleteEvaluation(@PathVariable Long id) {
@@ -154,4 +152,17 @@ public class EvaluationController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
+    @PostMapping("update")
+    public ResponseEntity<?> upadateEvaluation(@Validated @RequestBody EvaluationSaveDTO evaluationDTO, @AuthenticationPrincipal UserDetails currentUser, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.joining("/n"));
+            return ApiResponse.error("Error creating Evaluation: " + errorMessage);
+        }
+        Enseignant ens = as.getAuhtentification(currentUser.getUsername()).getNoEnseignant();
+        es.updateEvaluationEns(evaluationDTO, ens);
+        return ApiResponse.ok("Evaluation successfully created");
+    }
 }

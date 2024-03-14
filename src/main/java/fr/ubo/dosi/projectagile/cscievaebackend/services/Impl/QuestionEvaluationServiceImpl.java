@@ -14,4 +14,9 @@ public class QuestionEvaluationServiceImpl implements QuestionEvaluationService 
     public QuestionEvaluation saveQuestionEvaluation(QuestionEvaluation questionEvaluation) {
        return questionEvaluationRepository.save(questionEvaluation);
     }
+
+    @Override
+    public void deleteQuestionEvaluation(QuestionEvaluation questionEvaluation) {
+        questionEvaluationRepository.delete(questionEvaluation);
+    }
 }

@@ -1,5 +1,7 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.services;
 
+import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationSaveDTO;
+import fr.ubo.dosi.projectagile.cscievaebackend.DTO.ReponseEvaluationDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Promotion;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.PromotionId;
 

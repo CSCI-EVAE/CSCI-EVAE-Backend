@@ -18,14 +18,12 @@ import java.util.List;
 @Setter
 public class EvaluationSaveDTO {
 
+    private  Long id;
     @NotBlank(message = "Le code de la formation ne peut pas être vide")
     @NotNull(message = "Le code de la formation ne peut pas être null")
     @NotEmpty(message = "Le code de la formation ne peut pas être vide")
     private String codeFormation;
 
-    @NotBlank(message = "La période ne peut pas être vide")
-    @NotNull(message = "La période ne peut pas être  null")
-    @NotEmpty(message = "La période ne peut pas être vide")
     private String periode;
 
     @NotBlank(message = "L'année pro ne peut pas être vide")

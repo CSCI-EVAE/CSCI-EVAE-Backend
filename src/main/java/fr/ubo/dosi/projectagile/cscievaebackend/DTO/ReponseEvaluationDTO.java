@@ -1,14 +1,44 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.DTO;
 
-import fr.ubo.dosi.projectagile.cscievaebackend.model.QuestionEvaluation;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Rubrique;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ReponseEvaluationDTO {
     private Integer id;
-    private RubriqueDTO idRubrique;
+
+    @NotNull
+    private EvaluationDto idEvaluation;
+
+    private EtudiantDto noEtudiant;
+
+    @Size(max = 512)
+    private String commentaire;
+    @Size(max = 32)
+    private String nom;
+    @Size(max = 32)
+    private String prenom;
+    @NotNull
+    private Set<ReponseQuestionDto> reponseQuestions = new LinkedHashSet<>();
     private Short ordre;
-    Set<QuestionEvaluationDTO> questionEvaluations = new LinkedHashSet<>();
+    /**
+     * DTO for {@link fr.ubo.dosi.projectagile.cscievaebackend.model.ReponseQuestion}
+     */
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ReponseQuestionDto implements Serializable {
+        private ReponseQuestionId id;
+        private QuestionEvaluationDto idQuestionEvaluation;
+        private Long positionnement;
+    }
 }
