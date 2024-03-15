@@ -17,7 +17,6 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "PROMOTION")
-@ToString
 public class Promotion {
     @EmbeddedId
     private PromotionId id;

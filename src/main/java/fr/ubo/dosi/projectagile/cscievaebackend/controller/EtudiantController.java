@@ -1,5 +1,4 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.controller;
-
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Etudiant;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Promotion;
@@ -18,7 +17,6 @@ public class EtudiantController {
 
     @Autowired
     private PromotionService promotionService;
-
     @Autowired
     private EtudiantService etudiantService;
 
@@ -32,12 +30,10 @@ public class EtudiantController {
         Set<Etudiant> etudiants = promotion.getEtudiants();
         return ApiResponse.ok(etudiants);
     }
-
     @DeleteMapping("/etudiants/{noEtudiant}")
     @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<?> deleteEtudiant(@PathVariable String noEtudiant) {
         etudiantService.deleteEtudiant(noEtudiant);
         return ApiResponse.ok("Etudiant supprimé");
     }
-
 }
