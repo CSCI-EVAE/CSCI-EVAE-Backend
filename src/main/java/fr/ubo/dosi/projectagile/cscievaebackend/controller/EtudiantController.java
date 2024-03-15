@@ -31,12 +31,10 @@ public class EtudiantController {
         Set<Etudiant> etudiants = promotion.getEtudiants();
         return ApiResponse.ok(etudiants);
     }
-
     @DeleteMapping("/etudiants/{noEtudiant}")
     @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<?> deleteEtudiant(@PathVariable String noEtudiant) {
         etudiantService.deleteEtudiant(noEtudiant);
         return ApiResponse.ok("Etudiant supprimé");
     }
-
 }
