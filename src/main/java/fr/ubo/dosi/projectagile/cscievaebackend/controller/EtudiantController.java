@@ -30,4 +30,5 @@ public class EtudiantController {
         Set<Etudiant> etudiants = promotion.getEtudiants();
         return ApiResponse.ok(etudiants);
     }
+
 }
