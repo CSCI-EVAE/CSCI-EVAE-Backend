@@ -1,5 +1,4 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.controller;
-
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Etudiant;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Promotion;
