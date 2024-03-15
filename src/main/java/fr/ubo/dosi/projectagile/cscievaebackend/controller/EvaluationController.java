@@ -7,6 +7,7 @@ import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.mappers.EvaluationMapper;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.*;
+import fr.ubo.dosi.projectagile.cscievaebackend.services.AuthentificationService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.AuthentificationServiceImpl;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.EvaluationServiceImpl;
@@ -30,37 +31,24 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/evaluation")
 public class EvaluationController {
-    private final EvaluationServiceImpl es;
-    private final AuthentificationServiceImpl as;
-    private final PromotionService ps;
+
+    private final AuthentificationService authentificationService;
     private final EvaluationMapper evaluationMapper;
-    private final ModelMapper modelMapper;
     private final EvaluationService evaluationService;
 
 
     @Autowired
-    public EvaluationController(EvaluationServiceImpl es, AuthentificationServiceImpl as, PromotionService ps, EvaluationMapper evaluationMapper, ModelMapper modelMapper, EvaluationService evaluationService
-    ) {
-        this.es = es;
-        this.as = as;
-        this.ps = ps;
+    public EvaluationController(AuthentificationService authentificationService, EvaluationMapper evaluationMapper, EvaluationService evaluationService) {
+        this.authentificationService = authentificationService;
         this.evaluationMapper = evaluationMapper;
-        this.modelMapper = modelMapper;
         this.evaluationService = evaluationService;
     }
 
-    /**
-     * Endpoint to get all evaluations for the currently authenticated user.
-     * The user must have the 'ENS' authority.
-     *
-     * @param currentUser The currently authenticated user.
-     * @return ApiResponse containing a set of EvaluationDTO objects if evaluations exist for the user,
-     * otherwise a message indicating no evaluations are available.
-     */
+
     @PreAuthorize("hasAuthority('ENS')")
     @GetMapping("getAll")
     public ResponseEntity<?> getAll(@AuthenticationPrincipal UserDetails currentUser) {
-        Authentification auth = as.getAuhtentification(currentUser.getUsername());
+        Authentification auth = authentificationService.getAuhtentification(currentUser.getUsername());
         Set<Evaluation> evaluations = auth.getNoEnseignant().getEvaluations();
         if (evaluations == null) {
             return ApiResponse.ok("Aucune évaluation n'est disponible pour cet enseignant");
@@ -72,7 +60,7 @@ public class EvaluationController {
     @PreAuthorize("hasAuthority('ENS')")
     @GetMapping("getAllForThisYear")
     public ResponseEntity<?> getAllForThisYear(@AuthenticationPrincipal UserDetails currentUser, @RequestParam("codeFormation") String codeFormation, @RequestParam("anneeUniversitaire") String anneeUniversitaire) {
-        Authentification auth = as.getAuhtentification(currentUser.getUsername());
+        Authentification auth = authentificationService.getAuhtentification(currentUser.getUsername());
         Set<Evaluation> evaluations = auth.getNoEnseignant().getEvaluations().stream().filter(evaluation -> evaluation.getPromotion().getId().getCodeFormation().equals(codeFormation) && evaluation.getPromotion().getId().getAnneeUniversitaire().equals(anneeUniversitaire)).collect(Collectors.toSet());
         Set<EvaluationDTO> evaluationDTOs = evaluations.stream().map(evaluationMapper::evaluationToEvaluationDTO).collect(Collectors.toSet());
         return ApiResponse.ok(evaluationDTOs);
@@ -80,42 +68,33 @@ public class EvaluationController {
 
     @PreAuthorize("hasAuthority('ENS')")
     @PutMapping("soumettre/{id}")
-    public ResponseEntity<?> soumettreEvaluation(@PathVariable Long id) throws ResourceNotFoundException {
+    public ResponseEntity<?> soumettreEvaluation(@PathVariable Long id) {
         try {
-
             EvaluationDTO updated = evaluationService.updateEvaluation(id);
             return ApiResponse.ok(updated);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException("L'evaluation n'existe pas avec cet id : " + id);
+            return ApiResponse.error("L'evaluation n'existe pas avec cet id : " + id);
         }
     }
 
     @GetMapping("details/{Id}")
     public ResponseEntity<?> getDetails(@PathVariable Long Id) {
         try {
-            EvaluationDTO evaluationDetails = es.getEvaluationById(Id);
+            EvaluationDTO evaluationDetails = evaluationService.getEvaluationById(Id);
             return ApiResponse.ok(evaluationDetails);
         } catch (ChangeSetPersister.NotFoundException e) {
             return ApiResponse.error("L'evaluation n'existe pas avec cet id : " + Id, null);
         }
     }
 
-    /**
-     * Endpoint to get all evaluations for the currently authenticated student.
-     * The user must have the 'ETU' authority.
-     *
-     * @param currentUser The currently authenticated user.
-     * @return ApiResponse containing a set of EvaluationDTO objects if evaluations exist for the user,
-     * otherwise a message indicating no evaluations are available.
-     */
     @PreAuthorize("hasAuthority('ETU')")
     @GetMapping("getEvaluationsByUser")
     public ResponseEntity<?> getEvaluationsByUser(@AuthenticationPrincipal UserDetails currentUser) {
-        Etudiant etudiant = as.getAuhtentification(currentUser.getUsername()).getNoEtudiant();
+        Etudiant etudiant = authentificationService.getAuhtentification(currentUser.getUsername()).getNoEtudiant();
         Set<Evaluation> evaluations = etudiant.getPromotion().getEvaluations().stream().filter(evaluation -> !evaluation.getEtat().equals("ELA")).collect(Collectors.toSet());
-        Set<EvaluationDTO> evaluationDTOs = evaluations.stream().map(eva->{
+        Set<EvaluationDTO> evaluationDTOs = evaluations.stream().map(eva -> {
             EvaluationDTO evaluationDTO = evaluationMapper.evaluationToEvaluationDTO(eva);
-            if(eva.getReponseEvaluations().stream().anyMatch(reponseEvaluation -> reponseEvaluation.getNoEtudiant().equals(etudiant))){
+            if (eva.getReponseEvaluations().stream().anyMatch(reponseEvaluation -> reponseEvaluation.getNoEtudiant().equals(etudiant))) {
                 evaluationDTO.setEvaRepondu(true);
             }
             return evaluationDTO;
@@ -126,9 +105,9 @@ public class EvaluationController {
     @PreAuthorize("hasAuthority('ETU')")
     @GetMapping("evaluations/last-year")
     public ResponseEntity<?> getEvaluationsForEnseignantLastYear(@AuthenticationPrincipal UserDetails currentUser) {
-        Short enseignantId = as.getAuhtentification(currentUser.getUsername()).getNoEnseignant().getId();
-        List<Evaluation> evaluations = es.getEvaluationsForEnseignantLastYear(Long.valueOf(enseignantId));
-        List<EvaluationDTO> evaluationDTOs = evaluations.stream().map((element) -> modelMapper.map(element, EvaluationDTO.class)).collect(Collectors.toList());
+        Short enseignantId = authentificationService.getAuhtentification(currentUser.getUsername()).getNoEnseignant().getId();
+        List<Evaluation> evaluations = evaluationService.getEvaluationsForEnseignantLastYear(Long.valueOf(enseignantId));
+        List<EvaluationDTO> evaluationDTOs = evaluations.stream().map(evaluationMapper::evaluationToEvaluationDTO).collect(Collectors.toList());
         return ApiResponse.ok(evaluationDTOs);
     }
 
@@ -141,8 +120,8 @@ public class EvaluationController {
                     .collect(Collectors.joining("/n"));
             return ApiResponse.error("Error creating Evaluation: " + errorMessage);
         }
-        Enseignant ens = as.getAuhtentification(currentUser.getUsername()).getNoEnseignant();
-        es.saveEvaluation(evaluationDTO, ens);
+        Enseignant ens = authentificationService.getAuhtentification(currentUser.getUsername()).getNoEnseignant();
+        evaluationService.saveEvaluation(evaluationDTO, ens);
         return ApiResponse.ok("Evaluation successfully created");
     }
 
@@ -166,15 +145,15 @@ public class EvaluationController {
                     .collect(Collectors.joining("/n"));
             return ApiResponse.error("Error creating Evaluation: " + errorMessage);
         }
-        Enseignant ens = as.getAuhtentification(currentUser.getUsername()).getNoEnseignant();
-        es.updateEvaluationEns(evaluationDTO, ens);
+        Enseignant ens = authentificationService.getAuhtentification(currentUser.getUsername()).getNoEnseignant();
+        evaluationService.updateEvaluationEns(evaluationDTO, ens);
         return ApiResponse.ok("Evaluation est mise à jour avec succès");
     }
 
-   @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
+    @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @GetMapping("statistics/{id}")
     public ResponseEntity<?> getStatistics(@PathVariable Long id) {
-       return ApiResponse.ok(es.getStatistics(id));
+        return ApiResponse.ok(evaluationService.getStatistics(id));
     }
 
 }

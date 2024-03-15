@@ -25,10 +25,8 @@ public class EtudiantController {
     private final PromotionService promotionService;
     private final EvaluationService evaluationService;
     private final AuthentificationService authentificationService;
-    Logger logger = Logger.getLogger(EtudiantController.class.getName());
 
-    @Autowired
-    public EtudiantController(AuthentificationService authentificationService ,PromotionService promotionService, EvaluationService evaluationService) {
+    public EtudiantController(AuthentificationService authentificationService, PromotionService promotionService, EvaluationService evaluationService) {
         this.authentificationService = authentificationService;
         this.promotionService = promotionService;
         this.evaluationService = evaluationService;
@@ -46,10 +44,9 @@ public class EtudiantController {
     }
 
     @PostMapping("reponduEvaluation")
-    public ResponseEntity<?> setReponseEtudiant(@RequestBody ReponseEvaluationDTO reponseEvaluationDTO,@AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<?> setReponseEtudiant(@RequestBody ReponseEvaluationDTO reponseEvaluationDTO, @AuthenticationPrincipal UserDetails userDetails) {
         Etudiant etu = authentificationService.getAuhtentification(userDetails.getUsername()).getNoEtudiant();
-        logger.info("Etudiant connected: " + etu);
-        return ApiResponse.ok(evaluationService.saveReponseEtudiant(reponseEvaluationDTO,etu));
+        return ApiResponse.ok(evaluationService.saveReponseEtudiant(reponseEvaluationDTO, etu));
     }
 
     @DeleteMapping("deleteReponse/{id}")
@@ -60,7 +57,7 @@ public class EtudiantController {
     @GetMapping("getReponses/{id}")
     public ResponseEntity<?> getReponsesEtudiant(@PathVariable Integer id, @AuthenticationPrincipal UserDetails userDetails) {
         Etudiant etu = authentificationService.getAuhtentification(userDetails.getUsername()).getNoEtudiant();
-        return ApiResponse.ok(evaluationService.getReponsesEtudiant(id,etu));
+        return ApiResponse.ok(evaluationService.getReponsesEtudiant(id, etu));
     }
 
 }

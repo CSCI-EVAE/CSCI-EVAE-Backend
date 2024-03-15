@@ -19,10 +19,8 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-
 public class AuthController {
 
-    Logger logger = LoggerFactory.getLogger(AuthController.class);
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final userService userService;
@@ -34,17 +32,6 @@ public class AuthController {
         this.userService = userService;
     }
 
-    /**
-     * This method is responsible for authenticating a user and generating a JWT token.
-     * It is mapped to the "/api/v1/login" endpoint and responds to HTTP POST requests.
-     *
-     * @param authRequestDTO This is a request body object that contains the username and password for authentication.
-     * @return ResponseEntity<ApiResponse < JwtResponseDTO>> This returns a response entity that contains an API response.
-     * The API response includes a status, message, and a JWT response DTO that contains the generated JWT token and user details.
-     * If the authentication is successful, it returns a 200 OK response with the JWT token and user details.
-     * If the authentication fails due to incorrect credentials, it returns a 500 Internal Server Error response with an appropriate message.
-     * If the user does not exist, it throws a UsernameNotFoundException.
-     */
     @PostMapping("/api/v1/login")
     public ResponseEntity<?> AuthenticateAndGetToken(@RequestBody AuthRequestDTO authRequestDTO) {
         try {
