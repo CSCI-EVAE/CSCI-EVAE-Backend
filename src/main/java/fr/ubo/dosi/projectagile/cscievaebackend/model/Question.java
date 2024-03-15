@@ -1,6 +1,7 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -47,10 +48,11 @@ public class Question {
     @NotEmpty(message = "L'intitulé ne peut pas être vide")
     @Column(name = "INTITULE", nullable = false, length = 64)
     private String intitule;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "idQuestion")
     private Set<QuestionEvaluation> questionEvaluations = new LinkedHashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "idQuestion")
     private Set<RubriqueQuestion> rubriqueQuestions = new LinkedHashSet<>();
 
