@@ -17,7 +17,6 @@ public class EtudiantController {
 
     @Autowired
     private PromotionService promotionService;
-
     @Autowired
     private EtudiantService etudiantService;
 

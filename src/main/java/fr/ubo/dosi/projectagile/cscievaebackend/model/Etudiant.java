@@ -20,7 +20,6 @@ public class Etudiant {
     @Id
     @Size(max = 50)
     @Column(name = "NO_ETUDIANT", nullable = false, length = 50)
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private String noEtudiant;
 
     @Size(max = 50)

@@ -45,6 +45,10 @@ public class EtudiantServiceImpl implements EtudiantService {
     public void registerEtudiant(EtudiantDTO etudiantDTO) {
         String login = etudiantDTO.getEmail();
         String password = "dosi";
+        Etudiant existingEtudiant = etudiantRepository.findByNoEtudiant(etudiantDTO.getNoEtudiant());
+        if (existingEtudiant != null) {
+            throw new IllegalArgumentException("Un étudiant avec le même numéro d'etudiant existe déjà.");
+        }
         Authentification authentification = new Authentification();
         authentification.setRole("ETU");
         authentification.setLoginConnection(login);
