@@ -33,7 +33,6 @@ public class EtudiantController {
         return ApiResponse.ok(etudiants);
     }
 
-    //delete etudiant
     @DeleteMapping("/etudiants/{noEtudiant}")
     @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<?> deleteEtudiant(@PathVariable String noEtudiant) {

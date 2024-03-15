@@ -24,11 +24,6 @@ public class EtudiantServiceImpl implements EtudiantService {
 
     private static final Logger logger = Logger.getLogger(EtudiantServiceImpl.class.getName());
 
-    @Override
-    public Etudiant createEtudiant(Etudiant etudiant) {
-        return etudiantRepository.save(etudiant);
-    }
-
     @Transactional
     @Override
     public void deleteEtudiant(String noEtudiant) {
