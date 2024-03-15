@@ -26,6 +26,7 @@ public class EvaluationDTO {
     private LocalDate debutReponse;
     private LocalDate finReponse;
     private String periode;
+    private boolean evaRepondu=false;
     private Set<RubriqueEvaluationDTO> rubriqueEvaluations;
 }
 

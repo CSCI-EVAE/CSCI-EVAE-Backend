@@ -113,7 +113,13 @@ public class EvaluationController {
     public ResponseEntity<?> getEvaluationsByUser(@AuthenticationPrincipal UserDetails currentUser) {
         Etudiant etudiant = as.getAuhtentification(currentUser.getUsername()).getNoEtudiant();
         Set<Evaluation> evaluations = etudiant.getPromotion().getEvaluations().stream().filter(evaluation -> !evaluation.getEtat().equals("ELA")).collect(Collectors.toSet());
-        Set<EvaluationDTO> evaluationDTOs = evaluations.stream().map(evaluationMapper::evaluationToEvaluationDTO).collect(Collectors.toSet());
+        Set<EvaluationDTO> evaluationDTOs = evaluations.stream().map(eva->{
+            EvaluationDTO evaluationDTO = evaluationMapper.evaluationToEvaluationDTO(eva);
+            if(eva.getReponseEvaluations().stream().anyMatch(reponseEvaluation -> reponseEvaluation.getNoEtudiant().equals(etudiant))){
+                evaluationDTO.setEvaRepondu(true);
+            }
+            return evaluationDTO;
+        }).collect(Collectors.toSet());
         return ResponseEntity.ok(ApiResponse.ok(evaluationDTOs));
     }
 

@@ -108,7 +108,7 @@ public class Etudiant {
     })
     @OnDelete(action = OnDeleteAction.RESTRICT)
     private Promotion promotion;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "noEtudiant")
     private Set<ReponseEvaluation> reponseEvaluations = new LinkedHashSet<>();
 
