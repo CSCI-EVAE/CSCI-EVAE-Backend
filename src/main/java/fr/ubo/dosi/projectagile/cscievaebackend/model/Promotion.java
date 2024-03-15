@@ -12,12 +12,11 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
+@ToString
 @Getter
 @Setter
 @Entity
 @Table(name = "PROMOTION")
-@ToString
 public class Promotion {
     @EmbeddedId
     private PromotionId id;
