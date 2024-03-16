@@ -1,5 +1,8 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 
+import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EtudiantDTO;
+import fr.ubo.dosi.projectagile.cscievaebackend.services.EtudiantService;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.AuthRequestDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.JwtResponseDTO;
@@ -8,14 +11,16 @@ import fr.ubo.dosi.projectagile.cscievaebackend.model.Authentification;
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.security.JwtService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.userService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -24,12 +29,14 @@ public class AuthController {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final userService userService;
+    private final EtudiantService etudiantService;
 
 
-    public AuthController(JwtService jwtService, AuthenticationManager authenticationManager, userService userService) {
+    public AuthController(JwtService jwtService, AuthenticationManager authenticationManager, userService userService, EtudiantService etudiantService) {
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
         this.userService = userService;
+        this.etudiantService = etudiantService;
     }
 
     @PostMapping("/api/v1/login")
@@ -52,6 +59,17 @@ public class AuthController {
     @PostMapping("/api/v1/register")
     public ResponseEntity<?> registerUser(@RequestBody Authentification userDTO) {
         return ApiResponse.ok(userService.registerUser(userDTO));
+    }
+    @PostMapping("/register-etudiant")
+    public ResponseEntity<?> registerEtudiant(@Validated @RequestBody EtudiantDTO etudiantDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ApiResponse.error("Une erreur s'est produite lors de la création du qualificatif", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
+        }
+        if (userService.getUserByUsername(etudiantDTO.getEmail()) != null) {
+            return ApiResponse.error("L'étudiant existe déjà");
+        }
+        etudiantService.registerEtudiant(etudiantDTO);
+        return ApiResponse.ok("L'étudiant a été enregistré avec succès");
     }
 
 }

@@ -1,6 +1,5 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 
-import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationSaveDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.ReponseEvaluationDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Etudiant;
@@ -9,12 +8,10 @@ import fr.ubo.dosi.projectagile.cscievaebackend.services.AuthentificationService
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EtudiantService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.PromotionService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
