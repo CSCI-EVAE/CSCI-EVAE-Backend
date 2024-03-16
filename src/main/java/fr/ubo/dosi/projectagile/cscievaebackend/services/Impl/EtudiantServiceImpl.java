@@ -30,6 +30,7 @@ public class EtudiantServiceImpl implements EtudiantService {
     @Autowired
     private EtudiantMapper etudiantMapper;
     private static final Logger logger = Logger.getLogger(EtudiantServiceImpl.class.getName());
+
     @Transactional
     @Override
     public void deleteEtudiant(String noEtudiant) {
@@ -41,6 +42,7 @@ public class EtudiantServiceImpl implements EtudiantService {
             logger.severe("Cet Etudiant n'existe pas");
         }
     }
+
     @Override
     public void registerEtudiant(EtudiantDTO etudiantDTO) {
         String login = etudiantDTO.getEmail();
@@ -61,5 +63,32 @@ public class EtudiantServiceImpl implements EtudiantService {
         Authentification auth = authentificationRepository.findByLoginConnection(login);
         auth.setNoEtudiant(etu);
         authentificationRepository.save(auth);
+    }
+
+    @Override
+    public EtudiantDTO updateEtudiant(String noEtudiant, EtudiantDTO etudiantDTO) {
+        Etudiant existingEtudiant = etudiantRepository.findById(noEtudiant).orElse(null);
+        if (existingEtudiant == null) {
+            return null;
+        }
+        existingEtudiant.setNom(etudiantDTO.getNom());
+        existingEtudiant.setPrenom(etudiantDTO.getPrenom());
+        existingEtudiant.setSexe(etudiantDTO.getSexe());
+        existingEtudiant.setDateNaissance(etudiantDTO.getDateNaissance());
+        existingEtudiant.setLieuNaissance(etudiantDTO.getLieuNaissance());
+        existingEtudiant.setNationalite(etudiantDTO.getNationalite());
+        existingEtudiant.setTelephone(etudiantDTO.getTelephone());
+        existingEtudiant.setMobile(etudiantDTO.getMobile());
+        existingEtudiant.setEmail(etudiantDTO.getEmail());
+        existingEtudiant.setEmailUbo(etudiantDTO.getEmailUbo());
+        existingEtudiant.setAdresse(etudiantDTO.getAdresse());
+        existingEtudiant.setCodePostal(etudiantDTO.getCodePostal());
+        existingEtudiant.setVille(etudiantDTO.getVille());
+        existingEtudiant.setPaysOrigine(etudiantDTO.getPaysOrigine());
+        existingEtudiant.setUniversiteOrigine(etudiantDTO.getUniversiteOrigine());
+        existingEtudiant.setGroupeTp(etudiantDTO.getGroupeTp());
+        existingEtudiant.setGroupeAnglais(etudiantDTO.getGroupeAnglais());
+        Etudiant updatedEtudiant = etudiantRepository.save(existingEtudiant);
+        return etudiantMapper.etudiantToEtudiantDTO(updatedEtudiant);
     }
 }

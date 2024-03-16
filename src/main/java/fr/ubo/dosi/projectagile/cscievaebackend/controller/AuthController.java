@@ -1,10 +1,5 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 
-import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EtudiantDTO;
-import fr.ubo.dosi.projectagile.cscievaebackend.services.EtudiantService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
-
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.AuthRequestDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.JwtResponseDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.UserDTO;
@@ -17,11 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
 
 
 @RestController
@@ -30,8 +21,6 @@ public class AuthController {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final userService userService;
-    @Autowired
-    private EtudiantService etudiantService;
 
 
     public AuthController(JwtService jwtService, AuthenticationManager authenticationManager, userService userService) {
@@ -71,17 +60,5 @@ public class AuthController {
     @PostMapping("/api/v1/register")
     public ResponseEntity<?> registerUser(@RequestBody Authentification userDTO) {
         return ApiResponse.ok(userService.registerUser(userDTO));
-    }
-
-    @PostMapping("/register-etudiant")
-    public ResponseEntity<?> registerEtudiant(@Validated @RequestBody EtudiantDTO etudiantDTO, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return ApiResponse.error("Une erreur s'est produite lors de la création du qualificatif", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
-        }
-        if (userService.getUserByUsername(etudiantDTO.getEmail()) != null) {
-            return ApiResponse.error("L'étudiant existe déjà");
-        }
-        etudiantService.registerEtudiant(etudiantDTO);
-        return ApiResponse.ok("L'étudiant a été enregistré avec succès");
     }
 }
