@@ -20,9 +20,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -36,11 +34,12 @@ public class UniteEnseignementController {
     private final Logger logger = Logger.getLogger(UniteEnseignementController.class.getName());
 
     @Autowired
-    public UniteEnseignementController(userService userService , UniteEnseignementService uniteEnseignementService) {
+    public UniteEnseignementController(userService userService, UniteEnseignementService uniteEnseignementService) {
         this.userService = userService;
         this.uniteEnseignementService = uniteEnseignementService;
     }
 
+    @PreAuthorize("hasAuthority('ENS')")
     @GetMapping
     @Transactional
     public ResponseEntity<?> getAllUE(@AuthenticationPrincipal UserDetails currentUser) {
@@ -51,30 +50,41 @@ public class UniteEnseignementController {
         }
         logger.info("uniteEnseignements : " + uniteEnseignements);
         List<UniteEnseignementDTO> ues = uniteEnseignements.stream().map(ue -> {
-            UniteEnseignementDTO uniteEnseignementDTO = new UniteEnseignementDTO();
-            uniteEnseignementDTO.setCodeUe(ue.getId().getCodeUe());
-            uniteEnseignementDTO.setDesignation(ue.getDesignation());
-            if (ue.getEvaluations().isEmpty()) {
-                uniteEnseignementDTO.setEvaExiste(null);
-            }else {
-                uniteEnseignementDTO.setEvaExiste(ue.getEvaluations().stream().findFirst().get());
-            }
-            uniteEnseignementDTO.setNbhCm(ue.getNbhCm());
-            uniteEnseignementDTO.setNbhTd(ue.getNbhTd());
-            uniteEnseignementDTO.setNbhTp(ue.getNbhTp());
-            uniteEnseignementDTO.setTotalHeures();
-            if (ue.getFormation() != null) {
-                uniteEnseignementDTO.setCodeFormation(ue.getFormation().getCodeFormation());
-                uniteEnseignementDTO.setNomFormation(ue.getFormation().getNomFormation());
-            }
-            return uniteEnseignementDTO;
-        }).toList();
-        logger.info("ues : " + ues);
+                    UniteEnseignementDTO uniteEnseignementDTO = new UniteEnseignementDTO();
+                    uniteEnseignementDTO.setCodeUe(ue.getId().getCodeUe());
+                    uniteEnseignementDTO.setDesignation(ue.getDesignation());
+                    if (ue.getEvaluations().isEmpty()) {
+                        uniteEnseignementDTO.setEvaExiste(null);
+                    }else {
+                        uniteEnseignementDTO.setEvaExiste(ue.getEvaluations().stream().findFirst().get());
+                    }
+                    uniteEnseignementDTO.setNbhCm(ue.getNbhCm());
+                    uniteEnseignementDTO.setNbhTd(ue.getNbhTd());
+                    uniteEnseignementDTO.setNbhTp(ue.getNbhTp());
+                    uniteEnseignementDTO.setTotalHeures();
+                    if (ue.getFormation() != null) {
+                        uniteEnseignementDTO.setCodeFormation(ue.getFormation().getCodeFormation());
+                        uniteEnseignementDTO.setNomFormation(ue.getFormation().getNomFormation());
+                    }
+                    return uniteEnseignementDTO;
+                }).sorted(etatComparator)
+                .collect(Collectors.toList());
         return ApiResponse.ok(ues);
     }
 
+    Comparator<UniteEnseignementDTO> etatComparator = (ue1, ue2) -> {
+        List<String> order = Arrays.asList(null, "ELA", "DIS", "CLO");
+        if (ue1.getEtat() == null) {
+            return (ue2.getEtat() == null) ? 0 : -1;
+        }
+        if (ue2.getEtat() == null) {
+            return 1;
+        }
+        return Integer.compare(order.indexOf(ue1.getEtat()), order.indexOf(ue2.getEtat()));
+    };
+
     @GetMapping("/promotion/{codeFormation}")
-    ResponseEntity<?> getAllUEByPromotions(@PathVariable  String codeFormation) {
-      return ApiResponse.ok(uniteEnseignementService.getAllUEByPromotions(codeFormation));
+    ResponseEntity<?> getAllUEByPromotions(@PathVariable String codeFormation) {
+        return ApiResponse.ok(uniteEnseignementService.getAllUEByPromotions(codeFormation));
     }
 }

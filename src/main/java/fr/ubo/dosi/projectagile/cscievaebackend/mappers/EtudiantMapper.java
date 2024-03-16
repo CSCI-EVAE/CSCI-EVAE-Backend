@@ -16,6 +16,7 @@ public interface EtudiantMapper {
 
     @Mapping(target = "promotion.id.anneeUniversitaire", ignore = true)
     @Mapping(target = "promotion.id.codeFormation", ignore = true)
+    @Mapping(target = "reponseEvaluations", ignore = true)
     Etudiant etudiantDTOToEtudiant(EtudiantDTO etudiantDTO);
 
 }

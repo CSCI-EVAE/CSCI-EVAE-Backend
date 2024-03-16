@@ -13,7 +13,6 @@ import java.util.Set;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class EvaluationDTO {
     private Integer id;
     private String etat;
@@ -26,6 +25,10 @@ public class EvaluationDTO {
     private LocalDate debutReponse;
     private LocalDate finReponse;
     private String periode;
+    private boolean evaRepondu=false;
+    private String nomEtudiant = "";
+    private String prenomEtudiant = "";
+    private String commentaire = "";
     private Set<RubriqueEvaluationDTO> rubriqueEvaluations;
 }
 

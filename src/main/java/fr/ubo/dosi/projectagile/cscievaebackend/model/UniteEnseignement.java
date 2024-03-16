@@ -61,5 +61,10 @@ public class UniteEnseignement {
     @OrderColumn(name = "ID_EVALUATION")
     @JsonIgnore
     private Set<Evaluation> evaluations = new LinkedHashSet<>();
+    @Transient
+    private Double totaleHeures = 0.0;
 
+    public void setTotalHeures() {
+        totaleHeures = getNbhCm() * 1.5 + getNbhTd() + getNbhTp();
+    }
 }

@@ -91,4 +91,5 @@ public class EtudiantServiceImpl implements EtudiantService {
         Etudiant updatedEtudiant = etudiantRepository.save(existingEtudiant);
         return etudiantMapper.etudiantToEtudiantDTO(updatedEtudiant);
     }
+
 }

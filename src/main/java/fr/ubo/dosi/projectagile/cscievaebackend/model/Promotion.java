@@ -68,6 +68,7 @@ public class Promotion {
     private Set<Evaluation> evaluations = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "promotion")
+    @OrderBy("nom")
     private Set<Etudiant> etudiants = new LinkedHashSet<>();
 
 }

@@ -1,5 +1,9 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 
+
+import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EtudiantDTO;
+import fr.ubo.dosi.projectagile.cscievaebackend.services.EtudiantService;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.AuthRequestDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.JwtResponseDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.UserDTO;
@@ -12,34 +16,29 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.stream.Collectors;
 
 
 @RestController
-
 public class AuthController {
+
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final userService userService;
+    private final EtudiantService etudiantService;
 
 
-    public AuthController(JwtService jwtService, AuthenticationManager authenticationManager, userService userService) {
+    public AuthController(JwtService jwtService, AuthenticationManager authenticationManager, userService userService, EtudiantService etudiantService) {
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
         this.userService = userService;
+        this.etudiantService = etudiantService;
     }
 
-    /**
-     * This method is responsible for authenticating a user and generating a JWT token.
-     * It is mapped to the "/api/v1/login" endpoint and responds to HTTP POST requests.
-     *
-     * @param authRequestDTO This is a request body object that contains the username and password for authentication.
-     * @return ResponseEntity<ApiResponse < JwtResponseDTO>> This returns a response entity that contains an API response.
-     * The API response includes a status, message, and a JWT response DTO that contains the generated JWT token and user details.
-     * If the authentication is successful, it returns a 200 OK response with the JWT token and user details.
-     * If the authentication fails due to incorrect credentials, it returns a 500 Internal Server Error response with an appropriate message.
-     * If the user does not exist, it throws a UsernameNotFoundException.
-     */
     @PostMapping("/api/v1/login")
     public ResponseEntity<?> AuthenticateAndGetToken(@RequestBody AuthRequestDTO authRequestDTO) {
         try {
@@ -61,4 +60,5 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@RequestBody Authentification userDTO) {
         return ApiResponse.ok(userService.registerUser(userDTO));
     }
+
 }

@@ -18,6 +18,7 @@ import java.util.Set;
 public class ReponseEvaluation {
     @Id
     @Column(name = "ID_REPONSE_EVALUATION", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotNull

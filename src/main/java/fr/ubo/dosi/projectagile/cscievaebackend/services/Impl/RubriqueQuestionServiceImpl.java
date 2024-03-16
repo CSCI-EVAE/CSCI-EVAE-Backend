@@ -73,26 +73,38 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
 
     public String updateRubriqueQuestions(IncomingRubriqueQuestionDTO dto) {
         StringBuilder resultMessage = new StringBuilder();
-        Rubrique rubrique = rubriqueRepository.findById(dto.getIdRubrique()).get();
-        Set<RubriqueQuestion> rubriqueQuestions = rubrique.getRubriqueQuestions().stream().peek(q -> {
-            if (dto.getQuestionIds().containsKey(q.getIdQuestion().getId().longValue())) {
-                q.setOrdre(dto.getQuestionIds().get(q.getIdQuestion().getId().longValue()));
-                resultMessage.append("On a mis à jour l'ordre de la question: Rubrique: ").append(dto.getIdRubrique()).append(", Question: ").append(q.getIdQuestion().getId()).append("\n");
-                rubriqueQuestionRepository.save(q);
+        Optional<Rubrique> rubriqueOptional = rubriqueRepository.findById(dto.getIdRubrique());
+
+        if (!rubriqueOptional.isPresent()) {
+            throw new IllegalArgumentException("Rubrique with ID " + dto.getIdRubrique() + " not found.");
+        }
+
+        Rubrique rubrique = rubriqueOptional.get();
+        Set<Long> dtoQuestionIds = dto.getQuestionIds().keySet();
+
+        rubrique.getRubriqueQuestions().forEach(rubriqueQuestion -> {
+            Long questionId = rubriqueQuestion.getIdQuestion().getId().longValue();
+            if (dtoQuestionIds.contains(questionId)) {
+                rubriqueQuestion.setOrdre(dto.getQuestionIds().get(questionId));
+                resultMessage.append(String.format("Updated question order: Rubrique: %d, Question: %d\n", dto.getIdRubrique(), questionId));
             } else {
-                rubriqueQuestionRepository.delete(q);
-            }
-        }).collect(Collectors.toSet());
-        dto.getQuestionIds().forEach((k, v) -> {
-            if (rubriqueQuestions.stream().noneMatch(q -> q.getIdQuestion().getId().equals(k.intValue()))) {
-                Question question = questionRepository.findById(k).get();
-                RubriqueQuestion rubriqueQuestion = new RubriqueQuestion(new RubriqueQuestionId(rubrique.getId(), question.getId()), rubrique, question, v);
-                resultMessage.append("On a ajouté la question: Rubrique: ").append(dto.getIdRubrique()).append(", Question: ").append(question.getId()).append("\n");
-                rubriqueQuestionRepository.save(rubriqueQuestion);
+                rubriqueQuestionRepository.delete(rubriqueQuestion);
+                resultMessage.append(String.format("Deleted question: Rubrique: %d, Question: %d\n", dto.getIdRubrique(), questionId));
             }
         });
+
+        dto.getQuestionIds().forEach((questionId, ordre) -> {
+            if (rubrique.getRubriqueQuestions().stream().noneMatch(q -> q.getIdQuestion().getId().equals(questionId.intValue()))) {
+                Question question = questionRepository.findById(questionId).orElseThrow(() -> new IllegalArgumentException("Question with ID " + questionId + " not found."));
+                RubriqueQuestion rubriqueQuestion = new RubriqueQuestion(new RubriqueQuestionId(rubrique.getId(), question.getId()), rubrique, question, ordre);
+                rubriqueQuestionRepository.save(rubriqueQuestion);
+                resultMessage.append(String.format("Added new question: Rubrique: %d, Question: %d\n", dto.getIdRubrique(), questionId));
+            }
+        });
+
         return resultMessage.toString();
     }
+
 
     @Transactional
     @Override

@@ -10,11 +10,12 @@ import lombok.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class QuestionEvaluationDTO {
     private Integer id;
     private String intitule;
     private QuestionDTO idQuestion;
     private Short ordre;
     private QualificatifDTO idQualificatif;
+    private Integer positionnement = 0;
+    private double moyen = 0;
 }

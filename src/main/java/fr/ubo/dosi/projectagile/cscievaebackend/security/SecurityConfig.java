@@ -42,7 +42,6 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/v1/qualificatif/**","/api/v1/questions/**","/api/v1/rubrique/**","/api/v1/rubriqueQuestion/**" ,"/api/v1/enseignant/ue/promotion/**"
                                 ).hasAnyAuthority("ADM", "ENS")
                                 .requestMatchers("/api/v1/qualificatif/**","/api/v1/questions/**","/api/v1/rubrique/**").hasAuthority("ADM")
-                                .requestMatchers("/api/v1/etudiant/**").hasAuthority("ETU")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

@@ -2,12 +2,12 @@ package fr.ubo.dosi.projectagile.cscievaebackend.services;
 
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationSaveDTO;
+import fr.ubo.dosi.projectagile.cscievaebackend.DTO.ReponseEvaluationDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Enseignant;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Etudiant;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
 import org.springframework.data.crossstore.ChangeSetPersister;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +25,16 @@ public interface EvaluationService {
     Set<Evaluation> getEvaluationsByUser(Etudiant etudiant);
 
     void saveEvaluation(EvaluationSaveDTO evaluationDTO, Enseignant currentUser);
+
+    void updateEvaluationEns(EvaluationSaveDTO evaluationDTO, Enseignant ens);
+
+    String deleteReponse(Integer id);
+
+    String saveReponseEtudiant(ReponseEvaluationDTO reponseEvaluationDTO, Etudiant etu);
+
+    EvaluationDTO getStatistics(Long id);
+
+    EvaluationDTO getReponsesEtudiant(Integer id, Etudiant etu);
 
     void deleteEvaluation(Long id) throws ResourceNotFoundException;
 }

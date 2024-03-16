@@ -1,10 +1,8 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.services.Impl;
 
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.IncomingRubriqueQuestionDTO;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.QuestionEvaluation;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueEvaluation;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueQuestion;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.*;
+import fr.ubo.dosi.projectagile.cscievaebackend.repository.EvaluationRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.RubriqueEvaluationRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.*;
 import jakarta.transaction.Transactional;
@@ -22,53 +20,72 @@ public class RubriqueEvaluationServiceImpl implements RubriqueEvaluationService 
     private final QuestionService questionService;
     private final QuestionEvaluationService questionEvaluationService;
     Logger logger = Logger.getLogger(RubriqueEvaluationServiceImpl.class.getName());
+    private final EvaluationRepository evaluationRepository;
 
     @Autowired
-    public RubriqueEvaluationServiceImpl(RubriqueEvaluationRepository rubriqueEvaluationRepository, RubriqueService rubriqueService, QuestionService questionService, QuestionEvaluationService questionEvaluationService) {
+    public RubriqueEvaluationServiceImpl(RubriqueEvaluationRepository rubriqueEvaluationRepository, RubriqueService rubriqueService, QuestionService questionService, QuestionEvaluationService questionEvaluationService,
+                                         EvaluationRepository evaluationRepository) {
         this.rubriqueEvaluationRepository = rubriqueEvaluationRepository;
         this.rubriqueService = rubriqueService;
         this.questionService = questionService;
         this.questionEvaluationService = questionEvaluationService;
+        this.evaluationRepository = evaluationRepository;
     }
 
 
     @Transactional
     @Override
     public void saveRubriqueEvaluation(IncomingRubriqueQuestionDTO rubriqueQuestionDTO, Evaluation savedEvaluation) {
-        RubriqueEvaluation rubriqueEvaluation = new RubriqueEvaluation();
-        try {
-            rubriqueEvaluation.setIdRubrique(rubriqueService.getRubriqueById(rubriqueQuestionDTO.getIdRubrique()));
-        } catch (Exception e) {
-            throw new IllegalArgumentException("La rubrique n'existe pas");
-        }
+        RubriqueEvaluation rubriqueEvaluation =  rubriqueEvaluationRepository
+                .findByIdRubriqueAndIdEvaluation(rubriqueQuestionDTO.getIdRubrique(), savedEvaluation.getNoEvaluation().longValue() ).orElse(new RubriqueEvaluation());
+
         rubriqueEvaluation.setIdEvaluation(savedEvaluation);
         rubriqueEvaluation.setOrdre(rubriqueQuestionDTO.getOrdre().shortValue());
-        rubriqueEvaluation = rubriqueEvaluationRepository.save(rubriqueEvaluation);
-        for (Map.Entry<Long, Long> entry : rubriqueQuestionDTO.getQuestionIds().entrySet()) {
+        try {
+            logger.info("Trying to find rubrique with id: " + rubriqueQuestionDTO.getIdRubrique());
+            Rubrique rubrique = rubriqueService.getRubriqueById(rubriqueQuestionDTO.getIdRubrique());
+            rubriqueEvaluation.setIdRubrique(rubrique);
+            Logger.getLogger(RubriqueEvaluationServiceImpl.class.getName()).info("Rubrique found: " + rubrique);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("La rubrique n'existe pas", e);
+        }
+
+        if (!rubriqueEvaluation.getQuestionEvaluations().isEmpty()) {
+            rubriqueEvaluation.getQuestionEvaluations().forEach(questionEvaluationService::deleteQuestionEvaluation);
+            rubriqueEvaluation.getQuestionEvaluations().clear();
+        }
+
+        rubriqueQuestionDTO.getQuestionIds().forEach((questionId, ordre) -> {
             QuestionEvaluation questionEvaluation = new QuestionEvaluation();
             try {
-                questionEvaluation.setIdQuestion(questionService.getQuestionById(entry.getKey()));
+                questionEvaluation.setIdQuestion(questionService.getQuestionById(questionId));
+                questionEvaluation.setOrdre(ordre.shortValue());
+                logger.info("Question evaluation saved: " + questionEvaluation);
             } catch (Exception e) {
-                throw new IllegalArgumentException("La question n'existe pas");
+                throw new IllegalArgumentException("La question n'existe pas ", e);
             }
-            questionEvaluation.setOrdre(entry.getValue().shortValue());
+
+            logger.info("Question evaluation saved: " + rubriqueEvaluation);
+            rubriqueEvaluationRepository.save(rubriqueEvaluation);
             questionEvaluation.setIdRubriqueEvaluation(rubriqueEvaluation);
-            questionEvaluation = questionEvaluationService.saveQuestionEvaluation(questionEvaluation);
-            logger.info("Question evaluation saved: " + questionEvaluation);
+            questionEvaluationService.saveQuestionEvaluation(questionEvaluation);
             rubriqueEvaluation.getQuestionEvaluations().add(questionEvaluation);
-        }
+        });
+
         rubriqueEvaluationRepository.save(rubriqueEvaluation);
-        logger.info("Rubrique evaluation saved: " + rubriqueEvaluation);
         savedEvaluation.getRubriqueEvaluations().add(rubriqueEvaluation);
+        logger.info("Rubrique evaluation saved: " + rubriqueEvaluation);
     }
 
     @Transactional
     @Override
     public void saveRubriquesEvaluation(List<IncomingRubriqueQuestionDTO> rubriqueQuestion, Evaluation savedEvaluation) {
-        if (rubriqueQuestion!= null) {
+        if (rubriqueQuestion != null) {
             for (IncomingRubriqueQuestionDTO rubriqueQuestionDTO : rubriqueQuestion) {
                 this.saveRubriqueEvaluation(rubriqueQuestionDTO, savedEvaluation);
             }
         }
+        evaluationRepository.save(savedEvaluation);
     }
+
 }

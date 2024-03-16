@@ -7,7 +7,6 @@ import fr.ubo.dosi.projectagile.cscievaebackend.model.Authentification;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Formation;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Promotion;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.FormationRepository;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.PromotionId;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.AuthentificationServiceImpl;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.PromotionService;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +53,7 @@ public class PromotionController {
         Set<PromotionDTO> PromotionDTOs = promotions.stream().map(promotionMapper::promotionToPromotionDTO).collect(Collectors.toSet());
         return ApiResponse.ok(PromotionDTOs);
     }
-    // get all formation from a given promotion
+
     @PreAuthorize("hasAuthority('ENS')")
     @GetMapping("/formationsForPromotion/{codeformation}")
     public ResponseEntity<?> getFormationsForPromotion(@PathVariable String codeformation) {
