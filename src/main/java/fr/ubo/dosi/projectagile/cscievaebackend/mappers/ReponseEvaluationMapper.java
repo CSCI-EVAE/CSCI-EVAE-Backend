@@ -6,6 +6,5 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface ReponseEvaluationMapper {
-    ReponseEvaluation toEntity(ReponseEvaluationDTO reponseEvaluation);
     ReponseEvaluationDTO toDto(ReponseEvaluation reponseEvaluation);
 }

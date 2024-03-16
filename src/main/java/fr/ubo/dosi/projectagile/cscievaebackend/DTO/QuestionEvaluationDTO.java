@@ -10,7 +10,6 @@ import lombok.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class QuestionEvaluationDTO {
     private Integer id;
     private String intitule;

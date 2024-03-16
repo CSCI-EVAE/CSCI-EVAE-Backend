@@ -13,7 +13,6 @@ import java.util.Set;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class EvaluationDTO {
     private Integer id;
     private String etat;

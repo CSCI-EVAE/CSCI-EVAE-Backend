@@ -12,6 +12,7 @@ import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Etudiant;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Promotion;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.userService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EtudiantService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.PromotionService;

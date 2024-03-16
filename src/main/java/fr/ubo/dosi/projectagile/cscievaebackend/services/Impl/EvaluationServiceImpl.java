@@ -156,7 +156,10 @@ public class EvaluationServiceImpl implements EvaluationService {
             throw new IllegalArgumentException("L'étudiant a déjà répondu à cette évaluation");
         }
         Evaluation evaluation = evaluationRepository.findById(reponseEvaluationDTO.getIdEvaluation().getId().longValue()).orElseThrow(() -> new NoSuchElementException("L'évaluation n'existe pas"));
-        ReponseEvaluation responseEvaluation = reponseEvaluationMapper.toEntity(reponseEvaluationDTO);
+        ReponseEvaluation responseEvaluation = new ReponseEvaluation();
+        responseEvaluation.setCommentaire(reponseEvaluationDTO.getCommentaire());
+        responseEvaluation.setNom(reponseEvaluationDTO.getNom());
+        responseEvaluation.setPrenom(reponseEvaluationDTO.getPrenom());
         responseEvaluation.setNoEtudiant(etudiant);
         responseEvaluation.setIdEvaluation(evaluation);
         ReponseEvaluation savedResponce = responseEvaluationRepository.save(responseEvaluation);
