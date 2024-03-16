@@ -112,4 +112,7 @@ public class Etudiant {
     @OneToMany(mappedBy = "noEtudiant")
     private Set<ReponseEvaluation> reponseEvaluations = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "noEtudiant")
+    private Set<ReponseEvaluation> reponseEvaluations = new LinkedHashSet<>();
+
 }
