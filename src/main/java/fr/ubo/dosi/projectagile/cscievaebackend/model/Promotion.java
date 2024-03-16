@@ -12,7 +12,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
-@ToString
+
 @Getter
 @Setter
 @Entity

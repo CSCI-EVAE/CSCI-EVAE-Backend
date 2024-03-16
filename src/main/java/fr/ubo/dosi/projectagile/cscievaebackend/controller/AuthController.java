@@ -60,6 +60,7 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@RequestBody Authentification userDTO) {
         return ApiResponse.ok(userService.registerUser(userDTO));
     }
+
     @PostMapping("/register-etudiant")
     public ResponseEntity<?> registerEtudiant(@Validated @RequestBody EtudiantDTO etudiantDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -71,5 +72,4 @@ public class AuthController {
         etudiantService.registerEtudiant(etudiantDTO);
         return ApiResponse.ok("L'étudiant a été enregistré avec succès");
     }
-
 }
