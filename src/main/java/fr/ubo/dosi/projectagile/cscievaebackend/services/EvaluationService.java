@@ -34,7 +34,7 @@ public interface EvaluationService {
 
     EvaluationDTO getStatistics(Long id);
 
-    ReponseEvaluationDTO getReponsesEtudiant(Integer id, Etudiant etu);
+    EvaluationDTO getReponsesEtudiant(Integer id, Etudiant etu);
 
     void deleteEvaluation(Long id) throws ResourceNotFoundException;
 }

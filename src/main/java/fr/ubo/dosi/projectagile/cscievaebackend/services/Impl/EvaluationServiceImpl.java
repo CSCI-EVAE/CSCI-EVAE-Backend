@@ -192,13 +192,22 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     @Override
-    public ReponseEvaluationDTO getReponsesEtudiant(Integer id, Etudiant etu) {
+    public EvaluationDTO getReponsesEtudiant(Integer id, Etudiant etu) {
         List<ReponseEvaluation> reponseEvaluations = responseEvaluationRepository.findByIdEvaluationIdAndNoEtudiant(etu.getNoEtudiant(), id.longValue());
         if (reponseEvaluations.isEmpty()) {
             throw new NoSuchElementException("La réponse n'existe pas");
         }
         ReponseEvaluation reponseEvaluation = reponseEvaluations.get(0);
-        return reponseEvaluationMapper.toDto(reponseEvaluation);
+        EvaluationDTO evaluation = evaluationMapper.evaluationToEvaluationDTO(evaluationRepository.findById(id.longValue()).orElseThrow(() -> new NoSuchElementException("L'évaluation n'existe pas")));
+        evaluation.setCommentaire(reponseEvaluation.getCommentaire());
+        evaluation.setNomEtudiant(reponseEvaluation.getNom());
+        evaluation.setPrenomEtudiant(reponseEvaluation.getPrenom());
+        evaluation.getRubriqueEvaluations().forEach(rubriqueEvaluation -> {
+            rubriqueEvaluation.getQuestionEvaluations().forEach(questionEvaluation -> {
+                reponseQuestionRepository.findByIdReponseEvaluationIdAndIdQuestionEvaluationId(reponseEvaluation.getId(), questionEvaluation.getId()).ifPresent(reponseQuestion -> questionEvaluation.setPositionnement(reponseQuestion.getPositionnement().intValue()));
+            });
+        });
+        return evaluation;
     }
 
     @Override

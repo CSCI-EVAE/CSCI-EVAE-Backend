@@ -17,5 +17,6 @@ public class QuestionEvaluationDTO {
     private QuestionDTO idQuestion;
     private Short ordre;
     private QualificatifDTO idQualificatif;
-    private double moyen ;
+    private Integer positionnement = 0;
+    private double moyen = 0;
 }
