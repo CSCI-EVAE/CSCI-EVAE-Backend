@@ -6,6 +6,7 @@ import fr.ubo.dosi.projectagile.cscievaebackend.model.Etudiant;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Promotion;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.AuthentificationService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
+import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EtudiantService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.PromotionService;
 import org.springframework.http.ResponseEntity;
@@ -51,12 +52,6 @@ public class EtudiantController {
         return ApiResponse.ok("Etudiant supprimé");
     }
 
-    @PostMapping("reponduEvaluation")
-    public ResponseEntity<?> setReponseEtudiant(@RequestBody ReponseEvaluationDTO reponseEvaluationDTO, @AuthenticationPrincipal UserDetails userDetails) {
-        Etudiant etu = authentificationService.getAuhtentification(userDetails.getUsername()).getNoEtudiant();
-        return ApiResponse.ok(evaluationService.saveReponseEtudiant(reponseEvaluationDTO, etu));
-    }
-
     @DeleteMapping("deleteReponse/{id}")
     public ResponseEntity<?> deleteReponseEtudiant(@PathVariable Integer id) {
         return ApiResponse.ok(evaluationService.deleteReponse(id));
@@ -66,6 +61,14 @@ public class EtudiantController {
     public ResponseEntity<?> getReponsesEtudiant(@PathVariable Integer id, @AuthenticationPrincipal UserDetails userDetails) {
         Etudiant etu = authentificationService.getAuhtentification(userDetails.getUsername()).getNoEtudiant();
         return ApiResponse.ok(evaluationService.getReponsesEtudiant(id, etu));
+    }
+
+
+    @PostMapping("reponduEvaluation")
+    @PreAuthorize("hasAuthority('ETU')")
+    public ResponseEntity<?> setReponseEtudiant(@RequestBody ReponseEvaluationDTO reponseEvaluationDTO, @AuthenticationPrincipal UserDetails userDetails) {
+        Etudiant etu = authentificationService.getAuhtentification(userDetails.getUsername()).getNoEtudiant();
+        return ApiResponse.ok(evaluationService.saveReponseEtudiant(reponseEvaluationDTO , etu));
     }
 
 }
