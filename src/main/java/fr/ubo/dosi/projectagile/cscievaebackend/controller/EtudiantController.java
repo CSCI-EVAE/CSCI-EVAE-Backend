@@ -23,8 +23,8 @@ public class EtudiantController {
 
     private final PromotionService promotionService;
     private final EvaluationService evaluationService;
-    private final AuthentificationService authentificationService;
     private final EtudiantService etudiantService;
+    private final AuthentificationService authentificationService;
 
     public EtudiantController(AuthentificationService authentificationService, PromotionService promotionService, EvaluationService evaluationService, EtudiantService etudiantService) {
         this.authentificationService = authentificationService;
@@ -32,7 +32,6 @@ public class EtudiantController {
         this.evaluationService = evaluationService;
         this.etudiantService = etudiantService;
     }
-
 
     @GetMapping("/{anneeUniversitaire}/{codeFormation}/etudiants")
     @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
@@ -52,6 +51,12 @@ public class EtudiantController {
         return ApiResponse.ok("Etudiant supprimé");
     }
 
+    @PostMapping("reponduEvaluation")
+    public ResponseEntity<?> setReponseEtudiant(@RequestBody ReponseEvaluationDTO reponseEvaluationDTO, @AuthenticationPrincipal UserDetails userDetails) {
+        Etudiant etu = authentificationService.getAuhtentification(userDetails.getUsername()).getNoEtudiant();
+        return ApiResponse.ok(evaluationService.saveReponseEtudiant(reponseEvaluationDTO, etu));
+    }
+
     @DeleteMapping("deleteReponse/{id}")
     public ResponseEntity<?> deleteReponseEtudiant(@PathVariable Integer id) {
         return ApiResponse.ok(evaluationService.deleteReponse(id));
@@ -61,14 +66,6 @@ public class EtudiantController {
     public ResponseEntity<?> getReponsesEtudiant(@PathVariable Integer id, @AuthenticationPrincipal UserDetails userDetails) {
         Etudiant etu = authentificationService.getAuhtentification(userDetails.getUsername()).getNoEtudiant();
         return ApiResponse.ok(evaluationService.getReponsesEtudiant(id, etu));
-    }
-
-
-    @PostMapping("reponduEvaluation")
-    @PreAuthorize("hasAuthority('ETU')")
-    public ResponseEntity<?> setReponseEtudiant(@RequestBody ReponseEvaluationDTO reponseEvaluationDTO, @AuthenticationPrincipal UserDetails userDetails) {
-        Etudiant etu = authentificationService.getAuhtentification(userDetails.getUsername()).getNoEtudiant();
-        return ApiResponse.ok(evaluationService.saveReponseEtudiant(reponseEvaluationDTO , etu));
     }
 
 }
