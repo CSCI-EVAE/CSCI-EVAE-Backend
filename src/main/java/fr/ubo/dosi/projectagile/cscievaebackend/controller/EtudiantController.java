@@ -7,6 +7,7 @@ import fr.ubo.dosi.projectagile.cscievaebackend.model.Etudiant;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Promotion;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.AuthentificationService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
+import fr.ubo.dosi.projectagile.cscievaebackend.services.EtudiantService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +15,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/v1/etudiant")
@@ -25,12 +26,15 @@ public class EtudiantController {
     private final PromotionService promotionService;
     private final EvaluationService evaluationService;
     private final AuthentificationService authentificationService;
+    private final EtudiantService etudiantService;
 
-    public EtudiantController(AuthentificationService authentificationService, PromotionService promotionService, EvaluationService evaluationService) {
+    public EtudiantController(AuthentificationService authentificationService, PromotionService promotionService, EvaluationService evaluationService, EtudiantService etudiantService) {
         this.authentificationService = authentificationService;
         this.promotionService = promotionService;
         this.evaluationService = evaluationService;
+        this.etudiantService = etudiantService;
     }
+
 
     @GetMapping("/{anneeUniversitaire}/{codeFormation}/etudiants")
     @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
@@ -41,6 +45,13 @@ public class EtudiantController {
         }
         Set<Etudiant> etudiants = promotion.getEtudiants();
         return ApiResponse.ok(etudiants);
+    }
+
+    @DeleteMapping("/etudiants/{noEtudiant}")
+    @PreAuthorize("hasAuthority('ADM')")
+    public ResponseEntity<?> deleteEtudiant(@PathVariable String noEtudiant) {
+        etudiantService.deleteEtudiant(noEtudiant);
+        return ApiResponse.ok("Etudiant supprimé");
     }
 
     @PostMapping("reponduEvaluation")
