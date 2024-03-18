@@ -19,7 +19,6 @@ public class ReponseEvaluationDTO {
     @NotNull
     private Integer idEvaluationId;
 
-
     private String noEtudiantNoEtudiant;
 
     private String commentaire;
