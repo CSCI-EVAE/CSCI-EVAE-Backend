@@ -1,6 +1,5 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.DTO;
 
-import fr.ubo.dosi.projectagile.cscievaebackend.model.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -14,14 +13,11 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReponseEvaluationDTO {
+
     private Integer id;
-
     @NotNull
-    private EvaluationDto idEvaluation;
-
-    private EtudiantDto noEtudiant;
-
-    @Size(max = 512)
+    private Integer idEvaluationId;
+    private String noEtudiant;
     private String commentaire;
     @Size(max = 32)
     private String nom;
@@ -36,7 +32,7 @@ public class ReponseEvaluationDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ReponseQuestionDto implements Serializable {
-        private QuestionEvaluationDto idQuestionEvaluation;
+        private QuestionEvaluationDTO idQuestionEvaluation;
         private Long positionnement;
     }
 }

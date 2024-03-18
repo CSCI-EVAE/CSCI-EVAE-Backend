@@ -148,11 +148,11 @@ public class EvaluationServiceImpl implements EvaluationService {
         if (reponseEvaluationDTO.getId() != null) {
             deleteReponse(reponseEvaluationDTO.getId());
         }
-        if (responseEvaluationRepository.existsByNoEtudiantAndIdEvaluation(etudiant.getNoEtudiant(), reponseEvaluationDTO.getIdEvaluation().getId())) {
-            logger.info("ID Evaluation: " + reponseEvaluationDTO.getIdEvaluation().getId() + " No Etudiant: " + etudiant.getNoEtudiant());
+        if (responseEvaluationRepository.existsByNoEtudiantAndIdEvaluation(etudiant.getNoEtudiant(), reponseEvaluationDTO.getIdEvaluationId())) {
+            logger.info("ID Evaluation: " + reponseEvaluationDTO.getIdEvaluationId()+ " No Etudiant: " + etudiant.getNoEtudiant());
             throw new IllegalArgumentException("L'étudiant a déjà répondu à cette évaluation");
         }
-        Evaluation evaluation = evaluationRepository.findById(reponseEvaluationDTO.getIdEvaluation().getId().longValue()).orElseThrow(() -> new NoSuchElementException("L'évaluation n'existe pas"));
+        Evaluation evaluation = evaluationRepository.findById(reponseEvaluationDTO.getIdEvaluationId().longValue()).orElseThrow(() -> new NoSuchElementException("L'évaluation n'existe pas"));
         ReponseEvaluation responseEvaluation = new ReponseEvaluation();
         responseEvaluation.setCommentaire(reponseEvaluationDTO.getCommentaire());
         responseEvaluation.setNom(reponseEvaluationDTO.getNom());
