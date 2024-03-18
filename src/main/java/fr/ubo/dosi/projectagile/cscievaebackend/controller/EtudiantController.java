@@ -35,14 +35,14 @@ public class EtudiantController {
     private final EvaluationService evaluationService;
     private final EtudiantService etudiantService;
     private final AuthentificationService authentificationService;
-    @Autowired
-    private userService userService;
+    private final userService userService;
 
-    public EtudiantController(AuthentificationService authentificationService, PromotionService promotionService, EvaluationService evaluationService, EtudiantService etudiantService) {
+    public EtudiantController(AuthentificationService authentificationService, PromotionService promotionService, EvaluationService evaluationService, EtudiantService etudiantService, fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.userService userService) {
         this.authentificationService = authentificationService;
         this.promotionService = promotionService;
         this.evaluationService = evaluationService;
         this.etudiantService = etudiantService;
+        this.userService = userService;
     }
 
     @GetMapping("/{anneeUniversitaire}/{codeFormation}/etudiants")

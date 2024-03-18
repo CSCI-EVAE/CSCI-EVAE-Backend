@@ -1,6 +1,6 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.services.Impl;
 
-import fr.ubo.dosi.projectagile.cscievaebackend.DTO.UniteEnseignementDTO;
+
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Enseignant;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Formation;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.UniteEnseignement;

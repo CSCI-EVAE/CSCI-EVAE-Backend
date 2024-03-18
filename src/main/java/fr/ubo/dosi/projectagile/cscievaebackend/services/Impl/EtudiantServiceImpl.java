@@ -58,6 +58,9 @@ public class EtudiantServiceImpl implements EtudiantService {
         userService.registerNewUser(authentification);
         Etudiant etudiant = etudiantMapper.etudiantDTOToEtudiant(etudiantDTO);
         Promotion promotion = promotionRepository.findByPromotionId(etudiantDTO.getCodeFormation(), etudiantDTO.getAnneeUniversitaire());
+        if (promotion.getEtudiants().size() >= promotion.getNbMaxEtudiant()) {
+            throw new IllegalStateException("Impossible d'ajouter l'étudiant. La promotion est pleine.");
+        }
         etudiant.setPromotion(promotion);
         Etudiant etu = etudiantRepository.save(etudiant);
         Authentification auth = authentificationRepository.findByLoginConnection(login);

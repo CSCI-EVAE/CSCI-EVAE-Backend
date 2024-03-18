@@ -4,20 +4,14 @@ import fr.ubo.dosi.projectagile.cscievaebackend.DTO.QualificatifDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.LinkedToAnotherResourceException;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Qualificatif;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Question;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.QualificatifRepository;
-import fr.ubo.dosi.projectagile.cscievaebackend.repository.QuestionRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.QualificatifService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
-
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,7 +21,6 @@ public class QualificatifServiceImpl implements QualificatifService {
     private QualificatifRepository qualificatifRepository;
     @Autowired
     private ModelMapper modelMapper;
-    Logger logger = Logger.getLogger(QualificatifServiceImpl.class.getName());
 
     @Override
     public Qualificatif createQualificatif(Qualificatif qualificatif) {
@@ -73,7 +66,6 @@ public class QualificatifServiceImpl implements QualificatifService {
             try {
                 qualificatifRepository.deleteById(id);
             } catch (Exception e){
-                logger.info(e.getMessage() + " " + e.getClass());
                 throw new LinkedToAnotherResourceException("Le qualificatif est lié à une question et ne peut pas être supprimé.");
             }
         } else {

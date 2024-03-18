@@ -1,7 +1,6 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.services.Impl;
 
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.*;
-import fr.ubo.dosi.projectagile.cscievaebackend.mappers.ReponseEvaluationMapper;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationSaveDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.*;
@@ -30,7 +29,6 @@ public class EvaluationServiceImpl implements EvaluationService {
     private final QuestionEvaluationRepository questionEvaluationRepository;
     private final ReponseEvaluationRepository responseEvaluationRepository;
     private final EvaluationMapper evaluationMapper;
-    private final ReponseEvaluationMapper reponseEvaluationMapper;
     private final RubriqueEvaluationRepository rubriqueEvaluationRepository = null;
     private final DroitRepository droitRepository;
     private final ReponseQuestionRepository reponseQuestionRepository;
@@ -39,7 +37,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     Logger logger = Logger.getLogger(EvaluationServiceImpl.class.getName());
 
     @Autowired
-    public EvaluationServiceImpl(EvaluationRepository er, PromotionRepository promotionRepository, UniteEnseignementRepository uniteEnseignementRepository, EvaluationMapper evaluationMapper, ElementConstitutifRepository elementConstitutifRepository, RubriqueEvaluationService rubriqueQuestionService, QuestionEvaluationRepository questionEvaluationRepository, ReponseEvaluationRepository responseEvaluationRepository, ReponseEvaluationMapper reponseEvaluationMapper,
+    public EvaluationServiceImpl(EvaluationRepository er, PromotionRepository promotionRepository, UniteEnseignementRepository uniteEnseignementRepository, EvaluationMapper evaluationMapper, ElementConstitutifRepository elementConstitutifRepository, RubriqueEvaluationService rubriqueQuestionService, QuestionEvaluationRepository questionEvaluationRepository, ReponseEvaluationRepository responseEvaluationRepository,
                                  ReponseQuestionRepository reponseQuestionRepository, DroitRepository droitRepository, ReponseEvaluationRepository reponseEvaluationRepository) {
         this.evaluationRepository = er;
         this.promotionRepository = promotionRepository;
@@ -51,7 +49,6 @@ public class EvaluationServiceImpl implements EvaluationService {
         this.questionEvaluationRepository = questionEvaluationRepository;
         this.rubriqueEvaluationService = rubriqueQuestionService;
         this.responseEvaluationRepository = responseEvaluationRepository;
-        this.reponseEvaluationMapper = reponseEvaluationMapper;
         this.reponseEvaluationRepository = reponseEvaluationRepository;
     }
 
