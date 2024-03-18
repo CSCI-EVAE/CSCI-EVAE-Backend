@@ -74,6 +74,9 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
 
         Rubrique rubrique = rubriqueOptional.get();
         Set<Long> dtoQuestionIds = dto.getQuestionIds().keySet();
+        if (dtoQuestionIds.isEmpty()) {
+            return "Impossible d'ajouter une rubrique sans questions";
+        }
 
         rubrique.getRubriqueQuestions().forEach(rubriqueQuestion -> {
             Long questionId = rubriqueQuestion.getIdQuestion().getId().longValue();

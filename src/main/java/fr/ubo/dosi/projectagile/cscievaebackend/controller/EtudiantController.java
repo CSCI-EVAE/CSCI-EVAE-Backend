@@ -58,8 +58,7 @@ public class EtudiantController {
     @DeleteMapping("/etudiants/{noEtudiant}")
     @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<?> deleteEtudiant(@PathVariable String noEtudiant) {
-        etudiantService.deleteEtudiant(noEtudiant);
-        return ApiResponse.ok("Etudiant supprimé");
+        return ApiResponse.ok(etudiantService.deleteEtudiant(noEtudiant));
     }
 
     @PostMapping("reponduEvaluation")
