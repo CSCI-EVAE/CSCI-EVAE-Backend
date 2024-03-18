@@ -1,25 +1,19 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 
-import fr.ubo.dosi.projectagile.cscievaebackend.DTO.QuestionDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
-import fr.ubo.dosi.projectagile.cscievaebackend.mappers.QuestionMapper;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Question;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.QuestionService;
 import jakarta.validation.Valid;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/questions")
@@ -29,10 +23,6 @@ public class QuestionController {
     private QuestionService questionService;
 
     Logger logger = Logger.getLogger(QuestionController.class.getName());
-    @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    private QuestionMapper questionMapper;
 
     @PostMapping
     public ResponseEntity<?> createQuestion(@Valid @RequestBody Question question, BindingResult bindingResult) {

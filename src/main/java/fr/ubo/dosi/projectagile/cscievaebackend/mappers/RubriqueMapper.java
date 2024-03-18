@@ -1,8 +1,6 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.mappers;
 
-import fr.ubo.dosi.projectagile.cscievaebackend.DTO.QuestionEvaluationDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.RubriqueDTO;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.QuestionEvaluation;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Rubrique;
 import org.mapstruct.Mapper;
 

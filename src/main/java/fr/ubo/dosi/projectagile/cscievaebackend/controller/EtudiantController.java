@@ -6,11 +6,7 @@ import fr.ubo.dosi.projectagile.cscievaebackend.model.Etudiant;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Promotion;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.AuthentificationService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
-import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EtudiantDTO;
-import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Etudiant;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Promotion;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.userService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -23,8 +19,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+
 import java.util.stream.Collectors;
+
 import org.springframework.validation.BindingResult;
 
 import java.util.Set;
@@ -38,6 +35,8 @@ public class EtudiantController {
     private final EvaluationService evaluationService;
     private final EtudiantService etudiantService;
     private final AuthentificationService authentificationService;
+    @Autowired
+    private userService userService;
 
     public EtudiantController(AuthentificationService authentificationService, PromotionService promotionService, EvaluationService evaluationService, EtudiantService etudiantService) {
         this.authentificationService = authentificationService;
@@ -45,10 +44,6 @@ public class EtudiantController {
         this.evaluationService = evaluationService;
         this.etudiantService = etudiantService;
     }
-   
-    @Autowired
-    private userService userService;
-
 
     @GetMapping("/{anneeUniversitaire}/{codeFormation}/etudiants")
     @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
@@ -98,6 +93,7 @@ public class EtudiantController {
         }
         return ApiResponse.ok("Les informations de l'étudiant ont été mises à jour avec succès", updatedEtudiant);
     }
+
     @PostMapping("/register-etudiant")
     @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<?> registerEtudiant(@Validated @RequestBody EtudiantDTO etudiantDTO, BindingResult bindingResult) {

@@ -27,10 +27,10 @@ import java.util.stream.Collectors;
 public class PromotionController {
     private final AuthentificationServiceImpl as;
     private final PromotionMapper promotionMapper;
-    private final  PromotionService promotionService;
+    private final PromotionService promotionService;
     private final FormationRepository formationRepository;
 
-    public PromotionController(AuthentificationServiceImpl as, PromotionMapper promotionMapper, PromotionService promotionService , FormationRepository formationRepository) {
+    public PromotionController(AuthentificationServiceImpl as, PromotionMapper promotionMapper, PromotionService promotionService, FormationRepository formationRepository) {
         this.as = as;
         this.promotionMapper = promotionMapper;
         this.promotionService = promotionService;
@@ -46,6 +46,7 @@ public class PromotionController {
         Set<PromotionDTO> PromotionDTOs = promotions.stream().map(promotionMapper::promotionToPromotionDTO).collect(Collectors.toSet());
         return ApiResponse.ok(PromotionDTOs);
     }
+
     @PreAuthorize("hasAuthority('ADM')")
     @GetMapping("/promotionsForADM")
     public ResponseEntity<?> getAllPromotions() {

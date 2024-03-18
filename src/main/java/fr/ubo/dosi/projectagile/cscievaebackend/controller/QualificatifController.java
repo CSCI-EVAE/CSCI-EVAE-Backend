@@ -32,7 +32,6 @@ public class QualificatifController {
         this.modelMapper = modelMapper;
     }
 
-
     /**
      * Endpoint to get all Qualificatifs.
      * It fetches all the Qualificatifs from the database using the QualificatifService.
@@ -46,7 +45,6 @@ public class QualificatifController {
     public ResponseEntity<?> getQualificatifs() {
         return ApiResponse.ok(qualificatifService.getAllQualificatifs().stream().map((element) -> modelMapper.map(element, QualificatifDTO.class)).collect(Collectors.toList()));
     }
-
 
     /**
      * Endpoint to get a Qualificatif by its ID.
@@ -89,7 +87,6 @@ public class QualificatifController {
         }
         return ApiResponse.ok(qualificatifService.createQualificatif(qualificatif));
     }
-
 
     /**
      * Endpoint pour mettre à jour un Qualificatif existant.

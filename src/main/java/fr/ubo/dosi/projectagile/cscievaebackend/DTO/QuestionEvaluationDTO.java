@@ -1,9 +1,7 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.DTO;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+
 import lombok.Data;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Question;
 import lombok.*;
 
 @Data

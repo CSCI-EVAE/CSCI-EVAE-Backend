@@ -1,8 +1,6 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.repository;
 
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Authentification;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Etudiant;
-import org.springframework.aop.support.ControlFlowPointcut;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

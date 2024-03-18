@@ -71,23 +71,8 @@ public class EtudiantServiceImpl implements EtudiantService {
         if (existingEtudiant == null) {
             return null;
         }
-        existingEtudiant.setNom(etudiantDTO.getNom());
-        existingEtudiant.setPrenom(etudiantDTO.getPrenom());
-        existingEtudiant.setSexe(etudiantDTO.getSexe());
-        existingEtudiant.setDateNaissance(etudiantDTO.getDateNaissance());
-        existingEtudiant.setLieuNaissance(etudiantDTO.getLieuNaissance());
-        existingEtudiant.setNationalite(etudiantDTO.getNationalite());
-        existingEtudiant.setTelephone(etudiantDTO.getTelephone());
-        existingEtudiant.setMobile(etudiantDTO.getMobile());
-        existingEtudiant.setEmail(etudiantDTO.getEmail());
-        existingEtudiant.setEmailUbo(etudiantDTO.getEmailUbo());
-        existingEtudiant.setAdresse(etudiantDTO.getAdresse());
-        existingEtudiant.setCodePostal(etudiantDTO.getCodePostal());
-        existingEtudiant.setVille(etudiantDTO.getVille());
-        existingEtudiant.setPaysOrigine(etudiantDTO.getPaysOrigine());
-        existingEtudiant.setUniversiteOrigine(etudiantDTO.getUniversiteOrigine());
-        existingEtudiant.setGroupeTp(etudiantDTO.getGroupeTp());
-        existingEtudiant.setGroupeAnglais(etudiantDTO.getGroupeAnglais());
+        etudiantMapper.updateEtudiantFromDTO(etudiantDTO, existingEtudiant);
+
         Etudiant updatedEtudiant = etudiantRepository.save(existingEtudiant);
         return etudiantMapper.etudiantToEtudiantDTO(updatedEtudiant);
     }

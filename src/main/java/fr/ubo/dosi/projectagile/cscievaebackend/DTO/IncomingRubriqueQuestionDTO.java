@@ -2,7 +2,6 @@ package fr.ubo.dosi.projectagile.cscievaebackend.DTO;
 
 import lombok.Data;
 
-import java.util.List;
 import java.util.Map;
 
 @Data
