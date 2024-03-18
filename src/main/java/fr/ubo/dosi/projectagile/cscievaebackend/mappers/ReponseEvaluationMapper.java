@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ReponseEvaluationMapper {
-    @Mapping(source = "noEtudiant.noEtudiant", target = "noEtudiantNoEtudiant")
+    @Mapping(source = "noEtudiant.noEtudiant", target = "noEtudiant")
     @Mapping(source = "idEvaluation.id", target = "idEvaluationId")
     ReponseEvaluationDTO toDto(ReponseEvaluation reponseEvaluation);
 }
