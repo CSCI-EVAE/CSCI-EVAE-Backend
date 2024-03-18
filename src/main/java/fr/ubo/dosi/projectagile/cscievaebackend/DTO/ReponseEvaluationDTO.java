@@ -17,11 +17,11 @@ public class ReponseEvaluationDTO {
     private Integer id;
 
     @NotNull
-    private EvaluationDto idEvaluation;
+    private Integer idEvaluationId;
 
-    private EtudiantDto noEtudiant;
 
-    @Size(max = 512)
+    private String noEtudiantNoEtudiant;
+
     private String commentaire;
     @Size(max = 32)
     private String nom;
@@ -36,7 +36,7 @@ public class ReponseEvaluationDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ReponseQuestionDto implements Serializable {
-        private QuestionEvaluationDto idQuestionEvaluation;
+        private QuestionEvaluationDTO idQuestionEvaluation;
         private Long positionnement;
     }
 }
