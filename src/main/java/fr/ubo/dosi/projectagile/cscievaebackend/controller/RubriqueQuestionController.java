@@ -1,21 +1,13 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.IncomingRubriqueQuestionDTO;
-import fr.ubo.dosi.projectagile.cscievaebackend.DTO.RubriqueQuestionDTO;
-import fr.ubo.dosi.projectagile.cscievaebackend.DTO.RubriqueQuestionsDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.mappers.RubriqueMapper;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueQuestion;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueQuestionId;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.RubriqueQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.logging.Logger;
+;
 import java.util.stream.Collectors;
 
 @RestController
@@ -24,7 +16,6 @@ public class RubriqueQuestionController {
     @Autowired
     private RubriqueQuestionService rubriqueQuestionService;
 
-    Logger logger = Logger.getLogger(RubriqueQuestionController.class.getName());
     @Autowired
     private RubriqueMapper rubriqueMapper;
 

@@ -9,10 +9,6 @@ import fr.ubo.dosi.projectagile.cscievaebackend.mappers.EvaluationMapper;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.*;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.AuthentificationService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
-import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.AuthentificationServiceImpl;
-import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.EvaluationServiceImpl;
-import fr.ubo.dosi.projectagile.cscievaebackend.services.PromotionService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -36,14 +32,12 @@ public class EvaluationController {
     private final EvaluationMapper evaluationMapper;
     private final EvaluationService evaluationService;
 
-
     @Autowired
     public EvaluationController(AuthentificationService authentificationService, EvaluationMapper evaluationMapper, EvaluationService evaluationService) {
         this.authentificationService = authentificationService;
         this.evaluationMapper = evaluationMapper;
         this.evaluationService = evaluationService;
     }
-
 
     @PreAuthorize("hasAuthority('ENS')")
     @GetMapping("getAll")

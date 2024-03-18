@@ -2,13 +2,8 @@ package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 
 
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.UniteEnseignementDTO;
-import fr.ubo.dosi.projectagile.cscievaebackend.DTO.UniteEnseignementDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.*;
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
-import fr.ubo.dosi.projectagile.cscievaebackend.repository.*;
-import fr.ubo.dosi.projectagile.cscievaebackend.services.AuthentificationService;
-import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.AuthentificationServiceImpl;
-import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.UniteEnseignementServiceImpl;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.userService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.UniteEnseignementService;
 import jakarta.transaction.Transactional;
@@ -16,12 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @RestController
@@ -31,7 +24,6 @@ public class UniteEnseignementController {
 
     private final userService userService;
     private final UniteEnseignementService uniteEnseignementService;
-    private final Logger logger = Logger.getLogger(UniteEnseignementController.class.getName());
 
     @Autowired
     public UniteEnseignementController(userService userService, UniteEnseignementService uniteEnseignementService) {
@@ -48,7 +40,6 @@ public class UniteEnseignementController {
         if (uniteEnseignements.isEmpty()) {
             return ApiResponse.error("Aucune UE trouvée");
         }
-        logger.info("uniteEnseignements : " + uniteEnseignements);
         List<UniteEnseignementDTO> ues = uniteEnseignements.stream().map(ue -> {
                     UniteEnseignementDTO uniteEnseignementDTO = new UniteEnseignementDTO();
                     uniteEnseignementDTO.setCodeUe(ue.getId().getCodeUe());

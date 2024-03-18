@@ -9,10 +9,8 @@ import fr.ubo.dosi.projectagile.cscievaebackend.services.RubriqueService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +39,7 @@ public class RubriqueController {
     @PostMapping("/create")
     public ResponseEntity<?> createRubrique(@Validated @RequestBody Rubrique rubrique, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ApiResponse.error("Une erreur s'est produite lors de la création du rubrique : "+
+            return ApiResponse.error("Une erreur s'est produite lors de la création du rubrique : " +
                     bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList());
         }
         return ApiResponse.ok(rubriqueService.creerRubrique(rubrique));
@@ -87,10 +85,10 @@ public class RubriqueController {
      * @param rubrique Les nouvelles informations de la rubrique.
      * @return La rubrique mise à jour.
      */
-    @PutMapping(value ="/{id}" , consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateRubrique(@PathVariable Long id, @Validated @RequestBody Rubrique rubrique, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ApiResponse.error("Une erreur s'est produite lors de la modification du rubrique : "+
+            return ApiResponse.error("Une erreur s'est produite lors de la modification du rubrique : " +
                     bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList());
         }
         try {
@@ -100,8 +98,7 @@ public class RubriqueController {
             return ApiResponse.error("La rubrique n'a pas été trouvée ou lien avec une rubrique");
         } catch (IllegalArgumentException ex) {
             return ApiResponse.error(ex.getMessage());
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return ApiResponse.error("Une erreur s'est produite lors de la mise à jour de la rubrique");
         }
     }
