@@ -27,17 +27,12 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public RubriqueQuestionServiceImpl(RubriqueQuestionRepository rubriqueQuestionRepository, RubriqueRepository rubriqueRepository, QuestionRepository questionRepository, ModelMapper modelMapper, RubriqueMapper rubriqueMapper, QuestionMapper questionMapper) {
+    public RubriqueQuestionServiceImpl(RubriqueQuestionRepository rubriqueQuestionRepository, RubriqueRepository rubriqueRepository, QuestionRepository questionRepository, ModelMapper modelMapper) {
         this.rubriqueQuestionRepository = rubriqueQuestionRepository;
         this.rubriqueRepository = rubriqueRepository;
         this.questionRepository = questionRepository;
         this.modelMapper = modelMapper;
     }
-
-    private RubriqueQuestion convertToEntity(RubriqueQuestionDTO rubriqueQuestionAddDTO) {
-        return modelMapper.map(rubriqueQuestionAddDTO, RubriqueQuestion.class);
-    }
-
 
     @Override
     public List<Rubrique> findAllQuestionsForRubriques() {
@@ -73,8 +68,8 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
         StringBuilder resultMessage = new StringBuilder();
         Optional<Rubrique> rubriqueOptional = rubriqueRepository.findById(dto.getIdRubrique());
 
-        if (!rubriqueOptional.isPresent()) {
-            throw new IllegalArgumentException("Rubrique with ID " + dto.getIdRubrique() + " not found.");
+        if (rubriqueOptional.isEmpty()) {
+            throw new IllegalArgumentException("Rubrique avec ID " + dto.getIdRubrique() + " non trouvée.");
         }
 
         Rubrique rubrique = rubriqueOptional.get();
@@ -84,10 +79,10 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
             Long questionId = rubriqueQuestion.getIdQuestion().getId().longValue();
             if (dtoQuestionIds.contains(questionId)) {
                 rubriqueQuestion.setOrdre(dto.getQuestionIds().get(questionId));
-                resultMessage.append(String.format("Updated question order: Rubrique: %d, Question: %d\n", dto.getIdRubrique(), questionId));
+                resultMessage.append(String.format("Rubrique composée modifiée avec succès"));
             } else {
                 rubriqueQuestionRepository.delete(rubriqueQuestion);
-                resultMessage.append(String.format("Deleted question: Rubrique: %d, Question: %d\n", dto.getIdRubrique(), questionId));
+                resultMessage.append(String.format("Rubrique composée supprimée avec succès\""));
             }
         });
 
@@ -96,7 +91,7 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
                 Question question = questionRepository.findById(questionId).orElseThrow(() -> new IllegalArgumentException("Question with ID " + questionId + " not found."));
                 RubriqueQuestion rubriqueQuestion = new RubriqueQuestion(new RubriqueQuestionId(rubrique.getId(), question.getId()), rubrique, question, ordre);
                 rubriqueQuestionRepository.save(rubriqueQuestion);
-                resultMessage.append(String.format("Added new question: Rubrique: %d, Question: %d\n", dto.getIdRubrique(), questionId));
+                resultMessage.append(String.format("Rubrique composée ajoutée avec succès"));
             }
         });
 
@@ -107,8 +102,8 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
     @Transactional
     @Override
     public String deleteAllRubriqueQuestion(Long id) {
-        int result = rubriqueQuestionRepository.deleteAllByRubriqueId(id.intValue());
-        return "On a supprimé " + result + " RubriqueQuestions";
+        rubriqueQuestionRepository.deleteAllByRubriqueId(id.intValue());
+        return "La suppression a été effectuée avec succès";
     }
 
 }

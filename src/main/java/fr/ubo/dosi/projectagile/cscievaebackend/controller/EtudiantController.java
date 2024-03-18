@@ -8,7 +8,6 @@ import fr.ubo.dosi.projectagile.cscievaebackend.services.AuthentificationService
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EtudiantDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.userService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EtudiantService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.PromotionService;
@@ -98,12 +97,24 @@ public class EtudiantController {
     @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<?> registerEtudiant(@Validated @RequestBody EtudiantDTO etudiantDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ApiResponse.error("Une erreur s'est produite lors de la création du qualificatif", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
+            return ApiResponse.error("Une erreur s'est produite lors de la création de l'étudiant", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
         }
         if (userService.getUserByUsername(etudiantDTO.getEmail()) != null) {
             return ApiResponse.error("L'étudiant existe déjà");
         }
         etudiantService.registerEtudiant(etudiantDTO);
         return ApiResponse.ok("L'étudiant a été enregistré avec succès");
+    }
+
+
+
+    @GetMapping("/{noEtudiant}")
+
+    public ResponseEntity<?> getEtudiantByNoEtudiant(@PathVariable String noEtudiant) {
+        EtudiantDTO etudiantDTO = etudiantService.getEtudiantByNoEtudiant(noEtudiant);
+        if (etudiantDTO == null) {
+            return ApiResponse.error("L'étudiant avec le numéro " + noEtudiant + " n'a pas été trouvé");
+        }
+        return ApiResponse.ok(etudiantDTO);
     }
 }

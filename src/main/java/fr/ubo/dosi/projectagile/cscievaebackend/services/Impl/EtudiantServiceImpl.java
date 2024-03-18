@@ -80,4 +80,13 @@ public class EtudiantServiceImpl implements EtudiantService {
         return etudiantMapper.etudiantToEtudiantDTO(updatedEtudiant);
     }
 
+    @Override
+    public EtudiantDTO getEtudiantByNoEtudiant(String noEtudiant) {
+        Etudiant etudiant = etudiantRepository.findById(noEtudiant).orElse(null);
+        if(etudiant == null) {
+            return null;
+        }
+        return etudiantMapper.etudiantToEtudiantDTO(etudiant);
+    }
+
 }

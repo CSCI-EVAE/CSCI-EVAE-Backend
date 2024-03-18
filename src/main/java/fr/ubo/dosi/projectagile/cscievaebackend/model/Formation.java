@@ -55,6 +55,7 @@ public class Formation {
     @OneToMany(mappedBy = "formation")
     @ToString.Exclude
     @JsonIgnore
+    @OrderBy("designation ASC ")
     private Set<UniteEnseignement> uniteEnseignements = new LinkedHashSet<>();
 
 }

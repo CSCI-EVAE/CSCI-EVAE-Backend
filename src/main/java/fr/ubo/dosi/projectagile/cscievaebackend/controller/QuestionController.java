@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/v1/questions")
@@ -21,8 +20,6 @@ public class QuestionController {
 
     @Autowired
     private QuestionService questionService;
-
-    Logger logger = Logger.getLogger(QuestionController.class.getName());
 
     @PostMapping
     public ResponseEntity<?> createQuestion(@Valid @RequestBody Question question, BindingResult bindingResult) {
@@ -35,7 +32,6 @@ public class QuestionController {
     @GetMapping
     public ResponseEntity<?> getAllQuestions() {
         List<Question> questions = questionService.getAllQuestions();
-        logger.info("questions : " + questions);
         return ApiResponse.ok(questions);
     }
 
@@ -47,7 +43,7 @@ public class QuestionController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateQuestion(@PathVariable Long id, @RequestBody @Validated Question question, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ApiResponse.error("Une erreur s'est produite lors de la création du Question :"+ bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList());
+            return ApiResponse.error("Une erreur s'est produite lors de la modification de le Question :"+ bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList());
         }
         return ApiResponse.ok(questionService.updateQuestion(id, question));
     }

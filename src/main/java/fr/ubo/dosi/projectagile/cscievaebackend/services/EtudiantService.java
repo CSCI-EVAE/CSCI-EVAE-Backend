@@ -10,4 +10,6 @@ public interface EtudiantService {
     void registerEtudiant(EtudiantDTO etudiantDTO);
     EtudiantDTO updateEtudiant(String noEtudiant, EtudiantDTO etudiantDTO);
 
+    EtudiantDTO getEtudiantByNoEtudiant(String noEtudiant);
+
 }
