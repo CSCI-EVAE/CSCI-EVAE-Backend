@@ -46,7 +46,7 @@ public class Promotion {
     private LocalDate dateReponseLp;
 
     @Column(name = "DATE_REPONSE_LALP")
-    private LocalDate dateReponseLalp ;
+    private LocalDate dateReponseLalp;
 
     @Column(name = "DATE_RENTREE")
     private LocalDate dateRentree;
@@ -67,8 +67,9 @@ public class Promotion {
     @ToString.Exclude
     private Set<Evaluation> evaluations = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "promotion")
+    @OneToMany(mappedBy = "promotion", fetch = FetchType.EAGER)
     @OrderBy("nom")
     private Set<Etudiant> etudiants = new LinkedHashSet<>();
+
 
 }

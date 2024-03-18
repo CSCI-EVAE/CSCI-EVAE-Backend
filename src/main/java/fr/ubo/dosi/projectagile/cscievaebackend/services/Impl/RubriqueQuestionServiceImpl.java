@@ -11,14 +11,12 @@ import fr.ubo.dosi.projectagile.cscievaebackend.repository.QuestionRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.RubriqueQuestionRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.RubriqueRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.RubriqueQuestionService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service

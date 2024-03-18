@@ -1,7 +1,7 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.services;
 
 
-import fr.ubo.dosi.projectagile.cscievaebackend.DTO.UniteEnseignementDTO;
+
 import fr.ubo.dosi.projectagile.cscievaebackend.model.UniteEnseignement;
 
 import java.util.List;

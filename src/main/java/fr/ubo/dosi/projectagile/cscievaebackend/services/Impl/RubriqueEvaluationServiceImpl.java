@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 @Service
@@ -19,7 +18,6 @@ public class RubriqueEvaluationServiceImpl implements RubriqueEvaluationService 
     private final RubriqueService rubriqueService;
     private final QuestionService questionService;
     private final QuestionEvaluationService questionEvaluationService;
-    Logger logger = Logger.getLogger(RubriqueEvaluationServiceImpl.class.getName());
     private final EvaluationRepository evaluationRepository;
 
     @Autowired
@@ -36,13 +34,12 @@ public class RubriqueEvaluationServiceImpl implements RubriqueEvaluationService 
     @Transactional
     @Override
     public void saveRubriqueEvaluation(IncomingRubriqueQuestionDTO rubriqueQuestionDTO, Evaluation savedEvaluation) {
-        RubriqueEvaluation rubriqueEvaluation =  rubriqueEvaluationRepository
-                .findByIdRubriqueAndIdEvaluation(rubriqueQuestionDTO.getIdRubrique(), savedEvaluation.getNoEvaluation().longValue() ).orElse(new RubriqueEvaluation());
+        RubriqueEvaluation rubriqueEvaluation = rubriqueEvaluationRepository
+                .findByIdRubriqueAndIdEvaluation(rubriqueQuestionDTO.getIdRubrique(), savedEvaluation.getNoEvaluation().longValue()).orElse(new RubriqueEvaluation());
 
         rubriqueEvaluation.setIdEvaluation(savedEvaluation);
         rubriqueEvaluation.setOrdre(rubriqueQuestionDTO.getOrdre().shortValue());
         try {
-            logger.info("Trying to find rubrique with id: " + rubriqueQuestionDTO.getIdRubrique());
             Rubrique rubrique = rubriqueService.getRubriqueById(rubriqueQuestionDTO.getIdRubrique());
             rubriqueEvaluation.setIdRubrique(rubrique);
             Logger.getLogger(RubriqueEvaluationServiceImpl.class.getName()).info("Rubrique found: " + rubrique);
@@ -60,12 +57,9 @@ public class RubriqueEvaluationServiceImpl implements RubriqueEvaluationService 
             try {
                 questionEvaluation.setIdQuestion(questionService.getQuestionById(questionId));
                 questionEvaluation.setOrdre(ordre.shortValue());
-                logger.info("Question evaluation saved: " + questionEvaluation);
             } catch (Exception e) {
                 throw new IllegalArgumentException("La question n'existe pas ", e);
             }
-
-            logger.info("Question evaluation saved: " + rubriqueEvaluation);
             rubriqueEvaluationRepository.save(rubriqueEvaluation);
             questionEvaluation.setIdRubriqueEvaluation(rubriqueEvaluation);
             questionEvaluationService.saveQuestionEvaluation(questionEvaluation);
@@ -74,7 +68,6 @@ public class RubriqueEvaluationServiceImpl implements RubriqueEvaluationService 
 
         rubriqueEvaluationRepository.save(rubriqueEvaluation);
         savedEvaluation.getRubriqueEvaluations().add(rubriqueEvaluation);
-        logger.info("Rubrique evaluation saved: " + rubriqueEvaluation);
     }
 
     @Transactional

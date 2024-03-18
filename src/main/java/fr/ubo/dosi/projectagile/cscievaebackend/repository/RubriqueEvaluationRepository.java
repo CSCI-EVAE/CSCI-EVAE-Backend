@@ -1,6 +1,6 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.repository;
 
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
+
 import fr.ubo.dosi.projectagile.cscievaebackend.model.RubriqueEvaluation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

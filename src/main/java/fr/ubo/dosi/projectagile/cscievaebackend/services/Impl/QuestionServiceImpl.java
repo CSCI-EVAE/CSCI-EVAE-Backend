@@ -1,6 +1,5 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.services.Impl;
 
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Qualificatif;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Question;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.QualificatifRepository;
@@ -12,7 +11,6 @@ import fr.ubo.dosi.projectagile.cscievaebackend.services.QuestionService;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {
@@ -21,7 +19,6 @@ public class QuestionServiceImpl implements QuestionService {
     private QuestionRepository questionRepository;
     @Autowired
     private QualificatifRepository qualificatifRepository;
-    Logger logger = Logger.getLogger(QuestionServiceImpl.class.getName());
 
     @Transactional
     @Override

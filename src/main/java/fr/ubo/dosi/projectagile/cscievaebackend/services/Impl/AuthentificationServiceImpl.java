@@ -1,7 +1,6 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.services.Impl;
 
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Authentification;
-import fr.ubo.dosi.projectagile.cscievaebackend.model.Enseignant;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.AuthentificationRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.AuthentificationService;
 import org.springframework.beans.factory.annotation.Autowired;
