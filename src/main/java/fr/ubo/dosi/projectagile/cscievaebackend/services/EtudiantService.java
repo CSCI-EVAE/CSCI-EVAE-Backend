@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 @Service
 public interface EtudiantService {
   
-    void deleteEtudiant(String noEtudiant);
+    String deleteEtudiant(String noEtudiant);
     void registerEtudiant(EtudiantDTO etudiantDTO);
     EtudiantDTO updateEtudiant(String noEtudiant, EtudiantDTO etudiantDTO);
+
+    EtudiantDTO getEtudiantByNoEtudiant(String noEtudiant);
 
 }

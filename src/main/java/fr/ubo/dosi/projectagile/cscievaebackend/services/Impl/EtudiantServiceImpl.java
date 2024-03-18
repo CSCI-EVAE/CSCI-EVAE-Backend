@@ -33,13 +33,27 @@ public class EtudiantServiceImpl implements EtudiantService {
 
     @Transactional
     @Override
-    public void deleteEtudiant(String noEtudiant) {
+    public String  deleteEtudiant(String noEtudiant) {
         try {
-            Authentification authentification = authentificationRepository.findByNoEtudiant_NoEtudiant(noEtudiant).orElseThrow(() -> new IllegalArgumentException("Cet Etudiant n'existe pas"));
-            etudiantRepository.delete(authentification.getNoEtudiant());
-            authentificationRepository.delete(authentification);
+            Etudiant etudiant = etudiantRepository.findById(noEtudiant).orElse(null);
+            if (etudiant == null) {
+                throw new NoSuchElementException("Cet Etudiant n'existe pas");
+            }
+            if (etudiant.getPromotion().getId().getAnneeUniversitaire().split("-")[0].compareTo(String.valueOf(java.time.Year.now())) > 0) {
+                Authentification authentification = authentificationRepository.findByNoEtudiant_NoEtudiant(noEtudiant).orElse(null);
+                if (authentification == null) {
+                    etudiantRepository.deleteById(noEtudiant);
+                    return "Etudiant supprimé";
+                }
+                etudiantRepository.delete(authentification.getNoEtudiant());
+                authentificationRepository.delete(authentification);
+                return "Etudiant supprimé";
+            } else {
+                throw new IllegalStateException("Impossible de supprimer l'étudiant. La promotion est en cours ou passée.");
+            }
+
         } catch (NoSuchElementException e) {
-            logger.severe("Cet Etudiant n'existe pas");
+           return "Cet Etudiant n'existe pas";
         }
     }
 
@@ -78,6 +92,14 @@ public class EtudiantServiceImpl implements EtudiantService {
 
         Etudiant updatedEtudiant = etudiantRepository.save(existingEtudiant);
         return etudiantMapper.etudiantToEtudiantDTO(updatedEtudiant);
+    }
+    @Override
+    public EtudiantDTO getEtudiantByNoEtudiant(String noEtudiant) {
+        Etudiant etudiant = etudiantRepository.findById(noEtudiant).orElse(null);
+        if(etudiant == null) {
+            return null;
+        }
+        return etudiantMapper.etudiantToEtudiantDTO(etudiant);
     }
 
 }

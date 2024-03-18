@@ -85,7 +85,7 @@ public class Enseignant {
     private Set<Promotion> promotions = new LinkedHashSet<>();
     @JsonIgnore
     @OneToMany(mappedBy = "noEnseignant")
-    @OrderBy("designation ASC")
+    @OrderBy("designation DESC")
     private Set<UniteEnseignement> uniteEnseignements = new LinkedHashSet<>();
 
 }

@@ -6,6 +6,7 @@ import fr.ubo.dosi.projectagile.cscievaebackend.repository.QualificatifRepositor
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.QuestionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.QuestionService;
 
@@ -37,7 +38,8 @@ public class QuestionServiceImpl implements QuestionService {
         if (questionRepository.findAll().isEmpty()) {
             throw new IllegalArgumentException("la liste des questions est vide");
         }else {
-            return questionRepository.findAll();
+            Sort sortByIntitule = Sort.by(Sort.Direction.DESC, "intitule");
+            return questionRepository.findAll(sortByIntitule);
         }
     }
 

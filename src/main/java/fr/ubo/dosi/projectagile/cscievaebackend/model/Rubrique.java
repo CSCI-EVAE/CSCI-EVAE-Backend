@@ -41,8 +41,6 @@ public class Rubrique {
     @Size(max = 32)
     @NotNull(message = "La désignation ne peut pas être null")
     @NotEmpty(message = "La désignation ne peut pas être vide")
-    @Size(min = 1, max = 32, message = "La désignation doit être entre 1 et 32 caractères")
-    @NotBlank(message = "La désignation ne peut pas être vide")
     @Column(name = "DESIGNATION", nullable = false, length = 32)
     private String designation;
 

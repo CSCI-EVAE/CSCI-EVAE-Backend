@@ -8,6 +8,7 @@ import fr.ubo.dosi.projectagile.cscievaebackend.repository.QualificatifRepositor
 import fr.ubo.dosi.projectagile.cscievaebackend.services.QualificatifService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
@@ -35,7 +36,8 @@ public class QualificatifServiceImpl implements QualificatifService {
 
     @Override
     public List<QualificatifDTO> getAllQualificatifs() {
-        List<Qualificatif> qualificatifs = qualificatifRepository.findAll();
+        Sort sortByMinimal = Sort.by(Sort.Direction.DESC, "minimal");
+        List<Qualificatif> qualificatifs = qualificatifRepository.findAll(sortByMinimal);
         return qualificatifs.stream().map((element) -> modelMapper.map(element, QualificatifDTO.class)).collect(Collectors.toList());
     }
 

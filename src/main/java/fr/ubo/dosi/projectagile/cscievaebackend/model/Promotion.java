@@ -68,7 +68,7 @@ public class Promotion {
     private Set<Evaluation> evaluations = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "promotion", fetch = FetchType.EAGER)
-    @OrderBy("nom")
+    @OrderBy("nom DESC ")
     private Set<Etudiant> etudiants = new LinkedHashSet<>();
 
 
