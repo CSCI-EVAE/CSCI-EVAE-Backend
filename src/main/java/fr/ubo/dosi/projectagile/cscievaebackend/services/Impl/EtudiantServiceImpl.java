@@ -34,13 +34,13 @@ public class EtudiantServiceImpl implements EtudiantService {
     @Transactional
     @Override
     public void deleteEtudiant(String noEtudiant) {
-        try {
-            Authentification authentification = authentificationRepository.findByNoEtudiant_NoEtudiant(noEtudiant).orElseThrow(() -> new IllegalArgumentException("Cet Etudiant n'existe pas"));
-            etudiantRepository.delete(authentification.getNoEtudiant());
-            authentificationRepository.delete(authentification);
-        } catch (NoSuchElementException e) {
-            logger.severe("Cet Etudiant n'existe pas");
+        Authentification authentification = authentificationRepository.findByNoEtudiant_NoEtudiant(noEtudiant).orElse(null);
+        if (authentification == null) {
+            logger.severe("L'authentification de cet étudiant n'a pas été trouvée.");
+            return;
         }
+        etudiantRepository.delete(authentification.getNoEtudiant());
+        authentificationRepository.delete(authentification);
     }
 
     @Override
