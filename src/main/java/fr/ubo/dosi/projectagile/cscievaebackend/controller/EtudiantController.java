@@ -8,12 +8,13 @@ import fr.ubo.dosi.projectagile.cscievaebackend.services.AuthentificationService
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EtudiantDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.userService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EtudiantService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.PromotionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/etudiant")
+@Tag(name = "Etudiant", description = "Etudiant API")
 public class EtudiantController {
 
 
@@ -44,6 +46,11 @@ public class EtudiantController {
         this.userService = userService;
     }
 
+    @Operation(summary = "Get all Etudiants", description = "Fetches all the Etudiants from the database and maps them to DTOs")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Etudiants fetched successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = EtudiantDTO.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "An error occurred while fetching the Etudiants", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @GetMapping("/{anneeUniversitaire}/{codeFormation}/etudiants")
     @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     public ResponseEntity<?> getEtudiantsByPromotionAndFormation(@PathVariable String anneeUniversitaire, @PathVariable String codeFormation) {
@@ -55,18 +62,34 @@ public class EtudiantController {
         return ApiResponse.ok(etudiants);
     }
 
+    @Operation(summary = "Get all Etudiants", description = "Fetches all the Etudiants from the database and maps them to DTOs")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Etudiants fetched successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = EtudiantDTO.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "An error occurred while fetching the Etudiants", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @DeleteMapping("/etudiants/{noEtudiant}")
     @PreAuthorize("hasAuthority('ADM')")
     public ResponseEntity<?> deleteEtudiant(@PathVariable String noEtudiant) {
         return ApiResponse.ok(etudiantService.deleteEtudiant(noEtudiant));
     }
 
+    @Operation(summary = "Get all Etudiants", description = "Fetches all the Etudiants from the database and maps them to DTOs")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Etudiants fetched successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = EtudiantDTO.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "An error occurred while fetching the Etudiants", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @PostMapping("reponduEvaluation")
     public ResponseEntity<?> setReponseEtudiant(@RequestBody ReponseEvaluationDTO reponseEvaluationDTO, @AuthenticationPrincipal UserDetails userDetails) {
         Etudiant etu = authentificationService.getAuhtentification(userDetails.getUsername()).getNoEtudiant();
         return ApiResponse.ok(evaluationService.saveReponseEtudiant(reponseEvaluationDTO, etu));
     }
 
+
+    @Operation(summary = "Get all Etudiants", description = "Fetches all the Etudiants from the database and maps them to DTOs")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Etudiants fetched successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = EtudiantDTO.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "An error occurred while fetching the Etudiants", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @DeleteMapping("deleteReponse/{id}")
     public ResponseEntity<?> deleteReponseEtudiant(@PathVariable Integer id) {
         return ApiResponse.ok(evaluationService.deleteReponse(id));
@@ -104,8 +127,6 @@ public class EtudiantController {
         etudiantService.registerEtudiant(etudiantDTO);
         return ApiResponse.ok("L'étudiant a été enregistré avec succès");
     }
-
-
 
     @GetMapping("/{noEtudiant}")
 

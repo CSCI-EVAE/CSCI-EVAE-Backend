@@ -24,7 +24,7 @@ public class QuestionController {
     @PostMapping
     public ResponseEntity<?> createQuestion(@Valid @RequestBody Question question, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ApiResponse.error("Une erreur s'est produite lors de la création du Question : "+ bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList());
+            return ApiResponse.error("Une erreur s'est produite lors de la création de la Question : "+ bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList());
         }
         return ApiResponse.ok(questionService.createQuestion(question));
     }
@@ -43,7 +43,7 @@ public class QuestionController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateQuestion(@PathVariable Long id, @RequestBody @Validated Question question, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ApiResponse.error("Une erreur s'est produite lors de la modification de le Question :"+ bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList());
+            return ApiResponse.error("Une erreur s'est produite lors de la modification de la Question :"+ bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList());
         }
         return ApiResponse.ok(questionService.updateQuestion(id, question));
     }
@@ -53,13 +53,13 @@ public class QuestionController {
     public ResponseEntity<?> deleteQuestion(@PathVariable Long id) {
         try {
             questionService.deleteQuestion(id);
-            return ApiResponse.ok("La question a été supprimée avec succès");
+            return ApiResponse.ok("La question a été supprimée avec succès .");
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.badRequest()
-                    .body(ApiResponse.error("la question n'a pas été trouvée ou lien avec une rubrique"));
+                    .body(ApiResponse.error("La question n'a pas été trouvée ou lien avec une rubrique"));
         } catch (Exception e) {
             return ResponseEntity.badRequest()
-                    .body(ApiResponse.error("la question n'a pas été supprimée : la question est liée à une ressource"));
+                    .body(ApiResponse.error("La question n'a pas été supprimée car elle est liée à une rubrique"));
         }
     }
 }
