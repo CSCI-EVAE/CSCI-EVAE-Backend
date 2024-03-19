@@ -28,7 +28,7 @@ public class QualificatifServiceImpl implements QualificatifService {
         if (Objects.isNull(qualificatif.getMinimal()) || Objects.isNull(qualificatif.getMaximal())) {
             throw new IllegalArgumentException("Les valeurs minimal et maximal sont obligatoires");
         }
-        if (qualificatifRepository.existsByMinimalAndMaximal(qualificatif.getMinimal(), qualificatif.getMaximal())) {
+        if (qualificatifRepository.existsByMinimalAndMaximalIgnoreCase(qualificatif.getMinimal(), qualificatif.getMaximal())) {
             throw new IllegalArgumentException("Le qualificatif existe déjà avec ces valeurs minimal et maximal");
         }
         return qualificatifRepository.save(qualificatif);
@@ -54,7 +54,7 @@ public class QualificatifServiceImpl implements QualificatifService {
         }
         Qualificatif qualificatif = qualificatifRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Le qualificatif n'existe pas avec cet id : " + id));
-        if (qualificatifRepository.existsByMinimalAndMaximal(qualificatifModifie.getMinimal(), qualificatifModifie.getMaximal())) {
+        if (qualificatifRepository.existsByMinimalAndMaximalIgnoreCase(qualificatifModifie.getMinimal(), qualificatifModifie.getMaximal())) {
             throw new IllegalArgumentException("Le qualificatif existe déjà avec ces valeurs minimal et maximal");
         }
         qualificatif.setMinimal(qualificatifModifie.getMinimal());

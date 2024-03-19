@@ -17,6 +17,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+
 @Table(name = "QUESTION")
 public class Question {
     @Id
@@ -47,6 +48,7 @@ public class Question {
     @NotEmpty(message = "L'intitulé ne peut pas être vide")
     @Column(name = "INTITULE", nullable = false, length = 64)
     private String intitule;
+
     @JsonIgnore
     @OneToMany(mappedBy = "idQuestion")
     private Set<QuestionEvaluation> questionEvaluations = new LinkedHashSet<>();
