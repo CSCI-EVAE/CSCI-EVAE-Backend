@@ -18,18 +18,18 @@ public class RubriqueQuestionImpl implements RubriqueService {
 
     public Rubrique creerRubrique(Rubrique rubrique){
         if(rubriqueRepository.existsByDesignationIgnoreCase(rubrique.getDesignation())){
-            throw new IllegalArgumentException("Rubrique existe deja avec cette designation: "+ rubrique.getDesignation());
+            throw new IllegalArgumentException("La designation de la rubrique existe deja");
         }
        return rubriqueRepository.save(rubrique);
     }
 
     public Rubrique getRubriqueById(Long id) throws ResourceNotFoundException {
-        return rubriqueRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Rubrique non trouver de cet id: "+ id));
+        return rubriqueRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("La rubrique est inexistante avec ce id : "+ id));
     }
 
     public List<Rubrique> getRubriqueByType(String type) {
         if(!rubriqueRepository.existsByType(type)){
-            throw new IllegalArgumentException("Rubrique non trouver de ce type: "+ type);
+            throw new IllegalArgumentException("La rubrique est inexistante avec ce type : "+ type);
         }
         return rubriqueRepository.findAllByType(type);
     }
@@ -61,7 +61,7 @@ public class RubriqueQuestionImpl implements RubriqueService {
     public void deleteRubrique(Long id) throws ResourceNotFoundException {
         Optional<Rubrique> rubriqueOptional = rubriqueRepository.findById(id);
         if (rubriqueOptional.isEmpty()) {
-            throw new ResourceNotFoundException("Rubrique not found with id: " + id);
+            throw new ResourceNotFoundException("La rubrique est inexistante avec ce id : " + id);
         }
         rubriqueRepository.deleteById(id);
     }
