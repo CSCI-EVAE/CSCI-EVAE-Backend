@@ -39,7 +39,7 @@ public class RubriqueController {
     @PostMapping("/create")
     public ResponseEntity<?> createRubrique(@Validated @RequestBody Rubrique rubrique, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ApiResponse.error("Une erreur s'est produite lors de la création du rubrique : " +
+            return ApiResponse.error("Une erreur s'est produite lors de la création de la rubrique : " +
                     bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList());
         }
         return ApiResponse.ok(rubriqueService.creerRubrique(rubrique));
@@ -88,7 +88,7 @@ public class RubriqueController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateRubrique(@PathVariable Long id, @Validated @RequestBody Rubrique rubrique, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ApiResponse.error("Une erreur s'est produite lors de la modification du rubrique : " +
+            return ApiResponse.error("Une erreur s'est produite lors de la modification de la rubrique : " +
                     bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList());
         }
         try {
@@ -117,7 +117,7 @@ public class RubriqueController {
         } catch (ResourceNotFoundException ex) {
             return ApiResponse.error("La rubrique n'a pas été trouvée ou lien avec une rubrique");
         } catch (Exception ex) {
-            return ApiResponse.error("Une erreur s'est produite lors de la suppression de la rubrique");
+            return ApiResponse.error("La rubrique n'a pas été supprimée car elle est liée à une autre ressource");
         }
     }
 }

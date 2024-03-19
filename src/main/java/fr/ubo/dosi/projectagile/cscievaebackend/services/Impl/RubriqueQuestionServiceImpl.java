@@ -85,7 +85,7 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
                 resultMessage.append(String.format("Rubrique composée modifiée avec succès"));
             } else {
                 rubriqueQuestionRepository.delete(rubriqueQuestion);
-                resultMessage.append(String.format("Rubrique composée supprimée avec succès\""));
+                resultMessage.append(String.format("Rubrique composée supprimée avec succès"));
             }
         });
 
