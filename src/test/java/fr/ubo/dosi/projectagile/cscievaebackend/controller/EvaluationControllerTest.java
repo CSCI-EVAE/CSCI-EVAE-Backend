@@ -1,87 +1,57 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.controller;
 
 import fr.ubo.dosi.projectagile.cscievaebackend.mappers.EvaluationMapper;
-import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.AuthentificationServiceImpl;
-import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.EvaluationServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Authentification;
+import fr.ubo.dosi.projectagile.cscievaebackend.model.Evaluation;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.junit.jupiter.api.extension.ExtendWith;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationDTO;
+import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EvaluationSaveDTO;
+import fr.ubo.dosi.projectagile.cscievaebackend.services.AuthentificationService;
+import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
 
-class EvaluationControllerTest {
+import java.util.HashSet;
+import java.util.Set;
 
-    @InjectMocks
-    EvaluationController evaluationController;
+import static org.hamcrest.Matchers.containsString;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 
-    @Mock
-    AuthentificationServiceImpl as;
+@WebMvcTest(EvaluationController.class)
+@ExtendWith(SpringExtension.class)
+public class EvaluationControllerTest {
 
-    @Mock
-    EvaluationMapper evaluationMapper;
-    @Mock
-    EvaluationServiceImpl es;
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.initMocks(this);
-    }
+    @Autowired
+    private MockMvc mockMvc;
 
-    @Test
-    void getAllReturnsEvaluationsWhenExist() {
-        /* when(as.getAuhtentification(anyString())).thenReturn(new Authentification());
-        when(evaluationMapper.evaluationToEvaluationDTO(any())).thenReturn(new EvaluationDTO());
+    @MockBean
+    private AuthentificationService authentificationService;
 
-        ApiResponse<?> response = evaluationController.getAll(any());
+    @MockBean
+    private EvaluationMapper evaluationMapper;
 
-        assertNotNull(response);
-        assertInstanceOf(Set.class, response.getData());*/
-    }
+ /*   @Test
+    @WithMockUser(username = "user", authorities = {"ENS"})
+    public void getAllEvaluationsTest() throws Exception {
+        // Arrange
+        Authentification auth = new Authentification(); // Create a mock Authentification object
+        when(authentificationService.getAuhtentification(anyString())).thenReturn(auth);
+        Set<Evaluation> evaluations = new HashSet<>(); // Create a mock Set of Evaluations
+        when(auth.getNoEnseignant().getEvaluations()).thenReturn(evaluations);
+        // Assume evaluationMapper.evaluationToEvaluationDTO() is properly mocked as well
 
-    @Test
-    void getAllReturnsMessageWhenNoEvaluations() {
-        /*when(as.getAuhtentification(anyString())).thenReturn(new Authentification());
-
-        ApiResponse<?> response = evaluationController.getAll(any());
-
-        assertNotNull(response);
-        assertEquals("Aucune évaluation n'est disponible pour cet enseignant", response.getData());*/
-    }
-
-    @Test
-    void getDetailsReturnsEvaluationDetailsWhenExist() {
-       /* when(es.getEvaluationById(anyLong())).thenReturn(new Evaluation());
-        when(evaluationMapper.evaluationToEvaluationDTO(any())).thenReturn(new EvaluationDTO());
-
-        ApiResponse<EvaluationDTO> response = evaluationController.getDetails(1L);
-        assertNotNull(response);
-        assertNotNull(response.getData());*/
-    }
-
-    @Test
-    void getDetailsThrowsExceptionWhenNoEvaluation() {
-        /*when(es.getEvaluationById(anyLong())).thenReturn(null);
-
-        assertThrows(NoSuchElementException.class, () -> evaluationController.getDetails(1L));*/
-    }
-
-    @Test
-    void getEvaluationsByUserReturnsEvaluationsWhenExist() {
-        /*when(as.getAuhtentification(anyString())).thenReturn(new Authentification());
-        when(evaluationMapper.evaluationToEvaluationDTO(any())).thenReturn(new EvaluationDTO());
-
-        ApiResponse<Set<EvaluationDTO>> response = evaluationController.getEvaluationsByUser(any());
-
-        assertNotNull(response);
-        assertNotNull(response.getData());*/
-    }
-
-    @Test
-    void getEvaluationsByUserReturnsEmptySetWhenNoEvaluations() {
-      /*  when(as.getAuhtentification(anyString())).thenReturn(new Authentification());
-
-        ApiResponse<Set<EvaluationDTO>> response = evaluationController.getEvaluationsByUser(any());
-
-        assertNotNull(response);
-        assertTrue(response.getData().isEmpty());*/
-    }
+        // Act & Assert
+        mockMvc.perform(get("/getAll"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Aucune évaluation n'est disponible pour cet enseignant"))); // or whatever the expected response should be
+    }*/
 }
