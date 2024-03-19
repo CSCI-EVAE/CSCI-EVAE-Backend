@@ -10,5 +10,5 @@ import java.util.Set;
 public interface UniteEnseignementService {
     List<UniteEnseignement> getAllUE();
 
-    Set<UniteEnseignement> getAllUEByPromotions(String codeFormation);
+    List<UniteEnseignement> getAllUEByPromotions(String codeFormation);
 }

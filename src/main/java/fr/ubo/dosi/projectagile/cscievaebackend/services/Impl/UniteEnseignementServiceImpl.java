@@ -32,8 +32,12 @@ public class UniteEnseignementServiceImpl implements UniteEnseignementService {
     }
 
     @Override
-    public Set<UniteEnseignement> getAllUEByPromotions(String codeFormation) {
+    public List<UniteEnseignement> getAllUEByPromotions(String codeFormation) {
         Formation formation = formationRepository.findById( codeFormation).get();
-        return formation.getUniteEnseignements()  ;
+        // for all add setTotalHeures to the sum of all the hours
+        return formation.getUniteEnseignements().stream().map(ue -> {
+            ue.setTotalHeures();
+            return ue;
+        }).toList();
     }
 }
