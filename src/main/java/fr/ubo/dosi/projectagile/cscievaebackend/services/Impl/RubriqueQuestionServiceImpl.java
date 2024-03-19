@@ -82,10 +82,8 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
             Long questionId = rubriqueQuestion.getIdQuestion().getId().longValue();
             if (dtoQuestionIds.contains(questionId)) {
                 rubriqueQuestion.setOrdre(dto.getQuestionIds().get(questionId));
-                resultMessage.append(String.format("Rubrique composée modifiée avec succès"));
             } else {
                 rubriqueQuestionRepository.delete(rubriqueQuestion);
-                resultMessage.append(String.format("Rubrique composée supprimée avec succès\""));
             }
         });
 
@@ -94,10 +92,9 @@ public class RubriqueQuestionServiceImpl implements RubriqueQuestionService {
                 Question question = questionRepository.findById(questionId).orElseThrow(() -> new IllegalArgumentException("Question with ID " + questionId + " not found."));
                 RubriqueQuestion rubriqueQuestion = new RubriqueQuestion(new RubriqueQuestionId(rubrique.getId(), question.getId()), rubrique, question, ordre);
                 rubriqueQuestionRepository.save(rubriqueQuestion);
-                resultMessage.append(String.format("Rubrique composée ajoutée avec succès"));
             }
         });
-
+        resultMessage.append("La rubrique composée de questions a été mise à jour avec succès");
         return resultMessage.toString();
     }
 
