@@ -12,7 +12,7 @@ public interface RubriqueRepository extends JpaRepository<Rubrique, Long> {
 
     List<Rubrique> findAllByType(String type);
 
-    boolean existsByDesignation(String designation);
+    boolean existsByDesignationIgnoreCase(String designation);
 
     boolean existsByType(String type);
 

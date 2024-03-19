@@ -17,7 +17,7 @@ public class RubriqueQuestionImpl implements RubriqueService {
     private RubriqueRepository rubriqueRepository;
 
     public Rubrique creerRubrique(Rubrique rubrique){
-        if(rubriqueRepository.existsByDesignation(rubrique.getDesignation())){
+        if(rubriqueRepository.existsByDesignationIgnoreCase(rubrique.getDesignation())){
             throw new IllegalArgumentException("Rubrique existe deja avec cette designation: "+ rubrique.getDesignation());
         }
        return rubriqueRepository.save(rubrique);
@@ -40,7 +40,7 @@ public class RubriqueQuestionImpl implements RubriqueService {
 
         if(rubriqueExistant.isPresent()){
             Rubrique rubriqueUpdate = rubriqueExistant.get();
-            if (rubriqueRepository.existsByDesignation(rubrique.getDesignation())) {
+            if (rubriqueRepository.existsByDesignationIgnoreCase(rubrique.getDesignation())) {
                 throw new IllegalArgumentException("La designation de la rubrique existe deja");
             }
             rubriqueUpdate.setDesignation(rubrique.getDesignation());

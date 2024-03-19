@@ -24,10 +24,10 @@ public class QuestionServiceImpl implements QuestionService {
     @Transactional
     @Override
     public Question createQuestion(Question question) {
-        if (questionRepository.existsByIntitule(question.getIntitule())) {
+        if (questionRepository.existsByIntituleIgnoreCase(question.getIntitule())) {
             throw new IllegalArgumentException("La question existe déjà");
         }
-        if (qualificatifRepository.existsByQualificatifId(question.getIdQualificatif().getId())) {
+        if (!qualificatifRepository.existsByQualificatifId(question.getIdQualificatif().getId())) {
             throw new IllegalArgumentException("Le qualificatif n'existe pas !!");
         }
         return questionRepository.save(question);
@@ -57,7 +57,7 @@ public class QuestionServiceImpl implements QuestionService {
         Optional<Question> optionalQuestion = questionRepository.findById(id);
         if (optionalQuestion.isPresent()) {
             Question questionUpdate = optionalQuestion.get();
-            if (!questionUpdate.getIntitule().equals(question.getIntitule()) && questionRepository.existsByIntitule(question.getIntitule())) {
+            if (!questionUpdate.getIntitule().equals(question.getIntitule()) && questionRepository.existsByIntituleIgnoreCase(question.getIntitule())) {
                 throw new IllegalArgumentException("La question existe déjà");
             }
             questionUpdate.setType(question.getType());
