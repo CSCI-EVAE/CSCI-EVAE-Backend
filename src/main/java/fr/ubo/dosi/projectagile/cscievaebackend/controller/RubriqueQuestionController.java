@@ -27,12 +27,24 @@ public class RubriqueQuestionController {
     @PostMapping("/AjouterRubriqueQuestion")
     public ResponseEntity<?> processRubriqueQuestions(@RequestBody IncomingRubriqueQuestionDTO incomingData) {
         String result = rubriqueQuestionService.AjouterRubriqueQuestion(incomingData);
+        if (result.isEmpty()) {
+            return ApiResponse.error("Une erreur s'est produite lors de l'ajout de la question à la rubrique");
+        }
+        if (result.equals("Impossible d'ajouter une rubrique sans questions")) {
+            return ApiResponse.error("Impossible d'ajouter une rubrique sans questions");
+        }
         return ApiResponse.ok(result);
     }
 
     @PostMapping("/UpdateRubriqueQuestions")
     public ResponseEntity<?> updateRubriqueQuestions(@RequestBody IncomingRubriqueQuestionDTO incomingData) {
         String result = rubriqueQuestionService.AjouterRubriqueQuestion(incomingData);
+        if (result.isEmpty()) {
+            return ApiResponse.error("Une erreur s'est produite lors de l'ajout de la question à la rubrique");
+        }
+        if (result.equals("Impossible d'ajouter une rubrique sans questions")) {
+            return ApiResponse.error("Impossible d'ajouter une rubrique sans questions");
+        }
         return ApiResponse.ok(result);
     }
 
