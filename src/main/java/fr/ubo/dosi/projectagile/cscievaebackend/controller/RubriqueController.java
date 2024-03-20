@@ -6,6 +6,8 @@ import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.exception.ResourceNotFoundException;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Rubrique;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.RubriqueService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -18,11 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Contrôleur pour les opérations CRUD sur les rubriques.
- */
 @RestController
 @RequestMapping("/api/v1/rubrique")
+@Tag(name = "Rubrique", description = "Rubrique API")
 public class RubriqueController {
 
     @Autowired
@@ -30,12 +30,12 @@ public class RubriqueController {
     @Autowired
     private ModelMapper modelMapper;
 
-    /**
-     * Crée une nouvelle rubrique.
-     *
-     * @param rubrique La rubrique à créer.
-     * @return La rubrique créée.
-     */
+
+    @Operation(summary = "Create a new Rubrique", description = "Creates a new Rubrique and saves it to the database")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Rubrique created successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = Rubrique.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "An error occurred while creating the Rubrique", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @PostMapping("/create")
     public ResponseEntity<?> createRubrique(@Validated @RequestBody Rubrique rubrique, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -45,29 +45,34 @@ public class RubriqueController {
         return ApiResponse.ok(rubriqueService.creerRubrique(rubrique));
     }
 
+    @Operation(summary = "Get all Rubriques", description = "Fetches all the Rubriques from the database and maps them to DTOs")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Rubriques fetched successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = RubriqueDTO.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "An error occurred while fetching the Rubriques", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @GetMapping("/all")
     public ResponseEntity<?> getAllRubrique() {
         return ApiResponse.ok(rubriqueService.getAllRubrique().stream().map((element) -> modelMapper.map(element, RubriqueDTO.class)).collect(Collectors.toList()));
     }
 
-    /**
-     * Récupère les rubriques par type.
-     *
-     * @param type Le type de rubrique à récupérer.
-     * @return La liste des rubriques du type spécifié.
-     */
+    @Operation(summary = "Get Rubrique by type", description = "Fetches the Rubrique with the given type from the database and maps it to a DTO")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Rubrique fetched successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = RubriqueDTO.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Rubrique not found", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "An error occurred while fetching the Rubrique", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @GetMapping("/type/{type}")
     public ResponseEntity<?> getRubriqueByType(@PathVariable("type") String type) {
         List<Rubrique> rubriques = rubriqueService.getRubriqueByType(type);
         return ResponseEntity.ok(ApiResponse.ok(rubriques.stream().map((element) -> modelMapper.map(element, RubriqueDTO.class)).collect(Collectors.toList())));
     }
 
-    /**
-     * Récupère une rubrique par son ID.
-     *
-     * @param id L'ID de la rubrique à récupérer.
-     * @return La rubrique avec l'ID spécifié.
-     */
+    @Operation(summary = "Get Rubrique by ID", description = "Fetches the Rubrique with the given ID from the database and maps it to a DTO")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Rubrique fetched successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = RubriqueDTO.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Rubrique not found", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "An error occurred while fetching the Rubrique", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @GetMapping("/{id}")
     public ResponseEntity<?> getRubriqueById(@PathVariable Long id) {
         try {
@@ -78,13 +83,12 @@ public class RubriqueController {
         }
     }
 
-    /**
-     * Met à jour une rubrique.
-     *
-     * @param id       L'ID de la rubrique à mettre à jour.
-     * @param rubrique Les nouvelles informations de la rubrique.
-     * @return La rubrique mise à jour.
-     */
+    @Operation(summary = "Update a Rubrique", description = "Updates a Rubrique in the database")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Rubrique updated successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = RubriqueDTO.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "An error occurred while updating the Rubrique", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "An error occurred while updating the Rubrique", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateRubrique(@PathVariable Long id, @Validated @RequestBody Rubrique rubrique, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -103,12 +107,12 @@ public class RubriqueController {
         }
     }
 
-    /**
-     * Supprime une rubrique.
-     *
-     * @param id L'ID de la rubrique à supprimer.
-     * @return Une réponse vide.
-     */
+    @Operation(summary = "Delete a Rubrique", description = "Deletes a Rubrique from the database")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Rubrique deleted successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "An error occurred while deleting the Rubrique", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "An error occurred while deleting the Rubrique", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteRubrique(@PathVariable Long id) {
         try {

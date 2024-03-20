@@ -6,6 +6,8 @@ import fr.ubo.dosi.projectagile.cscievaebackend.model.*;
 import fr.ubo.dosi.projectagile.cscievaebackend.ResponceHandler.ApiResponse;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.userService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.UniteEnseignementService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/v1/enseignant/ue")
+@Tag(name = "UniteEnseignement", description = "UniteEnseignement API")
 public class UniteEnseignementController {
 
     private final userService userService;
@@ -31,6 +34,11 @@ public class UniteEnseignementController {
         this.uniteEnseignementService = uniteEnseignementService;
     }
 
+    @Operation(summary = "Get all UniteEnseignements", description = "Fetches all the UniteEnseignements from the database and maps them to DTOs")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "UniteEnseignements fetched successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = UniteEnseignementDTO.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "An error occurred while fetching the UniteEnseignements", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @PreAuthorize("hasAuthority('ENS')")
     @GetMapping
     @Transactional
@@ -74,6 +82,12 @@ public class UniteEnseignementController {
         return Integer.compare(order.indexOf(ue1.getEtat()), order.indexOf(ue2.getEtat()));
     };
 
+    @Operation(summary = "Get UniteEnseignement by ID", description = "Fetches the UniteEnseignement with the given ID from the database and maps it to a DTO")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "UniteEnseignement fetched successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = UniteEnseignementDTO.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "UniteEnseignement not found", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "An error occurred while fetching the UniteEnseignement", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @GetMapping("/promotion/{codeFormation}")
     ResponseEntity<?> getAllUEByPromotions(@PathVariable String codeFormation) {
         return ApiResponse.ok(uniteEnseignementService.getAllUEByPromotions(codeFormation));
