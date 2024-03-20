@@ -1,5 +1,4 @@
 package fr.ubo.dosi.projectagile.cscievaebackend.services.Impl;
-
 import fr.ubo.dosi.projectagile.cscievaebackend.DTO.EtudiantDTO;
 import fr.ubo.dosi.projectagile.cscievaebackend.mappers.EtudiantMapper;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.Authentification;
@@ -67,6 +66,7 @@ class EtudiantServiceImplTest {
 //        when(promotionRepository.findByPromotionId(anyString(), anyString())).thenReturn(new Promotion());
 //        when(promotionRepository.findByPromotionId(eq("formation123"), eq("2024"))).thenReturn(createFullPromotion());
 //        assertThrows(IllegalStateException.class, () -> etudiantService.registerEtudiant(etudiantDTO));
+//
 //        verify(userService).registerNewUser(any(Authentification.class));
 //        verify(etudiantRepository, never()).save(any(Etudiant.class));
 //    }
@@ -88,10 +88,10 @@ class EtudiantServiceImplTest {
 //        assertEquals("Prenom Updated", updatedEtudiantDTO.getPrenom());
 //    }
 
+
     private Promotion createFullPromotion() {
         Promotion promotion = new Promotion();
-        promotion.setNbMaxEtudiant((short)10); // Nombre maximal d'étudiants
-        // Ajouter des étudiants jusqu'au maximum
+        promotion.setNbMaxEtudiant((short)10);
         for (int i = 0; i < 10; i++) {
             Etudiant etudiant = new Etudiant();
             promotion.getEtudiants().add(etudiant);
