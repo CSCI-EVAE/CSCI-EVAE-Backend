@@ -14,8 +14,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class AuthentificationServiceImplTest {
     @InjectMocks
     private AuthentificationServiceImpl authentificationService;
+
     @Mock
     private AuthentificationRepository authentificationRepository;
+
     @Test
     public void testGetAuthentification() {
         Authentification authentification = new Authentification();

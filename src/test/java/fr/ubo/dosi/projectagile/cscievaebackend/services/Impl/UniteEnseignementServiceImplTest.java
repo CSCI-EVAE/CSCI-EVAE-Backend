@@ -27,7 +27,6 @@ class UniteEnseignementServiceImplTest {
     private UniteEnseignementServiceImpl uniteEnseignementService;
     @Mock
     private EvaluationRepository er;
-
     @Mock
     private FormationRepository formationRepository;
 
