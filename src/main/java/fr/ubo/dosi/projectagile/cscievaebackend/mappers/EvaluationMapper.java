@@ -14,5 +14,6 @@ public interface EvaluationMapper {
     @Mapping(target = "prenomEtudiant", ignore = true)
     @Mapping(target = "commentaire", ignore = true)
     @Mapping(target = "evaRepondu", ignore = true)
+    @Mapping(source = "uniteEnseignement.id.codeUe", target = "codeUe")
     EvaluationDTO evaluationToEvaluationDTO(Evaluation evaluation);
 }

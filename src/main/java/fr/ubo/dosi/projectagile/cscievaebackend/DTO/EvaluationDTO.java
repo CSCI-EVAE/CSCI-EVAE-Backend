@@ -22,6 +22,7 @@ public class EvaluationDTO {
     private LocalDate debutReponse;
     private LocalDate finReponse;
     private String periode;
+    private String codeUe;
     private boolean evaRepondu=false;
     private String nomEtudiant = "";
     private String prenomEtudiant = "";

@@ -154,7 +154,7 @@ public class EvaluationController {
         }
         Enseignant ens = authentificationService.getAuhtentification(currentUser.getUsername()).getNoEnseignant();
         evaluationService.saveEvaluation(evaluationDTO, ens);
-        return ApiResponse.ok("Evaluation successfully created");
+        return ApiResponse.ok("L'évaluation est créée avec succès");
     }
 
     @Operation(summary = "Get all Evaluations", description = "Fetches all the Evaluations from the database and maps them to DTOs")
