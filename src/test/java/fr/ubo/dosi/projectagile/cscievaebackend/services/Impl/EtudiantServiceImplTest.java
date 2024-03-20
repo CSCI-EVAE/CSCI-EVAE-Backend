@@ -99,5 +99,4 @@ class EtudiantServiceImplTest {
         return promotion;
     }
 
-
 }
