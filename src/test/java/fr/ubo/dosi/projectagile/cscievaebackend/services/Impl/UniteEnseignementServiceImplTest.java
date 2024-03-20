@@ -57,7 +57,8 @@ class UniteEnseignementServiceImplTest {
         Formation formation = new Formation();
         formation.setUniteEnseignements(new HashSet<>());
         when(formationRepository.findById(codeFormation)).thenReturn(Optional.of(formation));
-        Set<UniteEnseignement> ues = (Set<UniteEnseignement>) uniteEnseignementService.getAllUEByPromotions(codeFormation);
+        List<UniteEnseignement> ues = uniteEnseignementService.getAllUEByPromotions(codeFormation);
         assertNotNull(ues);
     }
+
 }
