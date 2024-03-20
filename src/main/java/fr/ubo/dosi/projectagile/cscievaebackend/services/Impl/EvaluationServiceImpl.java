@@ -184,6 +184,7 @@ public class EvaluationServiceImpl implements EvaluationService {
                 List<ReponseQuestion> reponseQuestions = reponseQuestionRepository.findByIdQuestionEvaluationId(questionEvaluation.getId());
                 if (!reponseQuestions.isEmpty()) {
                     double average = reponseQuestions.stream().mapToDouble(ReponseQuestion::getPositionnement).average().orElse(0.0);
+                    average = Math.round(average * 100.0) / 100.0;
                     questionEvaluation.setMoyen(average);
                 }
             });
