@@ -9,6 +9,8 @@ import fr.ubo.dosi.projectagile.cscievaebackend.mappers.EvaluationMapper;
 import fr.ubo.dosi.projectagile.cscievaebackend.model.*;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.AuthentificationService;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.EvaluationService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -26,6 +28,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/evaluation")
+@Tag(name = "Evaluation", description = "Evaluation API")
 public class EvaluationController {
 
     private final AuthentificationService authentificationService;
@@ -39,6 +42,11 @@ public class EvaluationController {
         this.evaluationService = evaluationService;
     }
 
+    @Operation(summary = "Get all Evaluations", description = "Fetches all the Evaluations from the database and maps them to DTOs")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Evaluations fetched successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = EvaluationDTO.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "An error occurred while fetching the Evaluations", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @PreAuthorize("hasAuthority('ENS')")
     @GetMapping("getAll")
     public ResponseEntity<?> getAll(@AuthenticationPrincipal UserDetails currentUser) {
@@ -51,6 +59,11 @@ public class EvaluationController {
         return ApiResponse.ok(evaluationDTOs);
     }
 
+    @Operation(summary = "Get all Evaluations", description = "Fetches all the Evaluations from the database and maps them to DTOs")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Evaluations fetched successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = EvaluationDTO.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "An error occurred while fetching the Evaluations", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @PreAuthorize("hasAuthority('ENS')")
     @GetMapping("getAllForThisYear")
     public ResponseEntity<?> getAllForThisYear(@AuthenticationPrincipal UserDetails currentUser, @RequestParam("codeFormation") String codeFormation, @RequestParam("anneeUniversitaire") String anneeUniversitaire) {
@@ -60,6 +73,11 @@ public class EvaluationController {
         return ApiResponse.ok(evaluationDTOs);
     }
 
+    @Operation(summary = "Get all Evaluations", description = "Fetches all the Evaluations from the database and maps them to DTOs")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Evaluations fetched successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = EvaluationDTO.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "An error occurred while fetching the Evaluations", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @PreAuthorize("hasAuthority('ENS')")
     @PutMapping("soumettre/{id}")
     public ResponseEntity<?> soumettreEvaluation(@PathVariable Long id) {
@@ -71,6 +89,11 @@ public class EvaluationController {
         }
     }
 
+    @Operation(summary = "Get all Evaluations", description = "Fetches all the Evaluations from the database and maps them to DTOs")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Evaluations fetched successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = EvaluationDTO.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "An error occurred while fetching the Evaluations", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @GetMapping("details/{Id}")
     public ResponseEntity<?> getDetails(@PathVariable Long Id) {
         try {
@@ -81,6 +104,11 @@ public class EvaluationController {
         }
     }
 
+    @Operation(summary = "Get all Evaluations", description = "Fetches all the Evaluations from the database and maps them to DTOs")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Evaluations fetched successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = EvaluationDTO.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "An error occurred while fetching the Evaluations", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @PreAuthorize("hasAuthority('ETU')")
     @GetMapping("getEvaluationsByUser")
     public ResponseEntity<?> getEvaluationsByUser(@AuthenticationPrincipal UserDetails currentUser) {
@@ -96,6 +124,11 @@ public class EvaluationController {
         return ResponseEntity.ok(ApiResponse.ok(evaluationDTOs));
     }
 
+    @Operation(summary = "Get all Evaluations", description = "Fetches all the Evaluations from the database and maps them to DTOs")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Evaluations fetched successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = EvaluationDTO.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "An error occurred while fetching the Evaluations", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @PreAuthorize("hasAuthority('ETU')")
     @GetMapping("evaluations/last-year")
     public ResponseEntity<?> getEvaluationsForEnseignantLastYear(@AuthenticationPrincipal UserDetails currentUser) {
@@ -105,6 +138,11 @@ public class EvaluationController {
         return ApiResponse.ok(evaluationDTOs);
     }
 
+    @Operation(summary = "Get all Evaluations", description = "Fetches all the Evaluations from the database and maps them to DTOs")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Evaluations fetched successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = EvaluationDTO.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "An error occurred while fetching the Evaluations", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @PostMapping("create")
     public ResponseEntity<?> createEvaluation(@Validated @RequestBody EvaluationSaveDTO evaluationDTO, @AuthenticationPrincipal UserDetails currentUser, BindingResult bindingResult) {
@@ -116,9 +154,14 @@ public class EvaluationController {
         }
         Enseignant ens = authentificationService.getAuhtentification(currentUser.getUsername()).getNoEnseignant();
         evaluationService.saveEvaluation(evaluationDTO, ens);
-        return ApiResponse.ok("Evaluation successfully created");
+        return ApiResponse.ok("L'évaluation est créée avec succès");
     }
 
+    @Operation(summary = "Get all Evaluations", description = "Fetches all the Evaluations from the database and maps them to DTOs")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Evaluations fetched successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = EvaluationDTO.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "An error occurred while fetching the Evaluations", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @DeleteMapping("delete/{id}")
     public ResponseEntity<?> deleteEvaluation(@PathVariable Long id) {
@@ -130,6 +173,11 @@ public class EvaluationController {
         }
     }
 
+    @Operation(summary = "Get all Evaluations", description = "Fetches all the Evaluations from the database and maps them to DTOs")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Evaluations fetched successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = EvaluationDTO.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "An error occurred while fetching the Evaluations", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @PostMapping("update")
     public ResponseEntity<?> upadateEvaluation(@Validated @RequestBody EvaluationSaveDTO evaluationDTO, @AuthenticationPrincipal UserDetails currentUser, BindingResult bindingResult) {
@@ -144,6 +192,11 @@ public class EvaluationController {
         return ApiResponse.ok("Evaluation est mise à jour avec succès");
     }
 
+    @Operation(summary = "Get all Evaluations", description = "Fetches all the Evaluations from the database and maps them to DTOs")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Evaluations fetched successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = EvaluationDTO.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "An error occurred while fetching the Evaluations", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @PreAuthorize("hasAuthority('ADM') or hasAuthority('ENS')")
     @GetMapping("statistics/{id}")
     public ResponseEntity<?> getStatistics(@PathVariable Long id) {
