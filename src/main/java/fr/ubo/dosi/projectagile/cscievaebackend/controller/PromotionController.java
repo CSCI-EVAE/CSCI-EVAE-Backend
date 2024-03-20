@@ -9,6 +9,8 @@ import fr.ubo.dosi.projectagile.cscievaebackend.model.Promotion;
 import fr.ubo.dosi.projectagile.cscievaebackend.repository.FormationRepository;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.Impl.AuthentificationServiceImpl;
 import fr.ubo.dosi.projectagile.cscievaebackend.services.PromotionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/promotion")
+@Tag(name = "Promotion", description = "Promotion API")
 public class PromotionController {
     private final AuthentificationServiceImpl as;
     private final PromotionMapper promotionMapper;
@@ -37,6 +40,11 @@ public class PromotionController {
         this.formationRepository = formationRepository;
     }
 
+    @Operation(summary = "Get all Promotions", description = "Fetches all the Promotions from the database and maps them to DTOs")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Promotions fetched successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = PromotionDTO.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "An error occurred while fetching the Promotions", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @PreAuthorize("hasAuthority('ENS')")
     @GetMapping("promotionsForENS")
     public ResponseEntity<?> getPromotions(
@@ -47,6 +55,11 @@ public class PromotionController {
         return ApiResponse.ok(PromotionDTOs);
     }
 
+    @Operation(summary = "Get all Promotions", description = "Fetches all the Promotions from the database and maps them to DTOs")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Promotions fetched successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = PromotionDTO.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "An error occurred while fetching the Promotions", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @PreAuthorize("hasAuthority('ADM')")
     @GetMapping("/promotionsForADM")
     public ResponseEntity<?> getAllPromotions() {
@@ -54,7 +67,11 @@ public class PromotionController {
         Set<PromotionDTO> PromotionDTOs = promotions.stream().map(promotionMapper::promotionToPromotionDTO).collect(Collectors.toSet());
         return ApiResponse.ok(PromotionDTOs);
     }
-
+    @Operation(summary = "Get all Promotions", description = "Fetches all the Promotions from the database and maps them to DTOs")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Promotions fetched successfully", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = PromotionDTO.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "An error occurred while fetching the Promotions", content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = String.class)))
+    })
     @PreAuthorize("hasAuthority('ENS')")
     @GetMapping("/formationsForPromotion/{codeformation}")
     public ResponseEntity<?> getFormationsForPromotion(@PathVariable String codeformation) {
