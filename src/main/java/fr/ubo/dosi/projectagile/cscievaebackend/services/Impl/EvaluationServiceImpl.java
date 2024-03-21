@@ -185,6 +185,7 @@ public class EvaluationServiceImpl implements EvaluationService {
                 }
             });
         });
+        evaluationDTO.setNbEtuRepondu(evaluation.getReponseEvaluations().size());
         return evaluationDTO;
     }
 

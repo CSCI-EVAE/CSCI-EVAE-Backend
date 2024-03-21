@@ -27,6 +27,7 @@ public class EvaluationDTO {
     private String nomEtudiant = "";
     private String prenomEtudiant = "";
     private String commentaire = "";
+    private int nbEtuRepondu = 0;
     private Set<RubriqueEvaluationDTO> rubriqueEvaluations;
 }
 
