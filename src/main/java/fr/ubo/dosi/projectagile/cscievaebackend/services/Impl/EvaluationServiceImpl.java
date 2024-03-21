@@ -222,8 +222,10 @@ public class EvaluationServiceImpl implements EvaluationService {
         if (evaluationExistant.isPresent()) {
             Evaluation evaluation = evaluationExistant.get();
             droitRepository.deleteAll(evaluation.getDroits());
-            for (ReponseEvaluation reponseEvaluation : evaluation.getReponseEvaluations()) {
-                reponseQuestionRepository.deleteAll(reponseEvaluation.getReponseQuestions());
+            if (!evaluation.getReponseEvaluations().isEmpty()) {
+                for (ReponseEvaluation reponseEvaluation : evaluation.getReponseEvaluations()) {
+                    reponseQuestionRepository.deleteAll(reponseEvaluation.getReponseQuestions());
+                }
             }
             reponseEvaluationRepository.deleteAll(evaluation.getReponseEvaluations());
             for (RubriqueEvaluation rubriqueEvaluation : evaluation.getRubriqueEvaluations()) {
